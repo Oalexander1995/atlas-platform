@@ -1,6 +1,6 @@
 import { query } from './db';
 import { hashPassword, UserRole, AccountState } from './auth';
-import { depositDemoMoney, getOrCreateUserWallet, getWalletBalancePence } from './ledger';
+import { depositDemoMoney, getOrCreateUserWallet, getWalletBalancePence, getOrCreateOpportunityEscrow, getOrCreateSystemAccount } from './ledger';
 import { ClockService } from './clock';
 
 export async function ensureDemoUsersSeeded(): Promise<void> {
@@ -39,7 +39,13 @@ export async function ensureDemoUsersSeeded(): Promise<void> {
       fullName: 'Active Investor (Dani)',
       role: 'investor',
       accountState: 'verified',
-      initialBalancePence: 12500, // £125.00
+      initialBalancePence: 25000, // £250.00
+    },
+    {
+      email: 'new@atlas.demo',
+      fullName: 'New Investor',
+      role: 'investor',
+      accountState: 'pending_kyc',
     },
   ];
 
@@ -67,6 +73,61 @@ export async function ensureDemoUsersSeeded(): Promise<void> {
           idempotencyKey: `seed_deposit_${userId}`,
           description: 'Initial demo balance',
         });
+      }
+    }
+
+    // Auto-complete onboarding for ready@ and active@
+    if (user.email === 'ready@atlas.demo' || user.email === 'active@atlas.demo') {
+      await query(
+        `INSERT INTO investor_classifications (user_id, category, declaration_text, declared_at)
+         VALUES ($1, 'restricted', 'Restricted investor declaration', $2)
+         ON CONFLICT DO NOTHING`,
+        [userId, now.toISOString()]
+      );
+
+      await query(
+        `INSERT INTO appropriateness_attempts (user_id, question_ids, answers, score, passed, attempted_at)
+         VALUES ($1, ARRAY[1,4,7,10,13], '{}', 5, true, $2)
+         ON CONFLICT DO NOTHING`,
+        [userId, now.toISOString()]
+      );
+    }
+  }
+
+  // Ensure active@atlas.demo has 8 holdings seeded (Section 11)
+  const activeUserRes = await query<{ id: string }>('SELECT id FROM users WHERE email = $1', ['active@atlas.demo']);
+  if (activeUserRes.rows.length > 0) {
+    const activeUserId = activeUserRes.rows[0].id;
+    const existingHoldings = await query<{ count: string }>('SELECT COUNT(*) FROM holdings WHERE user_id = $1', [activeUserId]);
+
+    if (Number(existingHoldings.rows[0].count) === 0) {
+      const oppsRes = await query<{ id: string; status: string }>('SELECT id, status FROM opportunities LIMIT 8');
+      if (oppsRes.rows.length >= 8) {
+        for (let i = 0; i < oppsRes.rows.length; i++) {
+          const opp = oppsRes.rows[i];
+          const principal = (i + 1) * 1500; // £15 to £120
+
+          const hRes = await query<{ id: string }>(
+            `INSERT INTO holdings (user_id, opportunity_id, principal_pence, source, status, created_at)
+             VALUES ($1, $2, $3, 'manual', $4, $5)
+             RETURNING id`,
+            [
+              activeUserId,
+              opp.id,
+              principal,
+              opp.status === 'defaulted' ? 'defaulted' : 'active',
+              now.toISOString(),
+            ]
+          );
+
+          if (opp.status === 'defaulted') {
+            await query(
+              `INSERT INTO holding_losses (holding_id, user_id, opportunity_id, amount_pence, provision_payout_pence, payout_reason, created_at)
+               VALUES ($1, $2, $3, $4, $5, 'Discretionary Provision Fund payout (50% loss cover)', $6)`,
+              [hRes.rows[0].id, activeUserId, opp.id, principal, Math.floor(principal * 0.5), now.toISOString()]
+            );
+          }
+        }
       }
     }
   }
@@ -203,10 +264,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'The Daily Loaf has supplied fresh sourdough in Bath for over 8 years. This loan helps buy a modern deck oven that cuts energy bills and allows baking 150 more loaves every morning. Secured against commercial bakery equipment.',
       risk_tier: 'low',
       sector: 'Food & Drink',
-      target_pence: 1500000, // £15,000
-      raised_pence: 950000,  // £9,500
-      expected_return_min_bps: 350, // 3.5%
-      expected_return_max_bps: 500, // 5.0%
+      target_pence: 1500000,
+      raised_pence: 950000,
+      expected_return_min_bps: 350,
+      expected_return_max_bps: 500,
       term_months: 12,
       status: 'open',
       key_risks: [
@@ -222,10 +283,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Established healthcare clinic upgrading practice equipment to replace older machinery. Steady patient list and consistent local NHS and private service history.',
       risk_tier: 'low',
       sector: 'Healthcare',
-      target_pence: 2500000, // £25,000
-      raised_pence: 2500000, // £25,000 (Funded)
-      expected_return_min_bps: 400, // 4.0%
-      expected_return_max_bps: 500, // 5.0%
+      target_pence: 2500000,
+      raised_pence: 2500000,
+      expected_return_min_bps: 400,
+      expected_return_max_bps: 500,
       term_months: 18,
       status: 'funded',
       key_risks: [
@@ -241,10 +302,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Local woodcraft business expanding furniture orders. Full loan repayments completed on time and in full over 24 months.',
       risk_tier: 'low',
       sector: 'Trades',
-      target_pence: 2000000, // £20,000
-      raised_pence: 2000000, // £20,000 (Completed)
-      expected_return_min_bps: 300, // 3.0%
-      expected_return_max_bps: 400, // 4.0%
+      target_pence: 2000000,
+      raised_pence: 2000000,
+      expected_return_min_bps: 300,
+      expected_return_max_bps: 400,
       term_months: 24,
       status: 'completed',
       key_risks: [
@@ -262,10 +323,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Popular neighbourhood cafe opening a second location in central Bristol. Borrowing funds for plumbing, kitchen fit-out, and initial ingredients inventory.',
       risk_tier: 'medium',
       sector: 'Food & Drink',
-      target_pence: 3500000, // £35,000
-      raised_pence: 2100000, // £21,000
-      expected_return_min_bps: 600, // 6.0%
-      expected_return_max_bps: 800, // 8.0%
+      target_pence: 3500000,
+      raised_pence: 2100000,
+      expected_return_min_bps: 600,
+      expected_return_max_bps: 800,
       term_months: 18,
       status: 'open',
       key_risks: [
@@ -281,10 +342,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Eco-conscious laundrette in Hebden Bridge. Installing recycled heat exchangers to reduce gas usage and cut laundry bills for local residents.',
       risk_tier: 'medium',
       sector: 'Clean Services',
-      target_pence: 1800000, // £18,000
-      raised_pence: 800000,  // £8,000
-      expected_return_min_bps: 550, // 5.5%
-      expected_return_max_bps: 750, // 7.5%
+      target_pence: 1800000,
+      raised_pence: 800000,
+      expected_return_min_bps: 550,
+      expected_return_max_bps: 750,
       term_months: 24,
       status: 'open',
       key_risks: [
@@ -300,10 +361,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Expanding doorstep organic grocery box deliveries. Loan is actively repaying month-by-month on schedule.',
       risk_tier: 'medium',
       sector: 'Local Retail',
-      target_pence: 3000000, // £30,000
-      raised_pence: 3000000, // £30,000 (Repaying)
-      expected_return_min_bps: 650, // 6.5%
-      expected_return_max_bps: 800, // 8.0%
+      target_pence: 3000000,
+      raised_pence: 3000000,
+      expected_return_min_bps: 650,
+      expected_return_max_bps: 800,
       term_months: 36,
       status: 'repaying',
       key_risks: [
@@ -321,10 +382,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Rapidly growing two-year-old electric bike shop. Borrowing for hydraulic workstands, diagnostics computers, and spare motor parts inventory.',
       risk_tier: 'high',
       sector: 'Transport',
-      target_pence: 2200000, // £22,000
-      raised_pence: 1400000, // £14,000
-      expected_return_min_bps: 900,  // 9.0%
-      expected_return_max_bps: 1200, // 12.0%
+      target_pence: 2200000,
+      raised_pence: 1400000,
+      expected_return_min_bps: 900,
+      expected_return_max_bps: 1200,
       term_months: 24,
       status: 'open',
       key_risks: [
@@ -340,10 +401,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Artisan cooperative processing wool from local crofts. Seeking funds to fulfill wholesale orders from European knitwear designers.',
       risk_tier: 'high',
       sector: 'Community Crafts',
-      target_pence: 1600000, // £16,000
-      raised_pence: 700000,  // £7,000
-      expected_return_min_bps: 850,  // 8.5%
-      expected_return_max_bps: 1150, // 11.5%
+      target_pence: 1600000,
+      raised_pence: 700000,
+      expected_return_min_bps: 850,
+      expected_return_max_bps: 1150,
       term_months: 18,
       status: 'open',
       key_risks: [
@@ -359,10 +420,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Early drone inspection startup. Borrower faced client cancellations and defaulted; currently in recovery.',
       risk_tier: 'high',
       sector: 'Tech & Trades',
-      target_pence: 2800000, // £28,000
-      raised_pence: 2800000, // £28,000 (Defaulted)
-      expected_return_min_bps: 1000, // 10.0%
-      expected_return_max_bps: 1300, // 13.0%
+      target_pence: 2800000,
+      raised_pence: 2800000,
+      expected_return_min_bps: 1000,
+      expected_return_max_bps: 1300,
       term_months: 30,
       status: 'defaulted',
       key_risks: [
@@ -380,10 +441,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Uncharted community energy project. Generates power sold back to the local grid. Early stage with novel cooperative governance model. Max £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Community Energy',
-      target_pence: 5000000, // £50,000
-      raised_pence: 1800000, // £18,000
-      expected_return_min_bps: 0,    // 0%
-      expected_return_max_bps: 2000, // 20.0%+ (Highly uncertain)
+      target_pence: 5000000,
+      raised_pence: 1800000,
+      expected_return_min_bps: 0,
+      expected_return_max_bps: 2000,
       term_months: 36,
       status: 'open',
       key_risks: [
@@ -399,10 +460,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Experimental urban farming project collecting waste coffee from 40 city cafes. Novel substrate recipe with high biological uncertainty. Max £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Urban Agriculture',
-      target_pence: 2500000, // £25,000
-      raised_pence: 1100000, // £11,000
-      expected_return_min_bps: 0,    // 0%
-      expected_return_max_bps: 2200, // 22.0%+ (Highly uncertain)
+      target_pence: 2500000,
+      raised_pence: 1100000,
+      expected_return_min_bps: 0,
+      expected_return_max_bps: 2200,
       term_months: 24,
       status: 'open',
       key_risks: [
@@ -418,10 +479,10 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'First-of-its-kind micro hydro prototype. Fully funded for experimental testing. Max £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Experimental Energy',
-      target_pence: 6000000, // £60,000
-      raised_pence: 6000000, // £60,000 (Funded)
-      expected_return_min_bps: 0,    // 0%
-      expected_return_max_bps: 2500, // 25.0%+ (Highly uncertain)
+      target_pence: 6000000,
+      raised_pence: 6000000,
+      expected_return_min_bps: 0,
+      expected_return_max_bps: 2500,
       term_months: 48,
       status: 'funded',
       key_risks: [
