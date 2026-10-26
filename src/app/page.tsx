@@ -9,6 +9,7 @@ import { RiskTierBadge, RiskTier } from '@/components/RiskTierBadge';
 import { CrowdPowerCalculator } from '@/components/CrowdPowerCalculator';
 import { ReturnAssetsShowcase } from '@/components/ReturnAssetsShowcase';
 import { ExpertVettingProcess } from '@/components/ExpertVettingProcess';
+import { WhyUsSection } from '@/components/WhyUsSection';
 import {
   Compass,
   Sparkles,
@@ -79,65 +80,66 @@ export default async function HomePage() {
   const featured = oppsRes.rows;
 
   return (
-    <div className="space-y-12">
+    <div className="-mx-4 sm:-mx-6 lg:-mx-12 -my-6 md:-my-8 px-4 sm:px-6 lg:px-12 py-8 md:py-12 bg-gradient-to-b from-[#062419] via-[#082f21] to-[#041a12] text-white min-h-screen space-y-16">
       {/* Top Demo Status Ribbon */}
-      <div className="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2 text-emerald-950 font-medium">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+      <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs backdrop-blur-md">
+        <div className="flex items-center gap-2 text-emerald-100 font-medium">
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
           <span>
-            Practice Account: <strong>{demoEmail}</strong>
+            Practice Account: <strong className="text-white">{demoEmail}</strong>
           </span>
-          <span className="text-emerald-700 hidden sm:inline">•</span>
-          <span className="text-emerald-800">
-            Wallet Balance: <strong>£{(balancePence / 100).toFixed(2)}</strong> demo money
+          <span className="text-emerald-500 hidden sm:inline">•</span>
+          <span className="text-emerald-200">
+            Wallet Balance: <strong className="text-white">£{(balancePence / 100).toFixed(2)}</strong> demo money
           </span>
         </div>
-        <div className="flex items-center gap-3 text-slate-500">
+        <div className="flex items-center gap-3 text-emerald-300/70">
           <span className="text-[11px] flex items-center gap-1 font-mono">
-            <Clock className="w-3 h-3 text-slate-400" />
+            <Clock className="w-3 h-3 text-emerald-400" />
             {formattedDate}
           </span>
         </div>
       </div>
 
       {/* Hero Section */}
-      <section className="text-center space-y-5 max-w-3xl mx-auto pt-2">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
-          <span>🇬🇧 UK Investment Syndicates & Micro-Crowdfunding</span>
+      <section className="text-center space-y-6 max-w-4xl mx-auto pt-2">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold tracking-wide">
+          <span>🇬🇧 An Example Platform Showing What Investing Could Be</span>
         </div>
-        <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-          Investments you couldn’t normally afford. <br />
-          <span className="text-emerald-700">Unlocked for everyone.</span>
+
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
+          Big investments, <br />
+          <span className="text-emerald-400">Small barriers.</span>
         </h1>
-        <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-          Normally, a £1,000,000 high-return project requires being a multi-millionaire or an investment bank.
-          On Atlas, 1,000 everyday people invest £1,000 each (or start with just £10) to collectively
-          fund big-ticket projects and share the returns. Practice with simulated money first—learn
-          step-by-step with complete peace of mind.
+
+        <p className="text-emerald-100/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-normal">
+          An example website showing how finance should work: so the average Joe can start investing
+          in high-return projects they would have never gotten a chance at, while giving viable projects
+          who couldn’t get a bank loan the opportunity to get everyday people to invest in them.
         </p>
 
         {/* Primary Call to Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
           <Link
             href="/explore"
-            className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-emerald-700 text-white font-bold text-sm sm:text-base hover:bg-emerald-800 transition shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
           >
-            <Compass className="w-4 h-4" />
+            <Compass className="w-5 h-5 text-slate-950" />
             <span>Browse Opportunities</span>
           </Link>
           <Link
             href="/pitch"
-            className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm sm:text-base transition shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2"
           >
-            <Sparkles className="w-4 h-4 text-white" />
-            <span>Pitch an Opportunity (Raise Funds)</span>
+            <Sparkles className="w-5 h-5 text-slate-950" />
+            <span>Pitch a Project (Raise Funds)</span>
           </Link>
           <Link
             href="/wallet"
-            className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white border border-stone-300 text-slate-800 font-bold text-sm sm:text-base hover:bg-stone-50 transition shadow-sm flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition backdrop-blur flex items-center justify-center gap-2"
           >
-            <Wallet className="w-4 h-4 text-emerald-700" />
-            <span>Practice With £{(balancePence / 100).toFixed(0)}</span>
+            <Wallet className="w-5 h-5 text-emerald-300" />
+            <span>Try With £{(balancePence / 100).toFixed(0)} Demo</span>
           </Link>
         </div>
       </section>
@@ -145,89 +147,112 @@ export default async function HomePage() {
       {/* Crowd Power Multiplier Interactive Feature */}
       <CrowdPowerCalculator />
 
-      {/* Everything That Brings in a Return — Real Tangible Assets */}
-      <ReturnAssetsShowcase />
-
-      {/* How Every Project is Vetted by Experts Before Acceptance */}
-      <ExpertVettingProcess />
-
-      {/* How It Works in 3 Kid-Simple Steps */}
-      <section className="space-y-4">
-        <div className="text-center">
-          <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-            How It Works in 3 Simple Steps
+      {/* How It Works in 4 Simple Steps */}
+      <section className="space-y-6">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+            <span>The 4-Step Flywheel</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white">
+            How It Works in 4 Simple Steps
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Easy to understand, transparent, and built so anyone can learn.
+          <p className="text-xs sm:text-sm text-emerald-200/80 max-w-xl mx-auto">
+            Easy to understand, transparent, and built so anyone can learn without finance jargon.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
           {/* Step 1 */}
-          <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl font-bold border border-emerald-100">
+          <div className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-6 shadow-sm space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center text-2xl border border-emerald-400/30">
               💡
             </div>
-            <h3 className="font-bold text-slate-900 text-base">
-              1. Project owners pitch big opportunities
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Step 01</span>
+            <h3 className="font-bold text-white text-base">
+              1. Project Owners Pitch
             </h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Person 1 has a major investment project—like a £1,000,000 commercial solar farm, an 8-flat
-              residential modernisation, or rapid EV charging hubs—and pitches it on Atlas to raise community funding.
+            <p className="text-emerald-100/80 text-xs sm:text-sm leading-relaxed">
+              Entrepreneurs with viable projects—like an 8-flat housing modernisation or clean solar array—pitch on Atlas when traditional banks say no.
             </p>
           </div>
 
           {/* Step 2 */}
-          <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl font-bold border border-emerald-100">
-              🤝
+          <div className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-6 shadow-sm space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center text-2xl border border-emerald-400/30">
+              🔍
             </div>
-            <h3 className="font-bold text-slate-900 text-base">
-              2. 1,000 people pool together from £10
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Step 02</span>
+            <h3 className="font-bold text-white text-base">
+              2. Independent Expert Vetting
             </h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Instead of needing a millionaire, 1,000 everyday people invest £1,000 each (or start with
-              as little as £10). This unlocks high-ticket projects while keeping your money diversified.
+            <p className="text-emerald-100/80 text-xs sm:text-sm leading-relaxed">
+              Chartered surveyors, accountants, and solicitors audit the project. Less than 5% pass our strict tests before opening.
             </p>
           </div>
 
           {/* Step 3 */}
-          <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl font-bold border border-emerald-100">
+          <div className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-6 shadow-sm space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center text-2xl border border-emerald-400/30">
+              🤝
+            </div>
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Step 03</span>
+            <h3 className="font-bold text-white text-base">
+              3. 1,000 People Pool From £10
+            </h3>
+            <p className="text-emerald-100/80 text-xs sm:text-sm leading-relaxed">
+              Everyday people join the syndicate with small amounts from £10 up to £1,000. Pooling together raises £1,000,000 with complete diversification.
+            </p>
+          </div>
+
+          {/* Step 4 */}
+          <div className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-6 shadow-sm space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center text-2xl border border-emerald-400/30">
               📈
             </div>
-            <h3 className="font-bold text-slate-900 text-base">
-              3. Share big returns every month
+            <span className="text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider block">Step 04</span>
+            <h3 className="font-bold text-white text-base">
+              4. Monthly Cash Returns
             </h3>
-            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              As the completed project generates commercial revenue or rental yields, the borrower repays
-              original capital plus interest directly into every investor’s Atlas wallet each month!
+            <p className="text-emerald-100/80 text-xs sm:text-sm leading-relaxed">
+              As completed projects collect tenant rents or clean power fees, the borrower repays capital plus interest monthly into your wallet.
             </p>
           </div>
         </div>
       </section>
 
+      {/* Everything That Brings in a Return — Real Tangible Assets */}
+      <ReturnAssetsShowcase />
+
+      {/* Why Us — Traditional Finance vs Atlas */}
+      <WhyUsSection />
+
+      {/* How Every Project is Vetted by Experts Before Acceptance */}
+      <ExpertVettingProcess />
+
       {/* Featured Opportunities Section */}
-      <section className="space-y-4">
+      <section className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
+              <span>Open Syndicates</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white">
               Featured Investment Opportunities
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500">
-              Real vetted projects and ventures seeking funding from micro-investors starting from £10.
+            <p className="text-xs sm:text-sm text-emerald-200/80">
+              Real vetted projects and ventures seeking crowd funding from everyday investors starting from £10.
             </p>
           </div>
           <Link
             href="/explore"
-            className="text-xs sm:text-sm font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+            className="text-xs sm:text-sm font-semibold text-emerald-400 hover:text-emerald-300 flex items-center gap-1 transition"
           >
             <span>View All Opportunities</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {featured.map((opp) => {
             const target = Number(opp.target_pence);
             const raised = Number(opp.raised_pence);
@@ -241,70 +266,70 @@ export default async function HomePage() {
             return (
               <div
                 key={opp.id}
-                className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm hover:border-emerald-200 transition flex flex-col justify-between gap-4"
+                className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-6 shadow-sm hover:border-emerald-400/60 transition flex flex-col justify-between gap-4 text-white"
               >
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                        <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider">
                           {opp.partner_name}
                         </span>
-                        <span className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold">
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-[10px] font-bold">
                           👥 {coInvestors.toLocaleString('en-GB')} Co-investors
                         </span>
                       </div>
-                      <h3 className="text-lg font-bold text-slate-900 leading-snug mt-0.5">
+                      <h3 className="text-lg font-bold text-white leading-snug mt-0.5">
                         {opp.title}
                       </h3>
                     </div>
                     <RiskTierBadge tier={opp.risk_tier} size="sm" />
                   </div>
 
-                  <p className="text-xs sm:text-sm text-slate-600 line-clamp-2">
+                  <p className="text-xs sm:text-sm text-emerald-100/80 line-clamp-2 leading-relaxed">
                     {opp.summary}
                   </p>
                 </div>
 
-                <div className="space-y-3 pt-3 border-t border-stone-100">
+                <div className="space-y-3 pt-3 border-t border-emerald-500/20">
                   {/* Stats Bar */}
                   <div className="flex items-center justify-between text-xs">
                     <div>
-                      <span className="text-slate-400 block text-[10px]">Expected Return</span>
-                      <span className="font-bold text-slate-900 text-sm">
+                      <span className="text-emerald-300/70 block text-[10px]">Expected Return</span>
+                      <span className="font-bold text-emerald-400 text-sm">
                         {minRate}% – {maxRate}% / yr
                       </span>
                     </div>
                     <div>
-                      <span className="text-slate-400 block text-[10px]">Loan Term</span>
-                      <span className="font-bold text-slate-900 text-sm">
+                      <span className="text-emerald-300/70 block text-[10px]">Loan Term</span>
+                      <span className="font-bold text-white text-sm">
                         {opp.term_months} Months
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-slate-400 block text-[10px]">Funded</span>
-                      <span className="font-bold text-emerald-700 text-sm">
+                      <span className="text-emerald-300/70 block text-[10px]">Funded</span>
+                      <span className="font-bold text-white text-sm">
                         £{raisedPounds.toLocaleString('en-GB')} ({progress}%)
                       </span>
                     </div>
                   </div>
 
                   {/* Progress bar */}
-                  <div className="w-full bg-stone-100 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
                     <div
-                      className="bg-emerald-600 h-full rounded-full transition-all duration-500"
+                      className="bg-emerald-400 h-full rounded-full transition-all duration-500"
                       style={{ width: `${progress}%` }}
                     />
                   </div>
 
                   {/* Action Link */}
                   <div className="flex items-center justify-between pt-1">
-                    <span className="text-[11px] text-slate-500 font-medium">
+                    <span className="text-[11px] text-emerald-300/80 font-medium">
                       Goal: £{targetPounds.toLocaleString('en-GB')} • Co-invest from £10
                     </span>
                     <Link
                       href={`/opportunities/${opp.id}`}
-                      className="px-4 py-2 rounded-xl bg-emerald-700 text-white font-semibold text-xs hover:bg-emerald-800 transition"
+                      className="px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs transition shadow-sm"
                     >
                       View & Invest
                     </Link>
@@ -316,69 +341,74 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* 4 Interactive Feature Pillars */}
-      <section className="space-y-4">
-        <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-          Tools to Help You Learn Safely
-        </h2>
+      {/* 4 Interactive Educational Feature Pillars */}
+      <section className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-400/15 border border-emerald-400/30 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+            <span>Section 0 Guardrails</span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-white">
+            Tools to Help You Practice with Peace of Mind
+          </h2>
+        </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link
             href="/auto-invest"
-            className="group bg-white rounded-3xl border border-stone-200 p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition space-y-2.5 block"
+            className="group bg-[#031c13] rounded-3xl border border-emerald-500/30 p-5 shadow-sm hover:border-emerald-400/60 transition space-y-2.5 block text-white"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 group-hover:bg-emerald-100 transition">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center border border-emerald-400/30 group-hover:bg-emerald-400/25 transition">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-800">
+            <h3 className="font-bold text-white text-sm group-hover:text-emerald-300">
               Auto-Invest Piggy Bank
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-emerald-100/80 leading-relaxed">
               Automatically split £10 a month across diversified risk buckets with a 20% cap on any single project.
             </p>
           </Link>
 
           <Link
             href="/portfolio"
-            className="group bg-white rounded-3xl border border-stone-200 p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition space-y-2.5 block"
+            className="group bg-[#031c13] rounded-3xl border border-emerald-500/30 p-5 shadow-sm hover:border-emerald-400/60 transition space-y-2.5 block text-white"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 group-hover:bg-emerald-100 transition">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center border border-emerald-400/30 group-hover:bg-emerald-400/25 transition">
               <PieChart className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-800">
+            <h3 className="font-bold text-white text-sm group-hover:text-emerald-300">
               Your Money Garden
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-emerald-100/80 leading-relaxed">
               See your holdings breakdown, risk balance, and download statement spreadsheets anytime.
             </p>
           </Link>
 
           <Link
             href="/provision-fund"
-            className="group bg-white rounded-3xl border border-stone-200 p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition space-y-2.5 block"
+            className="group bg-[#031c13] rounded-3xl border border-emerald-500/30 p-5 shadow-sm hover:border-emerald-400/60 transition space-y-2.5 block text-white"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 group-hover:bg-emerald-100 transition">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center border border-emerald-400/30 group-hover:bg-emerald-400/25 transition">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-800">
+            <h3 className="font-bold text-white text-sm group-hover:text-emerald-300">
               Community Reserve Fund
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-emerald-100/80 leading-relaxed">
               1% of every raise feeds a shared cushion to help if a vetted borrower hits hard times.
             </p>
           </Link>
 
           <Link
             href="/learn"
-            className="group bg-white rounded-3xl border border-stone-200 p-5 shadow-sm hover:border-emerald-300 hover:shadow-md transition space-y-2.5 block"
+            className="group bg-[#031c13] rounded-3xl border border-emerald-500/30 p-5 shadow-sm hover:border-emerald-400/60 transition space-y-2.5 block text-white"
           >
-            <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-800 flex items-center justify-center border border-emerald-100 group-hover:bg-emerald-100 transition">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/15 text-emerald-300 flex items-center justify-center border border-emerald-400/30 group-hover:bg-emerald-400/25 transition">
               <BookOpen className="w-5 h-5" />
             </div>
-            <h3 className="font-bold text-slate-900 text-sm group-hover:text-emerald-800">
+            <h3 className="font-bold text-white text-sm group-hover:text-emerald-300">
               3-Minute Lessons
             </h3>
-            <p className="text-xs text-slate-500 leading-relaxed">
+            <p className="text-xs text-emerald-100/80 leading-relaxed">
               Bite-sized stories and mini-quizzes explaining inflation, interest, and why spreading eggs matters.
             </p>
           </Link>
@@ -386,26 +416,26 @@ export default async function HomePage() {
       </section>
 
       {/* Statutory Section 3.1 Risk Warning Banner */}
-      <section className="bg-amber-50 rounded-3xl border border-amber-300 p-6 shadow-sm space-y-2">
-        <div className="flex items-center gap-2 text-amber-900 font-bold text-xs uppercase tracking-wider">
-          <AlertTriangle className="w-4 h-4 text-amber-700 flex-shrink-0" />
+      <section className="bg-amber-500/10 rounded-3xl border border-amber-400/30 p-6 shadow-sm space-y-2 text-amber-200">
+        <div className="flex items-center gap-2 text-amber-300 font-bold text-xs uppercase tracking-wider">
+          <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0" />
           <span>FCA Statutory Risk Warning (Section 3.1)</span>
         </div>
-        <p className="text-amber-950 font-bold text-sm sm:text-base">
+        <p className="text-white font-bold text-sm sm:text-base">
           Don’t invest unless you’re prepared to lose all the money you invest. This is a high-risk
           investment.
         </p>
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 text-xs text-amber-800">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-1 text-xs text-amber-200/90">
           <p>
             You should not expect to be protected if something goes wrong.{' '}
             <Link
               href="/risk-summary"
-              className="underline font-semibold hover:text-amber-950"
+              className="underline font-semibold hover:text-white"
             >
               Take 2 mins to learn more
             </Link>
           </p>
-          <span className="text-amber-700 font-medium">Demo platform — Simulated currency</span>
+          <span className="text-amber-300/80 font-medium">Demo platform — Simulated currency</span>
         </div>
       </section>
     </div>

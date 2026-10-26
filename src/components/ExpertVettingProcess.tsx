@@ -67,32 +67,32 @@ export function ExpertVettingProcess() {
   ];
 
   return (
-    <section className="bg-gradient-to-b from-stone-50 to-white rounded-3xl border border-stone-200 p-6 sm:p-8 md:p-10 shadow-sm space-y-8">
+    <section className="bg-[#062c1e]/90 backdrop-blur-xl rounded-3xl border border-emerald-500/25 p-6 sm:p-8 md:p-10 shadow-xl space-y-8 text-white">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-3 max-w-2xl">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-semibold uppercase tracking-wider">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-400/15 text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-400/30">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>Independent Due Diligence</span>
           </div>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
             How Every Project is Vetted by Experts
           </h2>
-          <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed">
-            Anyone can pitch a project on Atlas, but <strong>less than 5% are accepted</strong>. Before
+          <p className="text-xs sm:text-sm md:text-base text-emerald-100/90 leading-relaxed">
+            Anyone with a viable project can pitch on Atlas, but <strong>less than 5% are accepted</strong>. Before
             an opportunity is opened to community co-investors, independent accountants, surveyors,
             and solicitors put it through a strict 4-stage vetting pipeline.
           </p>
         </div>
 
         {/* 5% Acceptance Rate Stat Box */}
-        <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs flex items-center gap-4 flex-shrink-0">
-          <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-800 font-extrabold text-2xl flex items-center justify-center border border-amber-200">
+        <div className="bg-white/5 backdrop-blur border border-white/15 p-5 rounded-2xl shadow-xs flex items-center gap-4 flex-shrink-0">
+          <div className="w-14 h-14 rounded-2xl bg-amber-400/20 text-amber-300 font-extrabold text-2xl flex items-center justify-center border border-amber-400/40">
             &lt;5%
           </div>
           <div>
-            <div className="text-xs font-bold text-slate-900">Strict Acceptance Rate</div>
-            <p className="text-[11px] text-slate-500 max-w-[180px] leading-snug">
+            <div className="text-xs font-bold text-white">Strict Acceptance Rate</div>
+            <p className="text-[11px] text-emerald-200/80 max-w-[180px] leading-snug">
               95 out of 100 pitched projects are rejected during our expert review.
             </p>
           </div>
@@ -104,33 +104,33 @@ export function ExpertVettingProcess() {
         {vettingSteps.map((step) => (
           <div
             key={step.step}
-            className="bg-white rounded-2xl border border-stone-200 p-6 shadow-2xs hover:border-emerald-300 transition space-y-4 flex flex-col justify-between"
+            className="bg-[#031c13] rounded-2xl border border-emerald-500/30 p-6 shadow-2xs hover:border-emerald-400/60 transition space-y-4 flex flex-col justify-between"
           >
             <div className="space-y-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <span className="text-2xl">{step.icon}</span>
-                  <span className="text-xs font-mono font-bold text-slate-400">STAGE {step.step}</span>
+                  <span className="text-xs font-mono font-bold text-emerald-400">STAGE {step.step}</span>
                 </div>
-                <span className="px-2.5 py-0.5 rounded-full bg-stone-100 text-slate-700 text-[11px] font-semibold">
+                <span className="px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-200 border border-white/10 text-[11px] font-semibold">
                   {step.badge}
                 </span>
               </div>
 
-              <h3 className="text-base sm:text-lg font-bold text-slate-900">{step.title}</h3>
+              <h3 className="text-base sm:text-lg font-bold text-white">{step.title}</h3>
 
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">{step.desc}</p>
+              <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed">{step.desc}</p>
             </div>
 
             {/* Checklist */}
-            <div className="pt-3 border-t border-stone-100 space-y-2">
-              <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+            <div className="pt-3 border-t border-emerald-500/20 space-y-2">
+              <div className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">
                 Certified Verification Points:
               </div>
               <ul className="space-y-1.5">
                 {step.checklist.map((item, idx) => (
-                  <li key={idx} className="flex items-start gap-2 text-xs text-slate-700">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                  <li key={idx} className="flex items-start gap-2 text-xs text-emerald-100">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
                     <span>{item}</span>
                   </li>
                 ))}
@@ -141,7 +141,7 @@ export function ExpertVettingProcess() {
       </div>
 
       {/* Transparency Callout */}
-      <div className="bg-emerald-950 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-[#02140e] border border-emerald-500/40 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="space-y-1 text-center sm:text-left">
           <div className="text-xs font-bold uppercase tracking-wider text-emerald-400">
             100% Transparent Documentation
@@ -149,16 +149,16 @@ export function ExpertVettingProcess() {
           <div className="text-sm sm:text-base font-bold text-white">
             Every project page features an inspectable Vetting Checklist and live verification dates.
           </div>
-          <p className="text-xs text-emerald-200/80">
+          <p className="text-xs text-emerald-300/80">
             You can inspect the exact dates our team verified Companies House filings and physical site surveys.
           </p>
         </div>
         <Link
           href="/explore"
-          className="px-5 py-2.5 rounded-xl bg-white text-emerald-950 font-bold text-xs sm:text-sm hover:bg-emerald-50 transition shadow-sm flex-shrink-0 flex items-center gap-2"
+          className="px-5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs sm:text-sm transition shadow-sm flex-shrink-0 flex items-center gap-2"
         >
           <span>View Vetted Opportunities</span>
-          <ArrowRight className="w-4 h-4 text-emerald-800" />
+          <ArrowRight className="w-4 h-4" />
         </Link>
       </div>
     </section>

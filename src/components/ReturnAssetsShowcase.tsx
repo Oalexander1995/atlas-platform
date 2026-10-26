@@ -128,25 +128,25 @@ export function ReturnAssetsShowcase() {
   const current = categories.find((c) => c.id === activeTab) || categories[0];
 
   return (
-    <section className="bg-white rounded-3xl border border-stone-200 p-6 sm:p-8 md:p-10 shadow-sm space-y-8">
+    <section className="bg-[#062c1e]/90 backdrop-blur-xl rounded-3xl border border-emerald-500/25 p-6 sm:p-8 md:p-10 shadow-xl space-y-8 text-white">
       {/* Header */}
       <div className="space-y-3 text-center md:text-left">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-semibold uppercase tracking-wider border border-emerald-200">
-          <TrendingUp className="w-3.5 h-3.5 text-emerald-600" />
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-400/15 text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-400/30">
+          <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
           <span>Real Tangible Assets</span>
         </div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white">
           Everything That Brings in a Return
         </h2>
-        <p className="text-xs sm:text-sm md:text-base text-slate-600 max-w-3xl leading-relaxed">
-          Investing on Atlas isn’t about guessing stock charts or hoping a token goes up. Every project
+        <p className="text-xs sm:text-sm md:text-base text-emerald-100/90 max-w-3xl leading-relaxed">
+          Investing on Atlas isn’t about guessing stock charts or hoping a volatile token goes up. Every project
           is backed by <strong>real assets and contracts that earn predictable cash flow</strong>—from
-          residential rents to solar energy agreements and commercial equipment leases.
+          residential rental yields to solar energy agreements and commercial equipment leases.
         </p>
       </div>
 
       {/* Asset Category Selector Tabs */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
         {categories.map((cat) => {
           const isActive = cat.id === activeTab;
           return (
@@ -154,10 +154,10 @@ export function ReturnAssetsShowcase() {
               key={cat.id}
               type="button"
               onClick={() => setActiveTab(cat.id)}
-              className={`p-3 rounded-2xl border text-left transition flex flex-col items-center sm:items-start gap-1.5 ${
+              className={`p-3.5 rounded-2xl border text-left transition flex flex-col items-center sm:items-start gap-1.5 ${
                 isActive
-                  ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm'
-                  : 'bg-stone-50 hover:bg-stone-100 text-slate-700 border-stone-200'
+                  ? 'bg-emerald-400 text-slate-950 border-emerald-300 shadow-md font-bold'
+                  : 'bg-white/5 hover:bg-white/10 text-emerald-100 border-white/10'
               }`}
             >
               <span className="text-2xl">{cat.icon}</span>
@@ -168,20 +168,20 @@ export function ReturnAssetsShowcase() {
       </div>
 
       {/* Active Asset Deep-Dive Card */}
-      <div className="bg-stone-50 rounded-2xl border border-stone-200 p-6 md:p-8 space-y-6">
+      <div className="bg-[#031c13] rounded-2xl border border-emerald-500/30 p-6 md:p-8 space-y-6 shadow-inner">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <span className="text-3xl md:text-4xl p-2.5 bg-white rounded-2xl shadow-xs border border-stone-200">
+            <span className="text-3xl md:text-4xl p-2.5 bg-white/10 rounded-2xl border border-white/15">
               {current.icon}
             </span>
             <div>
-              <h3 className="text-xl md:text-2xl font-bold text-slate-900">{current.name}</h3>
-              <p className="text-xs sm:text-sm text-emerald-800 font-medium">{current.tagline}</p>
+              <h3 className="text-xl md:text-2xl font-bold text-white">{current.name}</h3>
+              <p className="text-xs sm:text-sm text-emerald-300 font-medium">{current.tagline}</p>
             </div>
           </div>
           <Link
             href="/explore"
-            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 hover:text-emerald-950 transition"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-300 hover:text-white transition"
           >
             <span>Explore {current.name} Projects</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -191,66 +191,66 @@ export function ReturnAssetsShowcase() {
         {/* 3 Step Cash Flow Mechanism */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Box 1: How it earns */}
-          <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs space-y-2">
-            <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+          <div className="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2 backdrop-blur">
+            <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">
               1. The Asset & Project
             </div>
-            <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed font-medium">
               {current.howItEarns}
             </p>
           </div>
 
           {/* Box 2: Source of Income */}
-          <div className="bg-white p-5 rounded-2xl border border-stone-200 shadow-2xs space-y-2">
-            <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">
+          <div className="bg-white/5 p-5 rounded-2xl border border-white/10 space-y-2 backdrop-blur">
+            <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">
               2. How Income Is Created
             </div>
-            <p className="text-xs sm:text-sm text-slate-900 font-semibold leading-relaxed">
+            <p className="text-xs sm:text-sm text-white font-semibold leading-relaxed">
               {current.sourceOfIncome}
             </p>
-            <p className="text-[11px] text-slate-500">
+            <p className="text-[11px] text-emerald-300/70">
               Backed by commercial contracts, lease paperwork, and customer payments.
             </p>
           </div>
 
           {/* Box 3: How investors get paid */}
-          <div className="bg-emerald-50/70 p-5 rounded-2xl border border-emerald-200 shadow-2xs space-y-2">
-            <div className="text-[11px] font-bold text-emerald-900 uppercase tracking-wider">
+          <div className="bg-emerald-500/15 p-5 rounded-2xl border border-emerald-400/30 space-y-2">
+            <div className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider">
               3. Returns Back To You
             </div>
-            <p className="text-xs sm:text-sm text-emerald-950 leading-relaxed font-medium">
+            <p className="text-xs sm:text-sm text-white leading-relaxed font-medium">
               {current.howInvestorsGetPaid}
             </p>
-            <span className="text-[10px] text-emerald-700 italic block">
+            <span className="text-[10px] text-emerald-300/80 italic block">
               Returns are not guaranteed; capital is at risk.
             </span>
           </div>
         </div>
 
         {/* Real Example Bar */}
-        <div className="p-4 bg-white rounded-2xl border border-stone-200 flex flex-wrap items-center justify-between gap-4">
+        <div className="p-4 bg-white/5 rounded-2xl border border-white/10 flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-0.5">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+            <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block">
               Featured Atlas Syndicate Example
             </span>
-            <div className="text-sm font-bold text-slate-900">{current.realExampleTitle}</div>
+            <div className="text-sm font-bold text-white">{current.realExampleTitle}</div>
           </div>
           <div className="flex items-center gap-4 text-xs">
             <div>
-              <span className="text-slate-400 block text-[10px]">Raise Goal</span>
-              <span className="font-bold text-slate-900">{current.exampleTarget}</span>
+              <span className="text-emerald-300/70 block text-[10px]">Raise Goal</span>
+              <span className="font-bold text-white">{current.exampleTarget}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Expected Return</span>
-              <span className="font-bold text-emerald-700">{current.exampleReturn}</span>
+              <span className="text-emerald-300/70 block text-[10px]">Expected Return</span>
+              <span className="font-bold text-emerald-400">{current.exampleReturn}</span>
             </div>
             <div>
-              <span className="text-slate-400 block text-[10px]">Term</span>
-              <span className="font-bold text-slate-900">{current.exampleTerm}</span>
+              <span className="text-emerald-300/70 block text-[10px]">Term</span>
+              <span className="font-bold text-white">{current.exampleTerm}</span>
             </div>
             <Link
               href="/explore"
-              className="px-3 py-1.5 rounded-xl bg-emerald-700 text-white font-bold text-xs hover:bg-emerald-800 transition"
+              className="px-3.5 py-1.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold text-xs transition shadow-sm"
             >
               View
             </Link>
