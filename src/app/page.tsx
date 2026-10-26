@@ -113,9 +113,11 @@ export default async function HomePage() {
         </h1>
 
         <p className="text-emerald-100/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-normal">
-          An example website showing how finance should work: so the average Joe can start investing
-          in high-return projects they would have never gotten a chance at, while giving viable projects
-          who couldn’t get a bank loan the opportunity to get everyday people to invest in them.
+          We believe everyone should have the opportunity to grow their wealth, not just those who already
+          have it. Our platform makes investing more accessible by opening the door to opportunities that
+          would traditionally be out of reach for everyday people. With a focus on transparency, carefully
+          vetted opportunities and different levels of risk, we aim to help people take control of their
+          financial future and make their money work harder for them.
         </p>
 
         {/* Primary Call to Action Buttons */}
