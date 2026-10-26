@@ -25,6 +25,7 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
   const [tierFilter, setTierFilter] = useState<string>('all');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [termFilter, setTermFilter] = useState<string>('all');
+  const [scaleFilter, setScaleFilter] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('newest');
 
   const filteredOpportunities = useMemo(() => {
@@ -34,12 +35,15 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
       if (termFilter === 'under_1' && opp.term_months >= 12) return false;
       if (termFilter === '1_to_3' && (opp.term_months < 12 || opp.term_months > 36)) return false;
       if (termFilter === '3_plus' && opp.term_months <= 36) return false;
+      if (scaleFilter === 'flagship_1m' && opp.target_pence < 75000000) return false;
+      if (scaleFilter === 'mid_syndicate' && (opp.target_pence < 25000000 || opp.target_pence >= 75000000)) return false;
       return true;
     }).sort((a, b) => {
       if (sortBy === 'term_length') return a.term_months - b.term_months;
+      if (sortBy === 'target_high') return b.target_pence - a.target_pence;
       return 0; // default newest
     });
-  }, [initialOpportunities, tierFilter, statusFilter, termFilter, sortBy]);
+  }, [initialOpportunities, tierFilter, statusFilter, termFilter, scaleFilter, sortBy]);
 
   return (
     <div className="space-y-6">
@@ -60,12 +64,27 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
               className="bg-stone-50 border border-stone-200 rounded-lg px-2.5 py-1 text-slate-800 font-medium focus:outline-none"
             >
               <option value="newest">Newest</option>
+              <option value="target_high">Largest Target (£1M first)</option>
               <option value="term_length">Shortest Term</option>
             </select>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 pt-1">
+          {/* Syndicate Scale Filter */}
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-1">Syndicate Scale</label>
+            <select
+              value={scaleFilter}
+              onChange={(e) => setScaleFilter(e.target.value)}
+              className="w-full text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none"
+            >
+              <option value="all">All Project Sizes</option>
+              <option value="flagship_1m">Flagship (£750k - £1M)</option>
+              <option value="mid_syndicate">Mid Syndicate (£250k - £750k)</option>
+            </select>
+          </div>
+
           {/* Risk Tier Filter */}
           <div>
             <label className="block text-xs font-medium text-slate-500 mb-1">Risk Level</label>
@@ -126,6 +145,8 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
           const minReturn = (opp.expected_return_min_bps / 100).toFixed(1);
           const maxReturn = (opp.expected_return_max_bps / 100).toFixed(1);
           const percentRaised = Math.min(100, Math.round((opp.raised_pence / opp.target_pence) * 100));
+          const targetPounds = Math.round(opp.target_pence / 100);
+          const coInvestors = Math.max(18, Math.round((opp.raised_pence / (opp.target_pence || 1)) * 1000));
 
           const statusStyles: Record<string, string> = {
             open: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -172,6 +193,16 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
                       </span>
                     )}
                   </div>
+                  <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                    <span className="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-md text-[10px] font-bold">
+                      👥 {coInvestors.toLocaleString('en-GB')} Co-investors
+                    </span>
+                    {targetPounds >= 750000 && (
+                      <span className="px-2 py-0.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-md text-[10px] font-bold">
+                        🌟 Flagship Syndicate
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">
@@ -214,6 +245,10 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
                       }`}
                       style={{ width: `${percentRaised}%` }}
                     />
+                  </div>
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 pt-0.5">
+                    <span>Micro-invest from £10</span>
+                    <span>Cap: £{opp.risk_tier === 'uncharted' ? '100' : '1,000'} / investor</span>
                   </div>
                 </div>
               </div>

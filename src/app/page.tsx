@@ -6,6 +6,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { getWalletBalancePence } from '@/lib/ledger';
 import { ClockService } from '@/lib/clock';
 import { RiskTierBadge, RiskTier } from '@/components/RiskTierBadge';
+import { CrowdPowerCalculator } from '@/components/CrowdPowerCalculator';
 import {
   Compass,
   Sparkles,
@@ -99,16 +100,17 @@ export default async function HomePage() {
 
       {/* Hero Section */}
       <section className="text-center space-y-5 max-w-3xl mx-auto pt-2">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
-          <span>🇬🇧 Curated UK Micro-Investment Marketplace</span>
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
+          <span>🇬🇧 UK Investment Syndicates & Micro-Crowdfunding</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-          Invest in real opportunities. <br />
-          <span className="text-emerald-700">Back projects. Earn returns.</span>
+          Investments you couldn’t normally afford. <br />
+          <span className="text-emerald-700">Unlocked for everyone.</span>
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-          Someone has a great investment project but needs funding. Everyday people come together to
-          fund it starting from £10 and share in the returns. Practice with simulated money first—learn
+          Normally, a £1,000,000 high-return project requires being a multi-millionaire or an investment bank.
+          On Atlas, 1,000 everyday people invest £1,000 each (or start with just £10) to collectively
+          fund big-ticket projects and share the returns. Practice with simulated money first—learn
           step-by-step with complete peace of mind.
         </p>
 
@@ -138,6 +140,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Crowd Power Multiplier Interactive Feature */}
+      <CrowdPowerCalculator />
+
       {/* How It Works in 3 Kid-Simple Steps */}
       <section className="space-y-4">
         <div className="text-center">
@@ -156,11 +161,11 @@ export default async function HomePage() {
               💡
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              1. Project owners pitch an opportunity
+              1. Project owners pitch big opportunities
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Person 1 has a great investment project—like renovating a house, installing solar panels,
-              or purchasing commercial equipment—and lists it on Atlas to raise funding.
+              Person 1 has a major investment project—like a £1,000,000 commercial solar farm, an 8-flat
+              residential modernisation, or rapid EV charging hubs—and pitches it on Atlas to raise community funding.
             </p>
           </div>
 
@@ -170,11 +175,11 @@ export default async function HomePage() {
               🤝
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              2. People pool money from £10
+              2. 1,000 people pool together from £10
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Everyday people choose projects they believe in and invest small amounts starting from
-              just £10. By putting £10 in several projects, you keep your money diversified.
+              Instead of needing a millionaire, 1,000 everyday people invest £1,000 each (or start with
+              as little as £10). This unlocks high-ticket projects while keeping your money diversified.
             </p>
           </div>
 
@@ -184,11 +189,11 @@ export default async function HomePage() {
               📈
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              3. Earn returns when the project succeeds
+              3. Share big returns every month
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              As the project generates income, the borrower repays investors their original capital
-              plus interest directly back into their Atlas wallet every month!
+              As the completed project generates commercial revenue or rental yields, the borrower repays
+              original capital plus interest directly into every investor’s Atlas wallet each month!
             </p>
           </div>
         </div>
@@ -221,6 +226,9 @@ export default async function HomePage() {
             const progress = target > 0 ? Math.min(100, Math.round((raised / target) * 100)) : 0;
             const minRate = (opp.expected_return_min_bps / 100).toFixed(1);
             const maxRate = (opp.expected_return_max_bps / 100).toFixed(1);
+            const targetPounds = Math.round(target / 100);
+            const raisedPounds = Math.round(raised / 100);
+            const coInvestors = Math.max(18, Math.round((raised / (target || 1)) * 1000));
 
             return (
               <div
@@ -230,9 +238,14 @@ export default async function HomePage() {
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <span className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
-                        {opp.partner_name}
-                      </span>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+                          {opp.partner_name}
+                        </span>
+                        <span className="px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] font-bold">
+                          👥 {coInvestors.toLocaleString('en-GB')} Co-investors
+                        </span>
+                      </div>
                       <h3 className="text-lg font-bold text-slate-900 leading-snug mt-0.5">
                         {opp.title}
                       </h3>
@@ -262,7 +275,9 @@ export default async function HomePage() {
                     </div>
                     <div className="text-right">
                       <span className="text-slate-400 block text-[10px]">Funded</span>
-                      <span className="font-bold text-emerald-700 text-sm">{progress}%</span>
+                      <span className="font-bold text-emerald-700 text-sm">
+                        £{raisedPounds.toLocaleString('en-GB')} ({progress}%)
+                      </span>
                     </div>
                   </div>
 
@@ -276,8 +291,8 @@ export default async function HomePage() {
 
                   {/* Action Link */}
                   <div className="flex items-center justify-between pt-1">
-                    <span className="text-[11px] text-slate-500">
-                      Invest £10 → ~£{(10 + 10 * (opp.expected_return_min_bps / 10000)).toFixed(2)} after 1 yr
+                    <span className="text-[11px] text-slate-500 font-medium">
+                      Goal: £{targetPounds.toLocaleString('en-GB')} • Co-invest from £10
                     </span>
                     <Link
                       href={`/opportunities/${opp.id}`}
@@ -311,7 +326,7 @@ export default async function HomePage() {
               Auto-Invest Piggy Bank
             </h3>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Automatically split £10 a month across safe buckets with a 20% cap on any single shop.
+              Automatically split £10 a month across diversified risk buckets with a 20% cap on any single project.
             </p>
           </Link>
 

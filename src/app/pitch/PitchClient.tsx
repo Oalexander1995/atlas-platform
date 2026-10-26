@@ -53,50 +53,50 @@ export function PitchClient() {
   // Quick preset templates for easy kid-friendly testing
   const applyPreset = (presetType: 'property' | 'energy' | 'tech') => {
     if (presetType === 'property') {
-      setCreatorName('Marcus Vance (Property Renovator)');
-      setCreatorBio('Experienced residential renovator with 4 successful house modernisations in Greater Manchester.');
+      setCreatorName('Marcus Vance (Property Developer)');
+      setCreatorBio('Experienced residential renovator modernising 8 apartments in Greater Manchester.');
       setLocation('Manchester, UK');
-      setTitle('Manchester 2-Flat Victorian House Refurbishment');
+      setTitle('Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)');
       setCategory('Property & Real Estate');
-      setSummary('Modernising a Victorian house into two energy-efficient apartments for long-term rental income.');
-      setDescription('Funding pays for new kitchens, modern heat pumps, and insulation. Monthly rental income from vetted tenants will pay investors back their capital plus interest.');
-      setTargetPounds('25000');
+      setSummary('Modernising a Victorian complex into 8 energy-efficient apartments for long-term rental income.');
+      setDescription('Collective raise of £1,000,000 funded by 1,000 investors pooling £1,000 each (or starting from £10). Rental yields from vetted tenants repay investors monthly with interest.');
+      setTargetPounds('1000000');
       setExpectedReturnPercent('6.5');
-      setTermMonths('12');
-      setRiskTier('medium');
-      setRisk1('Renovation work could uncover hidden plumbing repairs.');
+      setTermMonths('18');
+      setRiskTier('low');
+      setRisk1('Renovation work could uncover hidden plumbing or roof repairs.');
       setRisk2('Rental vacancy between tenancies could briefly delay cash flow.');
-      setRisk3('Material prices for fixtures could rise slightly during building.');
+      setRisk3('Building material costs could fluctuate during construction.');
     } else if (presetType === 'energy') {
-      setCreatorName('Elena Rostova (CleanTech Engineer)');
-      setCreatorBio('Renewable energy installer helping commercial buildings generate their own electricity.');
+      setCreatorName('Elena Rostova (Clean Infrastructure Director)');
+      setCreatorBio('Renewable engineering specialist deploying rooftop commercial solar arrays and multi-megawatt battery storage.');
       setLocation('Bristol, UK');
-      setTitle('Commercial Solar Roof Array & Battery Storage');
+      setTitle('Somerset Logistics Park — Commercial Solar Array & Battery Farm');
       setCategory('Clean Energy & Storage');
-      setSummary('Mounting 48 commercial solar panels and lithium battery packs on a logistics warehouse.');
-      setDescription('The business pays a fixed monthly energy fee that is cheaper than the National Grid. These contract payments repay investors their capital plus interest.');
-      setTargetPounds('20000');
-      setExpectedReturnPercent('5.0');
-      setTermMonths('12');
+      setSummary('Mounting commercial solar panels and industrial lithium battery storage on a major logistics hub.');
+      setDescription('1,000 co-investors pool £1,000 each to raise £1,000,000. 15-year fixed power purchase agreements with warehouse tenants repay investors their capital plus interest.');
+      setTargetPounds('1000000');
+      setExpectedReturnPercent('5.5');
+      setTermMonths('24');
       setRiskTier('low');
       setRisk1('Cloudy weather periods could temporarily reduce peak solar generation.');
-      setRisk2('Component delivery for battery inverters could take an extra week.');
-      setRisk3('Warehouse owner could change tenancy terms in year 3.');
+      setRisk2('Component delivery for high-capacity battery inverters could take extra time.');
+      setRisk3('Warehouse tenant relocation could require renegotiating power contracts.');
     } else {
-      setCreatorName('Tariq Khan (Robotics Specialist)');
-      setCreatorBio('Robotics engineer building autonomous delivery rovers for university and hospital campuses.');
-      setLocation('Leeds, UK');
-      setTitle('Campus Autonomous Delivery Rovers Fleet (Batch of 8)');
-      setCategory('Tech & Digital Ventures');
-      setSummary('Building 8 autonomous delivery rovers to carry hot food and books around universities.');
-      setDescription('Students and campus cafes pay a £1.50 delivery fee per trip. Revenue from over 200 daily trips repays investors over the 18-month term.');
-      setTargetPounds('18000');
-      setExpectedReturnPercent('9.0');
+      setCreatorName('Liam Gallagher (Clean Fleet Logistics)');
+      setCreatorBio('Fleet engineer installing commercial ultra-fast EV charging hubs along UK transport corridors.');
+      setLocation('Birmingham, UK');
+      setTitle('National Commercial EV Fast-Charging Highway Hub Network (6 Sites)');
+      setCategory('Transport & Vehicle Fleets');
+      setSummary('Deploying 12 rapid 150kW commercial EV chargers across high-traffic motorway corridors.');
+      setDescription('Syndicate of 250 investors pooling £1,000 each (or 2,500 pooling £100) to raise £250,000. Daily charging fees paid by commercial fleets repay investors every month.');
+      setTargetPounds('250000');
+      setExpectedReturnPercent('7.5');
       setTermMonths('18');
-      setRiskTier('high');
-      setRisk1('Campus software updates could require rover recalibration.');
-      setRisk2('Harsh winter weather could slow rover speeds outdoors.');
-      setRisk3('Competition from bicycle couriers could reduce order volume.');
+      setRiskTier('medium');
+      setRisk1('Grid connection works by local distribution operators could take longer.');
+      setRisk2('Commercial electricity tariffs could fluctuate seasonally.');
+      setRisk3('Hardware maintenance call-outs for high-voltage power converters.');
     }
   };
 
@@ -219,21 +219,21 @@ export function PitchClient() {
                 onClick={() => applyPreset('property')}
                 className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/20 flex items-center gap-1.5"
               >
-                <span>🏠 Property Modernisation</span>
+                <span>🏢 £1M Residential Modernisation (1,000 × £1,000)</span>
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('energy')}
                 className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/20 flex items-center gap-1.5"
               >
-                <span>☀️ Solar & Battery Array</span>
+                <span>☀️ £1M Solar & Battery Farm (1,000 × £1,000)</span>
               </button>
               <button
                 type="button"
                 onClick={() => applyPreset('tech')}
                 className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-semibold transition border border-white/20 flex items-center gap-1.5"
               >
-                <span>🤖 Campus Delivery Rovers</span>
+                <span>⚡ £250k EV Fast-Charging Hub (250 × £1,000)</span>
               </button>
             </div>
           </div>
@@ -371,14 +371,14 @@ export function PitchClient() {
                   type="number"
                   required
                   min="500"
-                  max="100000"
+                  max="1000000"
                   step="500"
                   value={targetPounds}
                   onChange={(e) => setTargetPounds(e.target.value)}
                   className="w-full pl-8 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
-              <p className="text-[11px] text-slate-500 mt-1">Min £500, max £100,000</p>
+              <p className="text-[11px] text-slate-500 mt-1">Min £500, max £1,000,000</p>
             </div>
 
             <div>
@@ -420,6 +420,36 @@ export function PitchClient() {
               </select>
             </div>
           </div>
+
+          {/* Dynamic Crowd Pooling Breakdown */}
+          {Number(targetPounds) > 0 && (
+            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 space-y-2.5">
+              <div className="flex items-center justify-between text-xs font-bold text-emerald-950 uppercase tracking-wider">
+                <span>👥 Collective Crowd Power For This Goal:</span>
+                <span className="font-mono text-emerald-800">Target: £{Number(targetPounds).toLocaleString('en-GB')}</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-emerald-900">
+                <div className="bg-white/90 p-2.5 rounded-xl border border-emerald-100 shadow-2xs">
+                  <span className="text-[11px] text-slate-500 block font-medium">1,000 Co-investors</span>
+                  <span className="font-bold text-emerald-800 text-sm">
+                    £{(Number(targetPounds) / 1000).toLocaleString('en-GB', { minimumFractionDigits: 0, maximumFractionDigits: 2 })} each
+                  </span>
+                </div>
+                <div className="bg-white/90 p-2.5 rounded-xl border border-emerald-100 shadow-2xs">
+                  <span className="text-[11px] text-slate-500 block font-medium">At £1,000 Max Cap</span>
+                  <span className="font-bold text-emerald-800 text-sm">
+                    {Math.ceil(Number(targetPounds) / 1000).toLocaleString('en-GB')} investors needed
+                  </span>
+                </div>
+                <div className="bg-white/90 p-2.5 rounded-xl border border-emerald-100 shadow-2xs">
+                  <span className="text-[11px] text-slate-500 block font-medium">At £100 Micro-tickets</span>
+                  <span className="font-bold text-emerald-800 text-sm">
+                    {Math.ceil(Number(targetPounds) / 100).toLocaleString('en-GB')} investors needed
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-2">

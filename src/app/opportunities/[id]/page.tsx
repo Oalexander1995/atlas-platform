@@ -35,6 +35,8 @@ export default async function OpportunityDetailPage({
   const minReturn = (opportunity.expected_return_min_bps / 100).toFixed(1);
   const maxReturn = (opportunity.expected_return_max_bps / 100).toFixed(1);
   const percentRaised = Math.min(100, Math.round((opportunity.raised_pence / opportunity.target_pence) * 100));
+  const targetPounds = Math.round(opportunity.target_pence / 100);
+  const coInvestorsCount = Math.max(18, Math.round((opportunity.raised_pence / (opportunity.target_pence || 1)) * 1000));
 
   // "Example: if you invest £100" calculations (Section 5.7)
   const expectedReturnPounds = (100 * (opportunity.expected_return_min_bps / 10000) * (opportunity.term_months / 12)).toFixed(2);
@@ -193,6 +195,57 @@ export default async function OpportunityDetailPage({
             <p className="text-xs text-rose-900 leading-relaxed">
               The borrower goes out of business and cannot repay. You lose all £100 you invested.
             </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Crowd Syndicate Multiplier Section */}
+      <div className="bg-gradient-to-br from-emerald-950 via-teal-950 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-sm space-y-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="space-y-1">
+            <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+              Crowd Syndicate Power
+            </span>
+            <h2 className="text-xl md:text-2xl font-extrabold text-white">
+              How Collective Backing Raises £{targetPounds.toLocaleString('en-GB')}
+            </h2>
+          </div>
+          <div className="px-3.5 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+            👥 {coInvestorsCount.toLocaleString('en-GB')} Co-investors Backing
+          </div>
+        </div>
+
+        <p className="text-xs md:text-sm text-emerald-100/90 leading-relaxed">
+          A £{targetPounds.toLocaleString('en-GB')} investment project would normally require an institutional venture fund or millionaire. On Atlas, the goal is fractionalised into accessible portions so 1,000 everyday people can pool £1,000 each (or start with just £10) to make it happen together.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <div className="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+            <div className="text-[11px] text-emerald-200">Total Project Goal</div>
+            <div className="text-xl font-extrabold text-white mt-0.5">
+              £{targetPounds.toLocaleString('en-GB')}
+            </div>
+            <div className="text-[11px] text-emerald-300/80 mt-1">
+              High-return vetted project
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+            <div className="text-[11px] text-emerald-200">Standard Ticket Cap</div>
+            <div className="text-xl font-extrabold text-white mt-0.5">
+              £{(opportunity.per_user_cap_pence / 100).toLocaleString('en-GB')} max
+            </div>
+            <div className="text-[11px] text-emerald-300/80 mt-1">
+              Prevents monopolisation & protects investors
+            </div>
+          </div>
+
+          <div className="bg-white/10 backdrop-blur rounded-2xl p-4 border border-white/10">
+            <div className="text-[11px] text-emerald-200">Accessible Starting Point</div>
+            <div className="text-xl font-extrabold text-white mt-0.5">From £10</div>
+            <div className="text-[11px] text-emerald-300/80 mt-1">
+              Start small, spread risk across projects
+            </div>
           </div>
         </div>
       </div>

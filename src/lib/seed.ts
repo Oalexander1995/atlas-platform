@@ -146,6 +146,7 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     if (Number(legacyCheck.rows[0].count) > 0) {
       await updateLegacyToInvestmentOpportunities();
     }
+    await ensureHighTicketSyndicates();
     return;
   }
 
@@ -266,13 +267,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     // Low Tier (3 items)
     {
       partnerName: 'Marcus Vance (Property Renovator)',
-      title: 'Manchester Victorian House — 2-Flat Refurbishment & Modernisation',
-      summary: 'Refurbishing a Victorian property into two energy-efficient apartments for long-term rental income.',
-      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation. Monthly rental yields from vetted tenants repay investors their capital plus interest.',
+      title: 'Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)',
+      summary: 'Refurbishing a Victorian property into 8 energy-efficient apartments for long-term rental income.',
+      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation for 8 units. 1,000 investors pool £1,000 each (or start from £10). Monthly rental yields from vetted tenants repay investors their capital plus interest.',
       risk_tier: 'low',
       sector: 'Property & Real Estate',
-      target_pence: 1500000,
-      raised_pence: 950000,
+      target_pence: 100000000,
+      raised_pence: 67500000,
       expected_return_min_bps: 350,
       expected_return_max_bps: 500,
       term_months: 12,
@@ -285,13 +286,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     },
     {
       partnerName: 'Elena Rostova (Clean Infrastructure)',
-      title: 'Somerset Logistics Park — Solar Roof Array & Battery Storage',
-      summary: 'Commercial solar panels and industrial lithium battery storage deployed on a logistics hub.',
-      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay investors their capital plus interest.',
+      title: 'Somerset Logistics Park — Commercial Solar Array & Battery Farm',
+      summary: 'Commercial solar panels and industrial lithium battery storage deployed on a major logistics hub.',
+      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay 1,000 co-investors their capital plus interest.',
       risk_tier: 'low',
       sector: 'Clean Energy & Storage',
-      target_pence: 2500000,
-      raised_pence: 2500000,
+      target_pence: 100000000,
+      raised_pence: 100000000,
       expected_return_min_bps: 400,
       expected_return_max_bps: 500,
       term_months: 18,
@@ -306,11 +307,11 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       partnerName: 'Dr. Richard Thorne (Clinical Director)',
       title: 'Regional Diagnostic Clinic — Imaging Scanner Equipment Lease',
       summary: 'State-of-the-art ultrasound imaging equipment leased to an NHS partner diagnostic clinic.',
-      description: 'Established healthcare clinic co-funding medical diagnostic machinery. Full loan repayments completed on time and in full over 24 months.',
+      description: 'Established healthcare clinic co-funding medical diagnostic machinery. 500 co-investors pooled to fund £500,000. Full loan repayments completed on time and in full over 24 months.',
       risk_tier: 'low',
       sector: 'Healthcare & MedTech',
-      target_pence: 2000000,
-      raised_pence: 2000000,
+      target_pence: 50000000,
+      raised_pence: 50000000,
       expected_return_min_bps: 300,
       expected_return_max_bps: 400,
       term_months: 24,
@@ -325,13 +326,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     // Medium Tier (3 items)
     {
       partnerName: 'Liam Gallagher (Logistics Operator)',
-      title: 'Urban Electric Delivery Van Fleet (3 Chilled Vans)',
-      summary: 'Purchasing three zero-emission electric refrigerated vans to fulfill contracted food logistics routes.',
-      description: 'Liam operates a fast-growing commercial courier fleet in Birmingham. Locked delivery contracts with regional supermarket suppliers generate the cash flow to repay investors over 18 months.',
+      title: 'National Commercial EV Fast-Charging Highway Hub Network (6 Sites)',
+      summary: 'Deploying 12 rapid commercial EV charging bays across 6 high-demand motorway freight corridors.',
+      description: 'Liam operates commercial transport hubs. 750 co-investors pooling to raise £750,000. Contracted fleet haulage charging fees repay investors every month.',
       risk_tier: 'medium',
       sector: 'Transport & Fleet',
-      target_pence: 3500000,
-      raised_pence: 2100000,
+      target_pence: 75000000,
+      raised_pence: 49500000,
       expected_return_min_bps: 600,
       expected_return_max_bps: 800,
       term_months: 18,
@@ -344,13 +345,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     },
     {
       partnerName: 'Dr. Maya Patel (AgriTech Specialist)',
-      title: 'Vertical Hydroponic Herb Farm Automation',
+      title: 'Vertical Hydroponic Supermarket Farm Automation',
       summary: 'Automated LED lighting and nutrient sensors for an indoor farm supplying supermarket herbs.',
       description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket pre-orders fund the loan repayments over 24 months.',
       risk_tier: 'medium',
       sector: 'Smart Agriculture',
-      target_pence: 1800000,
-      raised_pence: 800000,
+      target_pence: 35000000,
+      raised_pence: 18000000,
       expected_return_min_bps: 550,
       expected_return_max_bps: 750,
       term_months: 24,
@@ -368,8 +369,8 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Established sustainable clothing brand with 12,000 customers. Loan is actively repaying month-by-month on schedule from seasonal retail sales.',
       risk_tier: 'medium',
       sector: 'Consumer Goods & Trade',
-      target_pence: 3000000,
-      raised_pence: 3000000,
+      target_pence: 25000000,
+      raised_pence: 25000000,
       expected_return_min_bps: 650,
       expected_return_max_bps: 800,
       term_months: 36,
@@ -389,8 +390,8 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Award-winning game studio expanding to consoles. Pre-order game sales directly repay investors over 24 months.',
       risk_tier: 'high',
       sector: 'Gaming & Digital Media',
-      target_pence: 2200000,
-      raised_pence: 1400000,
+      target_pence: 50000000,
+      raised_pence: 32000000,
       expected_return_min_bps: 900,
       expected_return_max_bps: 1200,
       term_months: 24,
@@ -403,13 +404,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     },
     {
       partnerName: 'Highland Wool Millers',
-      title: 'Highland Wool — Plant Dye Steam Vats',
+      title: 'Highland Clean Tech Dye Production Facility',
       summary: 'Stainless steel temperature-controlled dye vats to scale naturally dyed wool production.',
       description: 'Artisan cooperative processing wool from local crofts. Seeking funds to fulfill wholesale orders from European knitwear designers.',
       risk_tier: 'high',
       sector: 'Community Crafts',
-      target_pence: 1600000,
-      raised_pence: 700000,
+      target_pence: 30000000,
+      raised_pence: 14000000,
       expected_return_min_bps: 850,
       expected_return_max_bps: 1150,
       term_months: 18,
@@ -427,8 +428,8 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       description: 'Early stage drone inspection startup. Borrower faced offshore client contract cancellations and defaulted; currently in recovery.',
       risk_tier: 'high',
       sector: 'Tech & Field Services',
-      target_pence: 2800000,
-      raised_pence: 2800000,
+      target_pence: 40000000,
+      raised_pence: 40000000,
       expected_return_min_bps: 1000,
       expected_return_max_bps: 1300,
       term_months: 30,
@@ -443,13 +444,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     // Uncharted Tier (3 items - Capped at £100 per user)
     {
       partnerName: 'Tariq Al-Mansoor (Aerospace Engineer)',
-      title: 'Low-Orbit Satellite Community Ground Station Dish',
+      title: 'Low-Orbit Satellite Earth Observation Receiving Station',
       summary: 'Automated satellite tracking dish in Yorkshire receiving weather and Earth-observation data.',
       description: 'Ground station capturing data sold to universities and climate researchers. Early stage with innovative data sales model. Strictly capped at £100 per investor.',
       risk_tier: 'uncharted',
       sector: 'Aerospace & Telecom',
-      target_pence: 5000000,
-      raised_pence: 1800000,
+      target_pence: 25000000,
+      raised_pence: 11000000,
       expected_return_min_bps: 0,
       expected_return_max_bps: 2000,
       term_months: 36,
@@ -462,13 +463,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     },
     {
       partnerName: 'Dr. Aris Vance (Bio-Energy Researcher)',
-      title: 'Next-Gen Micro-Algae Biofuel Experimental Rig',
+      title: 'Next-Gen Micro-Algae Biofuel Experimental Production Facility',
       summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
       description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Frontier CleanTech',
-      target_pence: 2500000,
-      raised_pence: 1100000,
+      target_pence: 35000000,
+      raised_pence: 16000000,
       expected_return_min_bps: 0,
       expected_return_max_bps: 2200,
       term_months: 24,
@@ -481,13 +482,13 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
     },
     {
       partnerName: 'Calum MacLeod (Hydro Specialist)',
-      title: 'River Kinetic Micro-Hydro Turbine Prototype',
+      title: 'River Kinetic Micro-Hydro Turbine Generation Station',
       summary: 'Submerged non-dam river turbine generating 24/7 continuous electrical power from river flow.',
       description: 'Highland renewable power pilot rig. Fully funded by early community testers. Strictly capped at £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Experimental Energy',
-      target_pence: 6000000,
-      raised_pence: 6000000,
+      target_pence: 50000000,
+      raised_pence: 50000000,
       expected_return_min_bps: 0,
       expected_return_max_bps: 2500,
       term_months: 48,
@@ -757,6 +758,123 @@ async function updateLegacyToInvestmentOpportunities(): Promise<void> {
        SET title = $1, summary = $2, description = $3, sector = $4, key_risks = $5
        WHERE id = $6`,
       [u.title, u.summary, u.description, u.sector, JSON.stringify(u.risks), opp.id]
+    );
+  }
+}
+
+export async function ensureHighTicketSyndicates(): Promise<void> {
+  const check = await query<{ count: string }>(
+    'SELECT COUNT(*) FROM opportunities WHERE target_pence < 10000000'
+  );
+  if (Number(check.rows[0].count) === 0) {
+    return;
+  }
+
+  const updates = [
+    {
+      matchTitle: '%Victorian House%',
+      title: 'Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)',
+      summary: 'Refurbishing a Victorian property into 8 energy-efficient apartments for long-term rental income.',
+      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation for 8 units. 1,000 investors pool £1,000 each (or start from £10). Monthly rental yields from vetted tenants repay investors their capital plus interest.',
+      target_pence: 100000000, // £1,000,000
+      raised_pence: 67500000,  // £675,000 (67.5% funded)
+    },
+    {
+      matchTitle: '%Logistics Park%',
+      title: 'Somerset Logistics Park — Commercial Solar Array & Battery Farm',
+      summary: 'Commercial solar panels and industrial lithium battery storage deployed on a major logistics hub.',
+      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay 1,000 co-investors their capital plus interest.',
+      target_pence: 100000000, // £1,000,000
+      raised_pence: 100000000, // £1,000,000 (100% funded)
+    },
+    {
+      matchTitle: '%Diagnostic Clinic%',
+      title: 'Regional Diagnostic Clinic — Imaging Scanner Equipment Lease',
+      summary: 'State-of-the-art ultrasound imaging equipment leased to an NHS partner diagnostic clinic.',
+      description: 'Established healthcare clinic co-funding medical diagnostic machinery. 500 co-investors pooled to fund £500,000. Full loan repayments completed on time and in full over 24 months.',
+      target_pence: 50000000, // £500,000
+      raised_pence: 50000000, // £500,000 (100% completed)
+    },
+    {
+      matchTitle: '%Delivery Van%',
+      title: 'National Commercial EV Fast-Charging Highway Hub Network (6 Sites)',
+      summary: 'Deploying 12 rapid commercial EV charging bays across 6 high-demand motorway freight corridors.',
+      description: 'Liam operates commercial transport hubs. 750 co-investors pooling to raise £750,000. Contracted fleet haulage charging fees repay investors every month.',
+      target_pence: 75000000, // £750,000
+      raised_pence: 49500000, // £495,000 (66% funded)
+    },
+    {
+      matchTitle: '%Hydroponic%',
+      title: 'Vertical Hydroponic Supermarket Farm Automation',
+      summary: 'Automated LED lighting and nutrient sensors for an indoor farm supplying supermarket herbs.',
+      description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket pre-orders fund the loan repayments over 24 months.',
+      target_pence: 35000000, // £350,000
+      raised_pence: 18000000, // £180,000 (51.4% funded)
+    },
+    {
+      matchTitle: '%Eco-Apparel%',
+      title: 'Eco-Apparel Q4 Bulk Seasonal Inventory Financing',
+      summary: 'Financing bulk raw bamboo yarn purchase to manufacture autumn/winter collection.',
+      description: 'Established sustainable clothing brand with 12,000 customers. Loan is actively repaying month-by-month on schedule from seasonal retail sales.',
+      target_pence: 25000000, // £250,000
+      raised_pence: 25000000, // £250,000 (repaying)
+    },
+    {
+      matchTitle: '%Indie Studio%',
+      title: 'Indie Studio Game Console Port & Physical Editions',
+      summary: 'Porting a viral PC indie game to Nintendo Switch and manufacturing physical collector cartridges.',
+      description: 'Award-winning game studio expanding to consoles. Pre-order game sales directly repay investors over 24 months.',
+      target_pence: 50000000, // £500,000
+      raised_pence: 32000000, // £320,000 (64% funded)
+    },
+    {
+      matchTitle: '%Highland Wool%',
+      title: 'Highland Clean Tech Dye Production Facility',
+      summary: 'Stainless steel temperature-controlled dye vats to scale naturally dyed wool production.',
+      description: 'Artisan cooperative processing wool from local crofts. Seeking funds to fulfill wholesale orders from European knitwear designers.',
+      target_pence: 30000000, // £300,000
+      raised_pence: 14000000, // £140,000
+    },
+    {
+      matchTitle: '%Commercial Drone%',
+      title: 'Commercial Drone Offshore Turbine Inspection Fleet',
+      summary: 'Thermal-imaging inspection drones for industrial wind turbine and bridge surveys.',
+      description: 'Early stage drone inspection startup. Borrower faced offshore client contract cancellations and defaulted; currently in recovery.',
+      target_pence: 40000000, // £400,000
+      raised_pence: 40000000, // £400,000 (defaulted)
+    },
+    {
+      matchTitle: '%Satellite%',
+      title: 'Low-Orbit Satellite Earth Observation Receiving Station',
+      summary: 'Automated satellite tracking dish in Yorkshire receiving weather and Earth-observation data.',
+      description: 'Ground station capturing data sold to universities and climate researchers. Early stage with innovative data sales model. Strictly capped at £100 per investor.',
+      target_pence: 25000000, // £250,000
+      raised_pence: 11000000, // £110,000
+    },
+    {
+      matchTitle: '%Biofuel%',
+      title: 'Next-Gen Micro-Algae Biofuel Experimental Production Facility',
+      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
+      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
+      target_pence: 35000000, // £350,000
+      raised_pence: 16000000, // £160,000
+    },
+    {
+      matchTitle: '%Hydro Turbine%',
+      title: 'River Kinetic Micro-Hydro Turbine Generation Station',
+      summary: 'Submerged non-dam river turbine generating 24/7 continuous electrical power from river flow.',
+      description: 'Highland renewable power pilot rig. Fully funded by early community testers. Strictly capped at £100 per user.',
+      target_pence: 50000000, // £500,000
+      raised_pence: 50000000, // £500,000 (funded)
+    },
+  ];
+
+  for (const u of updates) {
+    await query(
+      `UPDATE opportunities
+       SET title = $1, summary = $2, description = $3, target_pence = $4, raised_pence = $5
+       WHERE title ILIKE $6`,
+      [u.title, u.summary, u.description, u.target_pence, u.raised_pence, u.matchTitle]
     );
   }
 }

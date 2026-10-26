@@ -45,9 +45,9 @@ export async function POST(req: NextRequest) {
     }
 
     const target = Number(targetPounds);
-    if (!target || target < 100 || target > 500000) {
+    if (!target || target < 100 || target > 1000000) {
       return NextResponse.json(
-        { error: 'Target funding must be between £100 and £500,000.' },
+        { error: 'Target funding must be between £100 and £1,000,000.' },
         { status: 400 }
       );
     }

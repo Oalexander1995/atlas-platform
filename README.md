@@ -2,7 +2,13 @@
 
 > **DEMO — Simulated money only. No real investments or bank transfers are made.**
 
-Atlas is an interactive, production-ready prototype of a curated micro-investment marketplace designed specifically for UK households. Anyone with a viable investment project—such as a property renovation, clean energy installation, electric delivery fleet, or tech venture—can pitch their opportunity to raise funding. Everyday people come together to fund these projects starting from just **£10** and earn returns as the project delivers, while being protected by built-in regulatory guardrails (appropriateness tests, 24-hour cooling-off periods, strict caps, and a discretionary Provision Fund). Everything is explained in plain English with a reading age of 12 or below.
+Atlas is an interactive, production-ready prototype of an investment opportunities marketplace designed to unlock big-ticket deals that everyday UK households wouldn't normally be able to afford. Normally, high-return ventures—such as a **£1,000,000 commercial solar and battery farm**, an **8-apartment Victorian residential modernisation**, or **regional EV fast-charging highway hubs**—require being a multi-millionaire or an institutional fund. 
+
+On Atlas:
+- **Crowd Syndicate Pooling:** 1,000 everyday people invest £1,000 each (or start from as little as **£10**) to collectively fund high-return £1,000,000 projects and share the monthly returns.
+- **Project Pitching (`/pitch`):** Anyone with an investment opportunity can pitch their project to the community to raise funding, with interactive syndicate math calculators and 1-click templates.
+- **Interactive Crowd Power Calculator:** Built directly into the homepage, showing live project unlocks from £100k up to £1,000,000 based on co-investor pooling.
+- **Section 0 Regulatory Guardrails:** Double-entry ledger, server-side caps (£10 min, £1,000 cap per project / £100 Uncharted cap), statutory risk banners, appropriateness tests, and automated copy linter. Everything is written in plain English with a reading age of 12 or below.
 
 ---
 
@@ -80,16 +86,27 @@ Follow this 10-minute step-by-step evaluation guide to verify all platform capab
 4. Observe the balance update immediately. Behind the scenes, the double-entry engine debits the custodian bank account and credits the user's wallet account in a single atomic transaction.
 5. Click **"Withdraw Demo Money"** to test simulated withdrawals back to your bank account.
 
-### Scenario 3: Marketplace & Single Investment (Milestone 3 & 5)
-1. Click **"Explore"** (`/explore`) to view 12 vetted UK small businesses.
-2. Filter opportunities by risk tier (**Low Risk**, **Medium Risk**, **High Risk**, **Uncharted**).
-3. Observe the statutory regulatory risk banner at the top of the marketplace.
-4. Click **"Take 2 mins to learn more"** to review the plain-English `/risk-summary` page.
-5. Click on an opportunity (e.g., *Artisan Bakery & Cafe Expansion*).
-6. Review the **"What could I get back on £100?"** interactive scenario panel showing Good, Typical, and Poor return outcomes with honest loss disclaimers.
-7. Click **"Invest in this business"** (`/invest/[id]`).
+### Scenario 3: Large-Scale Investment Marketplace & Syndicates (Milestones 3 & 5)
+1. Click **"Explore"** (`/explore`) to view vetted UK investment opportunities ranging from £250k to £1,000,000 raises.
+2. Filter opportunities by **Syndicate Scale** (**Flagship £750k - £1M**, **Mid Syndicate £250k - £750k**) or by risk tier (**Low Risk**, **Medium Risk**, **High Risk**, **Uncharted**).
+3. Observe the co-investor pooling badges on each card (e.g. `👥 1,000 Co-investors`, `🌟 Flagship Syndicate`).
+4. Click on a flagship project (e.g., *Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)* or *Somerset Logistics Park Commercial Solar & Battery Farm*).
+5. Review the **"Crowd Syndicate Power"** breakdown showing how 1,000 people pooling £1,000 each (or starting from £10) funds the £1,000,000 project.
+6. Review the **"What could I get back on £100?"** interactive scenario panel showing Expected, Poor, and Worst Case return outcomes with honest loss disclaimers.
+7. Click **"Invest from £10"** (`/invest/[id]`).
 8. Enter `£25`, check the required risk acknowledgement checkbox, and confirm.
-9. Observe the calm, celebratory success screen. Your £25 is moved into escrow awaiting loan closing.
+9. Observe your investment move into escrow awaiting loan closing.
+
+### Scenario 3B: Pitch an Opportunity & Raise Community Funding
+1. Click **"Pitch an Opportunity"** (`/pitch`) from the navigation bar or homepage hero.
+2. Test the 1-click evaluator presets:
+   - Click **"🏢 £1M Residential Modernisation"** to autofill Marcus Vance's £1,000,000 8-apartment project.
+   - Click **"☀️ £1M Solar & Battery Farm"** to autofill Elena Rostova's £1,000,000 clean infrastructure raise.
+   - Click **"⚡ £250k EV Fast-Charging Hub"** to autofill Liam Gallagher's transport charging network.
+3. Observe the real-time **Collective Crowd Power** calculation box updating dynamically to show:
+   - Required co-investors at £1,000 max cap.
+   - Required co-investors at £100 micro-tickets.
+4. Click **"Submit Opportunity for Vetting"** to post it to the database, where it immediately opens for community funding.
 
 ### Scenario 4: Auto-Invest Allocation Engine (Milestone 6)
 1. Click **"Auto-Invest"** (`/auto-invest`).
