@@ -3,6 +3,7 @@ import './globals.css';
 import { DemoBanner } from '@/components/DemoBanner';
 import { AppHeader } from '@/components/AppHeader';
 import { MobileBottomNav } from '@/components/MobileBottomNav';
+import { AiCoachDrawer } from '@/components/AiCoachDrawer';
 import { getCurrentUser } from '@/lib/auth';
 import Link from 'next/link';
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
         </main>
 
         <MobileBottomNav />
+        <AiCoachDrawer />
 
         <footer className="border-t border-stone-200 py-8 text-xs text-slate-500 bg-stone-50 pb-24 md:pb-8">
           <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">

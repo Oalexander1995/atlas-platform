@@ -351,4 +351,25 @@ CREATE TABLE IF NOT EXISTS prize_winners (
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- -------------------------------------------------------------
+-- AI Coach Conversations & Messages (Section 8.1 & 10)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS ai_conversations (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID REFERENCES users(id),
+  started_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS ai_messages (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  conversation_id UUID NOT NULL REFERENCES ai_conversations(id) ON DELETE CASCADE,
+  role TEXT NOT NULL CHECK (role IN ('user', 'assistant', 'system')),
+  content TEXT NOT NULL,
+  flagged BOOLEAN NOT NULL DEFAULT false,
+  flag_reason TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
 
