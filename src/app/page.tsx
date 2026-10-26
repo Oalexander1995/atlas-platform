@@ -100,15 +100,16 @@ export default async function HomePage() {
       {/* Hero Section */}
       <section className="text-center space-y-5 max-w-3xl mx-auto pt-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-100 text-stone-700 text-xs font-semibold">
-          <span>🇬🇧 Made for everyday UK savers and families</span>
+          <span>🇬🇧 Curated UK Micro-Investment Marketplace</span>
         </div>
         <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
-          Learn how money grows. <br />
-          <span className="text-emerald-700">Start investing from £10.</span>
+          Invest in real opportunities. <br />
+          <span className="text-emerald-700">Back projects. Earn returns.</span>
         </h1>
         <p className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
-          Back friendly local UK businesses like bakeries, solar farms, and neighbourhood repair shops.
-          Practice with simulated demo money first — learn step by step with zero risk to your real savings.
+          Someone has a great investment project but needs funding. Everyday people come together to
+          fund it starting from £10 and share in the returns. Practice with simulated money first—learn
+          step-by-step with complete peace of mind.
         </p>
 
         {/* Primary Call to Action Buttons */}
@@ -118,14 +119,21 @@ export default async function HomePage() {
             className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-emerald-700 text-white font-bold text-sm sm:text-base hover:bg-emerald-800 transition shadow-sm flex items-center justify-center gap-2"
           >
             <Compass className="w-4 h-4" />
-            <span>Browse 12 Businesses</span>
+            <span>Browse Opportunities</span>
+          </Link>
+          <Link
+            href="/pitch"
+            className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm sm:text-base transition shadow-sm flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-4 h-4 text-white" />
+            <span>Pitch an Opportunity (Raise Funds)</span>
           </Link>
           <Link
             href="/wallet"
             className="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-white border border-stone-300 text-slate-800 font-bold text-sm sm:text-base hover:bg-stone-50 transition shadow-sm flex items-center justify-center gap-2"
           >
             <Wallet className="w-4 h-4 text-emerald-700" />
-            <span>Practice With £{(balancePence / 100).toFixed(0)} Wallet</span>
+            <span>Practice With £{(balancePence / 100).toFixed(0)}</span>
           </Link>
         </div>
       </section>
@@ -134,7 +142,7 @@ export default async function HomePage() {
       <section className="space-y-4">
         <div className="text-center">
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-            How Atlas Works in 3 Simple Steps
+            How It Works in 3 Simple Steps
           </h2>
           <p className="text-xs sm:text-sm text-slate-500 mt-1">
             Easy to understand, transparent, and built so anyone can learn.
@@ -145,28 +153,28 @@ export default async function HomePage() {
           {/* Step 1 */}
           <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl font-bold border border-emerald-100">
-              🪙
+              💡
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              1. Put pretend coins in your wallet
+              1. Project owners pitch an opportunity
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Every learner gets demo money to experiment with. You can practice depositing,
-              withdrawing, and investing without ever touching real bank accounts.
+              Person 1 has a great investment project—like renovating a house, installing solar panels,
+              or purchasing commercial equipment—and lists it on Atlas to raise funding.
             </p>
           </div>
 
           {/* Step 2 */}
           <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-800 flex items-center justify-center text-xl font-bold border border-emerald-100">
-              🏪
+              🤝
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              2. Back friendly local shops
+              2. People pool money from £10
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Choose from 12 vetted businesses across the UK. Put £10 in a town bakery, a clean
-              solar roof, or organic farming. You decide which projects to support.
+              Everyday people choose projects they believe in and invest small amounts starting from
+              just £10. By putting £10 in several projects, you keep your money diversified.
             </p>
           </div>
 
@@ -176,11 +184,11 @@ export default async function HomePage() {
               📈
             </div>
             <h3 className="font-bold text-slate-900 text-base">
-              3. Watch your savings earn interest
+              3. Earn returns when the project succeeds
             </h3>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              As businesses repay their loans every month, you get your money back plus extra interest.
-              Learn how diversification protects your eggs across multiple baskets.
+              As the project generates income, the borrower repays investors their original capital
+              plus interest directly back into their Atlas wallet every month!
             </p>
           </div>
         </div>
@@ -191,17 +199,17 @@ export default async function HomePage() {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900">
-              Featured Opportunities
+              Featured Investment Opportunities
             </h2>
             <p className="text-xs sm:text-sm text-slate-500">
-              Real vetted small UK businesses open for micro-investments starting from £10.
+              Real vetted projects and ventures seeking funding from micro-investors starting from £10.
             </p>
           </div>
           <Link
             href="/explore"
             className="text-xs sm:text-sm font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
           >
-            <span>View All 12</span>
+            <span>View All Opportunities</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

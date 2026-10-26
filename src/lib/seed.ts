@@ -139,6 +139,13 @@ export async function ensureDemoUsersSeeded(): Promise<void> {
 export async function ensureOpportunitiesSeeded(): Promise<void> {
   const existingCount = await query<{ count: string }>('SELECT COUNT(*) FROM opportunities');
   if (Number(existingCount.rows[0].count) >= 12) {
+    // Check if legacy bakery titles exist and update in-place to new investment opportunities
+    const legacyCheck = await query<{ count: string }>(
+      "SELECT COUNT(*) FROM opportunities WHERE title ILIKE '%Daily Loaf%'"
+    );
+    if (Number(legacyCheck.rows[0].count) > 0) {
+      await updateLegacyToInvestmentOpportunities();
+    }
     return;
   }
 
@@ -146,59 +153,59 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
 
   const seedPartners = [
     {
-      name: 'The Daily Loaf Bakery Ltd',
-      description: 'Family-run organic sourdough bakery supplying local shops and farmers markets.',
+      name: 'Marcus Vance (Property Renovator)',
+      description: 'Experienced property renovator modernising residential Victorian houses for long-term rental income.',
       founded_year: 2018,
-      sector: 'Food & Drink',
-      location: 'Bath, Somerset',
-      track_record: { repaid_on_time: 2, previous_loans: 2 },
+      sector: 'Property & Real Estate',
+      location: 'Manchester, UK',
+      track_record: { repaid_on_time: 4, previous_loans: 4 },
     },
     {
-      name: 'Meadowbrook Community Healthcare',
-      description: 'Independent family dental practice established over two decades.',
-      founded_year: 2004,
-      sector: 'Healthcare',
-      location: 'Harrogate, North Yorkshire',
+      name: 'Elena Rostova (Clean Infrastructure)',
+      description: 'Renewable engineering specialist deploying rooftop commercial solar arrays and storage batteries.',
+      founded_year: 2016,
+      sector: 'Clean Energy & Storage',
+      location: 'Bristol, UK',
       track_record: { repaid_on_time: 3, previous_loans: 3 },
     },
     {
-      name: 'Cumbria Timber Crafts',
-      description: 'Locally sourced sustainable timber workshop crafting handmade furniture.',
-      founded_year: 2015,
-      sector: 'Trades',
-      location: 'Kendal, Cumbria',
-      track_record: { repaid_on_time: 1, previous_loans: 1 },
+      name: 'Dr. Richard Thorne (Clinical Director)',
+      description: 'Medical clinic leader co-funding digital diagnostic scanners for regional diagnostic hubs.',
+      founded_year: 2012,
+      sector: 'Healthcare & MedTech',
+      location: 'Harrogate, North Yorkshire',
+      track_record: { repaid_on_time: 2, previous_loans: 2 },
     },
     {
-      name: 'Bramble & Bean Coffee Co',
-      description: 'Independent specialty coffee shop opening a second neighbourhood cafe.',
+      name: 'Liam Gallagher (Logistics Operator)',
+      description: 'Commercial fleet operator expanding electric refrigerated delivery vans for zero-emission logistics.',
       founded_year: 2021,
-      sector: 'Food & Drink',
-      location: 'Bristol',
+      sector: 'Transport & Fleet',
+      location: 'Birmingham, UK',
       track_record: { repaid_on_time: 1, previous_loans: 1 },
     },
     {
-      name: 'Pennine Eco Cleaners',
-      description: 'Eco-friendly community laundrette powered by ground-source heat pumps.',
+      name: 'Dr. Maya Patel (AgriTech Specialist)',
+      description: 'Urban agricultural scientist building automated vertical hydroponic herb towers for supermarkets.',
       founded_year: 2022,
-      sector: 'Clean Services',
-      location: 'Hebden Bridge, West Yorkshire',
+      sector: 'Smart Agriculture',
+      location: 'Leeds, West Yorkshire',
       track_record: { repaid_on_time: 0, previous_loans: 0 },
     },
     {
-      name: 'Coastline Organic Grocers',
-      description: 'Zero-waste local food co-op expanding home delivery routes.',
+      name: 'Chloe & Sam Davis (Brand Founders)',
+      description: 'Eco-apparel brand founders funding bulk seasonal yarn inventory purchases to fulfill pre-orders.',
       founded_year: 2020,
-      sector: 'Local Retail',
+      sector: 'Consumer Goods & Trade',
       location: 'Exeter, Devon',
       track_record: { repaid_on_time: 1, previous_loans: 1 },
     },
     {
-      name: 'Spoke & Sprocket E-Bikes',
-      description: 'Fast-growing urban cargo bike and e-bike sales and servicing centre.',
-      founded_year: 2024,
-      sector: 'Transport',
-      location: 'Sheffield, South Yorkshire',
+      name: 'Sophie Bennett (Game Director)',
+      description: 'Indie game studio lead porting a viral PC game to Nintendo Switch and manufacturing physical editions.',
+      founded_year: 2023,
+      sector: 'Gaming & Digital Media',
+      location: 'Sheffield, UK',
       track_record: { repaid_on_time: 0, previous_loans: 0 },
     },
     {
@@ -210,32 +217,32 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       track_record: { repaid_on_time: 0, previous_loans: 0 },
     },
     {
-      name: 'Apex Aerial Inspections',
-      description: 'Drone surveying team inspecting roofs, solar panels, and wind turbines.',
+      name: 'Nathan Ross (Commercial Drone Pilot)',
+      description: 'Specialist UAV survey team inspecting infrastructure, wind turbines, and industrial bridges.',
       founded_year: 2023,
-      sector: 'Tech & Trades',
+      sector: 'Tech & Field Services',
       location: 'Newcastle upon Tyne',
       track_record: { repaid_on_time: 0, previous_loans: 1 },
     },
     {
-      name: 'Wharfedale Community Energy Co-op',
-      description: 'Locally owned clean energy cooperative installing community solar arrays.',
-      founded_year: 2025,
-      sector: 'Community Energy',
+      name: 'Tariq Al-Mansoor (Aerospace Engineer)',
+      description: 'Satellite ground station network receiving low-Earth orbit weather and Earth-observation data.',
+      founded_year: 2024,
+      sector: 'Aerospace & Telecom',
       location: 'Ilkley, West Yorkshire',
       track_record: { repaid_on_time: 0, previous_loans: 0 },
     },
     {
-      name: 'Urban Mycology Farm Project',
-      description: 'Circular agriculture initiative growing gourmet mushrooms on spent coffee grounds.',
+      name: 'Dr. Aris Vance (Bio-Energy Researcher)',
+      description: 'Experimental tubular photo-bioreactor testing algae oil yield for sustainable aviation fuel.',
       founded_year: 2025,
-      sector: 'Urban Agriculture',
-      location: 'Leeds, West Yorkshire',
+      sector: 'Frontier CleanTech',
+      location: 'Cambridge, UK',
       track_record: { repaid_on_time: 0, previous_loans: 0 },
     },
     {
-      name: 'Dartmouth Micro-Hydro Pilot',
-      description: 'Experimental river water turbine generating power for rural workshops.',
+      name: 'Calum MacLeod (Hydro Specialist)',
+      description: 'Experimental submerged river turbine prototype generating 24/7 continuous baseload electricity.',
       founded_year: 2025,
       sector: 'Experimental Energy',
       location: 'Dartmouth, Devon',
@@ -258,12 +265,12 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
   const seedOpportunities = [
     // Low Tier (3 items)
     {
-      partnerName: 'The Daily Loaf Bakery Ltd',
-      title: 'The Daily Loaf — Stone Hearth Oven Upgrade',
-      summary: 'Energy-saving electric stone oven to increase bread production for morning delivery routes.',
-      description: 'The Daily Loaf has supplied fresh sourdough in Bath for over 8 years. This loan helps buy a modern deck oven that cuts energy bills and allows baking 150 more loaves every morning. Secured against commercial bakery equipment.',
+      partnerName: 'Marcus Vance (Property Renovator)',
+      title: 'Manchester Victorian House — 2-Flat Refurbishment & Modernisation',
+      summary: 'Refurbishing a Victorian property into two energy-efficient apartments for long-term rental income.',
+      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation. Monthly rental yields from vetted tenants repay investors their capital plus interest.',
       risk_tier: 'low',
-      sector: 'Food & Drink',
+      sector: 'Property & Real Estate',
       target_pence: 1500000,
       raised_pence: 950000,
       expected_return_min_bps: 350,
@@ -271,18 +278,18 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 12,
       status: 'open',
       key_risks: [
-        'Bakery equipment breakdown could briefly delay baking output.',
-        'Electricity price spikes could increase operating expenses.',
-        'Local competition could reduce wholesale shop orders.',
+        'Property renovation work could uncover unforeseen plumbing or wiring repairs.',
+        'Material price fluctuations could increase building supply costs.',
+        'Rental vacancy periods between tenancies could temporarily delay cash flow.',
       ],
     },
     {
-      partnerName: 'Meadowbrook Community Healthcare',
-      title: 'Meadowbrook Clinic — Digital Imaging Suite',
-      summary: 'Low-radiation digital 3D dental scanner to modernise patient treatment rooms.',
-      description: 'Established healthcare clinic upgrading practice equipment to replace older machinery. Steady patient list and consistent local NHS and private service history.',
+      partnerName: 'Elena Rostova (Clean Infrastructure)',
+      title: 'Somerset Logistics Park — Solar Roof Array & Battery Storage',
+      summary: 'Commercial solar panels and industrial lithium battery storage deployed on a logistics hub.',
+      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay investors their capital plus interest.',
       risk_tier: 'low',
-      sector: 'Healthcare',
+      sector: 'Clean Energy & Storage',
       target_pence: 2500000,
       raised_pence: 2500000,
       expected_return_min_bps: 400,
@@ -290,18 +297,18 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 18,
       status: 'funded',
       key_risks: [
-        'Healthcare regulatory changes could require extra software updates.',
-        'Staff shortage could slow patient appointment throughput.',
-        'Supplier shipping delays for specialized dental equipment.',
+        'Prolonged periods of overcast weather could temporarily reduce peak solar generation.',
+        'Component shipping delays for specialized high-capacity battery inverters.',
+        'Warehouse tenant business relocation could require renegotiating power contracts.',
       ],
     },
     {
-      partnerName: 'Cumbria Timber Crafts',
-      title: 'Cumbria Timber — Joinery Workshop Tooling',
-      summary: 'Precision timber cutting machinery and dust extraction for local apprenticeship training.',
-      description: 'Local woodcraft business expanding furniture orders. Full loan repayments completed on time and in full over 24 months.',
+      partnerName: 'Dr. Richard Thorne (Clinical Director)',
+      title: 'Regional Diagnostic Clinic — Imaging Scanner Equipment Lease',
+      summary: 'State-of-the-art ultrasound imaging equipment leased to an NHS partner diagnostic clinic.',
+      description: 'Established healthcare clinic co-funding medical diagnostic machinery. Full loan repayments completed on time and in full over 24 months.',
       risk_tier: 'low',
-      sector: 'Trades',
+      sector: 'Healthcare & MedTech',
       target_pence: 2000000,
       raised_pence: 2000000,
       expected_return_min_bps: 300,
@@ -309,20 +316,20 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 24,
       status: 'completed',
       key_risks: [
-        'Raw hardwood timber prices fluctuate with seasonal weather.',
-        'Delivery transport delays across mountain passes during winter.',
-        'Slow commercial client payment terms on large custom furniture.',
+        'Healthcare equipment maintenance downtime could temporarily slow patient scans.',
+        'Regulatory medical device compliance changes requiring software upgrades.',
+        'Manufacturer part delivery delays for specialized calibration tools.',
       ],
     },
 
     // Medium Tier (3 items)
     {
-      partnerName: 'Bramble & Bean Coffee Co',
-      title: 'Bramble & Bean — Second Cafe Site Fit-Out',
-      summary: 'Fitting out an empty corner shop with espresso machines, tables, and counter seating.',
-      description: 'Popular neighbourhood cafe opening a second location in central Bristol. Borrowing funds for plumbing, kitchen fit-out, and initial ingredients inventory.',
+      partnerName: 'Liam Gallagher (Logistics Operator)',
+      title: 'Urban Electric Delivery Van Fleet (3 Chilled Vans)',
+      summary: 'Purchasing three zero-emission electric refrigerated vans to fulfill contracted food logistics routes.',
+      description: 'Liam operates a fast-growing commercial courier fleet in Birmingham. Locked delivery contracts with regional supermarket suppliers generate the cash flow to repay investors over 18 months.',
       risk_tier: 'medium',
-      sector: 'Food & Drink',
+      sector: 'Transport & Fleet',
       target_pence: 3500000,
       raised_pence: 2100000,
       expected_return_min_bps: 600,
@@ -330,18 +337,18 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 18,
       status: 'open',
       key_risks: [
-        'New location may take longer to attract regular daily coffee drinkers.',
-        'High street footfall changes or local streetworks could slow customer visits.',
-        'Delays in shop refit could postpone the planned opening date.',
+        'Electric vehicle charging infrastructure outages could delay delivery runs.',
+        'Commercial fleet insurance premiums could rise across urban operating zones.',
+        'Client contract renegotiations after initial 12-month period.',
       ],
     },
     {
-      partnerName: 'Pennine Eco Cleaners',
-      title: 'Pennine Eco — Water Recirculation Laundrette',
-      summary: 'Water-saving commercial washing machines and smart coinless payment readers.',
-      description: 'Eco-conscious laundrette in Hebden Bridge. Installing recycled heat exchangers to reduce gas usage and cut laundry bills for local residents.',
+      partnerName: 'Dr. Maya Patel (AgriTech Specialist)',
+      title: 'Vertical Hydroponic Herb Farm Automation',
+      summary: 'Automated LED lighting and nutrient sensors for an indoor farm supplying supermarket herbs.',
+      description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket pre-orders fund the loan repayments over 24 months.',
       risk_tier: 'medium',
-      sector: 'Clean Services',
+      sector: 'Smart Agriculture',
       target_pence: 1800000,
       raised_pence: 800000,
       expected_return_min_bps: 550,
@@ -349,18 +356,18 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 24,
       status: 'open',
       key_risks: [
-        'Machine maintenance parts may take several weeks to import.',
-        'Flooding risks in Calder Valley during extreme rainfall.',
-        'Competition from domestic washer-dryer sales in the area.',
+        'Sensor hardware replacements may take several weeks to import.',
+        'Electricity rate changes could affect indoor climate control operating costs.',
+        'Competition from traditional outdoor summer herb farms during harvest peaks.',
       ],
     },
     {
-      partnerName: 'Coastline Organic Grocers',
-      title: 'Coastline Grocers — Electric Delivery Van Fleet',
-      summary: 'Two chilled electric cargo vans for weekly veggie box deliveries across Devon.',
-      description: 'Expanding doorstep organic grocery box deliveries. Loan is actively repaying month-by-month on schedule.',
+      partnerName: 'Chloe & Sam Davis (Brand Founders)',
+      title: 'Eco-Apparel Q4 Bulk Seasonal Inventory Financing',
+      summary: 'Financing bulk raw bamboo yarn purchase to manufacture autumn/winter collection.',
+      description: 'Established sustainable clothing brand with 12,000 customers. Loan is actively repaying month-by-month on schedule from seasonal retail sales.',
       risk_tier: 'medium',
-      sector: 'Local Retail',
+      sector: 'Consumer Goods & Trade',
       target_pence: 3000000,
       raised_pence: 3000000,
       expected_return_min_bps: 650,
@@ -368,20 +375,20 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 36,
       status: 'repaying',
       key_risks: [
-        'Farm harvest shortages due to unseasonal rain or drought.',
-        'Electric vehicle battery wear requiring unexpected repair.',
-        'Customer subscription cancellations during cost-of-living pinches.',
+        'Textile mill shipping delays could compress holiday retail selling window.',
+        'Consumer fashion spending shifts during general economic downturns.',
+        'Raw material import tariffs could affect final wholesale margins.',
       ],
     },
 
     // High Tier (3 items)
     {
-      partnerName: 'Spoke & Sprocket E-Bikes',
-      title: 'Spoke & Sprocket — Rapid Cargo Bike Workshop',
-      summary: 'Expansion of commercial bike repair bays for local postal and parcel delivery couriers.',
-      description: 'Rapidly growing two-year-old electric bike shop. Borrowing for hydraulic workstands, diagnostics computers, and spare motor parts inventory.',
+      partnerName: 'Sophie Bennett (Game Director)',
+      title: 'Indie Studio Game Console Port & Physical Editions',
+      summary: 'Porting a viral PC indie game to Nintendo Switch and manufacturing physical collector cartridges.',
+      description: 'Award-winning game studio expanding to consoles. Pre-order game sales directly repay investors over 24 months.',
       risk_tier: 'high',
-      sector: 'Transport',
+      sector: 'Gaming & Digital Media',
       target_pence: 2200000,
       raised_pence: 1400000,
       expected_return_min_bps: 900,
@@ -389,9 +396,9 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 24,
       status: 'open',
       key_risks: [
-        'Business is young with less than 2 years of financial accounts.',
-        'Courier firms might switch delivery contracts to competitor garages.',
-        'Higher loss risk: unsecured business loan without fixed property collateral.',
+        'Console platform certification reviews could delay target launch window.',
+        'Physical cartridge manufacturing minimum runs require substantial upfront cash.',
+        'Higher loss risk: creative media sales can be hit-driven and unpredictable.',
       ],
     },
     {
@@ -414,12 +421,12 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       ],
     },
     {
-      partnerName: 'Apex Aerial Inspections',
-      title: 'Apex Surveys — Thermal Inspection Drones',
-      summary: 'Night-vision thermal cameras to inspect insulation loss on public housing roofs.',
-      description: 'Early drone inspection startup. Borrower faced client cancellations and defaulted; currently in recovery.',
+      partnerName: 'Nathan Ross (Commercial Drone Pilot)',
+      title: 'Commercial Drone Offshore Turbine Inspection Fleet',
+      summary: 'Thermal-imaging inspection drones for industrial wind turbine and bridge surveys.',
+      description: 'Early stage drone inspection startup. Borrower faced offshore client contract cancellations and defaulted; currently in recovery.',
       risk_tier: 'high',
-      sector: 'Tech & Trades',
+      sector: 'Tech & Field Services',
       target_pence: 2800000,
       raised_pence: 2800000,
       expected_return_min_bps: 1000,
@@ -427,20 +434,20 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 30,
       status: 'defaulted',
       key_risks: [
-        'High chance of borrower default if council grant budgets freeze.',
-        'Damage or loss of drone airframes in windy coastal weather.',
+        'High chance of borrower default if industrial inspection contracts pause.',
+        'Loss or damage of specialized drone equipment in extreme maritime weather.',
         'Unsecured loan without property asset guarantees.',
       ],
     },
 
     // Uncharted Tier (3 items - Capped at £100 per user)
     {
-      partnerName: 'Wharfedale Community Energy Co-op',
-      title: 'Wharfedale Solar — Community Rooftop Array',
-      summary: 'First community-owned solar panel installation across 4 public school roofs.',
-      description: 'Uncharted community energy project. Generates power sold back to the local grid. Early stage with novel cooperative governance model. Max £100 per user.',
+      partnerName: 'Tariq Al-Mansoor (Aerospace Engineer)',
+      title: 'Low-Orbit Satellite Community Ground Station Dish',
+      summary: 'Automated satellite tracking dish in Yorkshire receiving weather and Earth-observation data.',
+      description: 'Ground station capturing data sold to universities and climate researchers. Early stage with innovative data sales model. Strictly capped at £100 per investor.',
       risk_tier: 'uncharted',
-      sector: 'Community Energy',
+      sector: 'Aerospace & Telecom',
       target_pence: 5000000,
       raised_pence: 1800000,
       expected_return_min_bps: 0,
@@ -448,18 +455,18 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 36,
       status: 'open',
       key_risks: [
-        'Novel pilot structure with no past commercial operating history.',
-        'Weather dependence: electricity generation drops during cloudy seasons.',
+        'Novel pilot ground station with no past commercial operating history.',
+        'Satellite downlink spectrum licensing subject to regulatory approval.',
         'Total capital loss possible; Provision Fund does not cover Uncharted tier.',
       ],
     },
     {
-      partnerName: 'Urban Mycology Farm Project',
-      title: 'Urban Mycology — Coffee Grounds Mushroom Farm',
-      summary: 'Converting basement vaults into zero-waste oyster mushroom growing chambers.',
-      description: 'Experimental urban farming project collecting waste coffee from 40 city cafes. Novel substrate recipe with high biological uncertainty. Max £100 per user.',
+      partnerName: 'Dr. Aris Vance (Bio-Energy Researcher)',
+      title: 'Next-Gen Micro-Algae Biofuel Experimental Rig',
+      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
+      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
       risk_tier: 'uncharted',
-      sector: 'Urban Agriculture',
+      sector: 'Frontier CleanTech',
       target_pence: 2500000,
       raised_pence: 1100000,
       expected_return_min_bps: 0,
@@ -467,16 +474,16 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 24,
       status: 'open',
       key_risks: [
-        'Biological contamination can wipe out entire crop cycles.',
-        'Brand new market with unproven restaurant subscription demand.',
+        'Biological culture contamination can wipe out experimental batch cycles.',
+        'Aviation fuel certification timeline remains long and uncertain.',
         'Treat as money you can afford to lose completely; no Provision Fund cover.',
       ],
     },
     {
-      partnerName: 'Dartmouth Micro-Hydro Pilot',
-      title: 'Dartmouth Hydro — River Turbine Pilot',
-      summary: 'Pioneering submerged water wheel turbine generating clean power from river flow.',
-      description: 'First-of-its-kind micro hydro prototype. Fully funded for experimental testing. Max £100 per user.',
+      partnerName: 'Calum MacLeod (Hydro Specialist)',
+      title: 'River Kinetic Micro-Hydro Turbine Prototype',
+      summary: 'Submerged non-dam river turbine generating 24/7 continuous electrical power from river flow.',
+      description: 'Highland renewable power pilot rig. Fully funded by early community testers. Strictly capped at £100 per user.',
       risk_tier: 'uncharted',
       sector: 'Experimental Energy',
       target_pence: 6000000,
@@ -486,8 +493,8 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       term_months: 48,
       status: 'funded',
       key_risks: [
-        'Experimental mechanical prototype with unknown long-term durability.',
-        'Environmental agency river permit reviews could halt operations.',
+        'Experimental mechanical prototype with unknown underwater debris wear.',
+        'River environmental agency testing permits subject to annual review.',
         'Highest risk tier: treat as speculative; no Provision Fund protection.',
       ],
     },
@@ -564,5 +571,192 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
         ]
       );
     }
+  }
+}
+
+async function updateLegacyToInvestmentOpportunities(): Promise<void> {
+  const opps = await query<{ id: string; title: string; risk_tier: string }>(
+    'SELECT id, title, risk_tier FROM opportunities ORDER BY created_at ASC'
+  );
+
+  const updates = [
+    {
+      partnerName: 'Marcus Vance (Property Renovator)',
+      partnerDesc: 'Experienced property renovator modernising residential Victorian houses for long-term rental income.',
+      title: 'Manchester Victorian House — 2-Flat Refurbishment & Modernisation',
+      summary: 'Refurbishing a Victorian property into two energy-efficient apartments for long-term rental income.',
+      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation. Monthly rental yields from vetted tenants repay investors their capital plus interest.',
+      sector: 'Property & Real Estate',
+      risks: [
+        'Property renovation work could uncover unforeseen plumbing or wiring repairs.',
+        'Material price fluctuations could increase building supply costs.',
+        'Rental vacancy periods between tenancies could temporarily delay cash flow.',
+      ],
+    },
+    {
+      partnerName: 'Elena Rostova (Clean Infrastructure)',
+      partnerDesc: 'Renewable engineering specialist deploying rooftop commercial solar arrays and storage batteries.',
+      title: 'Somerset Logistics Park — Solar Roof Array & Battery Storage',
+      summary: 'Commercial solar panels and industrial lithium battery storage deployed on a logistics hub.',
+      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay investors their capital plus interest.',
+      sector: 'Clean Energy & Storage',
+      risks: [
+        'Prolonged periods of overcast weather could temporarily reduce peak solar generation.',
+        'Component shipping delays for specialized high-capacity battery inverters.',
+        'Warehouse tenant business relocation could require renegotiating power contracts.',
+      ],
+    },
+    {
+      partnerName: 'Dr. Richard Thorne (Clinical Director)',
+      partnerDesc: 'Medical clinic leader co-funding digital diagnostic scanners for regional diagnostic hubs.',
+      title: 'Regional Diagnostic Clinic — Imaging Scanner Equipment Lease',
+      summary: 'State-of-the-art ultrasound imaging equipment leased to an NHS partner diagnostic clinic.',
+      description: 'Established healthcare clinic co-funding medical diagnostic machinery. Full loan repayments completed on time and in full over 24 months.',
+      sector: 'Healthcare & MedTech',
+      risks: [
+        'Healthcare equipment maintenance downtime could temporarily slow patient scans.',
+        'Regulatory medical device compliance changes requiring software upgrades.',
+        'Manufacturer part delivery delays for specialized calibration tools.',
+      ],
+    },
+    {
+      partnerName: 'Liam Gallagher (Logistics Operator)',
+      partnerDesc: 'Commercial fleet operator expanding electric refrigerated delivery vans for zero-emission logistics.',
+      title: 'Urban Electric Delivery Van Fleet (3 Chilled Vans)',
+      summary: 'Purchasing three zero-emission electric refrigerated vans to fulfill contracted food logistics routes.',
+      description: 'Liam operates a fast-growing commercial courier fleet in Birmingham. Locked delivery contracts with regional supermarket suppliers generate the cash flow to repay investors over 18 months.',
+      sector: 'Transport & Fleet',
+      risks: [
+        'Electric vehicle charging infrastructure outages could delay delivery runs.',
+        'Commercial fleet insurance premiums could rise across urban operating zones.',
+        'Client contract renegotiations after initial 12-month period.',
+      ],
+    },
+    {
+      partnerName: 'Dr. Maya Patel (AgriTech Specialist)',
+      partnerDesc: 'Urban agricultural scientist building automated vertical hydroponic herb towers for supermarkets.',
+      title: 'Vertical Hydroponic Herb Farm Automation',
+      summary: 'Automated LED lighting and nutrient sensors for an indoor farm supplying supermarket herbs.',
+      description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket pre-orders fund the loan repayments over 24 months.',
+      sector: 'Smart Agriculture',
+      risks: [
+        'Sensor hardware replacements may take several weeks to import.',
+        'Electricity rate changes could affect indoor climate control operating costs.',
+        'Competition from traditional outdoor summer herb farms during harvest peaks.',
+      ],
+    },
+    {
+      partnerName: 'Chloe & Sam Davis (Brand Founders)',
+      partnerDesc: 'Eco-apparel brand founders funding bulk seasonal yarn inventory purchases to fulfill pre-orders.',
+      title: 'Eco-Apparel Q4 Bulk Seasonal Inventory Financing',
+      summary: 'Financing bulk raw bamboo yarn purchase to manufacture autumn/winter collection.',
+      description: 'Established sustainable clothing brand with 12,000 customers. Loan is actively repaying month-by-month on schedule from seasonal retail sales.',
+      sector: 'Consumer Goods & Trade',
+      risks: [
+        'Textile mill shipping delays could compress holiday retail selling window.',
+        'Consumer fashion spending shifts during general economic downturns.',
+        'Raw material import tariffs could affect final wholesale margins.',
+      ],
+    },
+    {
+      partnerName: 'Sophie Bennett (Game Director)',
+      partnerDesc: 'Indie game studio lead porting a viral PC game to Nintendo Switch and manufacturing physical editions.',
+      title: 'Indie Studio Game Console Port & Physical Editions',
+      summary: 'Porting a viral PC indie game to Nintendo Switch and manufacturing physical collector cartridges.',
+      description: 'Award-winning game studio expanding to consoles. Pre-order game sales directly repay investors over 24 months.',
+      sector: 'Gaming & Digital Media',
+      risks: [
+        'Console platform certification reviews could delay target launch window.',
+        'Physical cartridge manufacturing minimum runs require substantial upfront cash.',
+        'Higher loss risk: creative media sales can be hit-driven and unpredictable.',
+      ],
+    },
+    {
+      partnerName: 'James & Hannah Kelly (Property Renovators)',
+      partnerDesc: 'Architectural renovators converting a historic stone agricultural barn into eco-tourism holiday lets.',
+      title: 'Derbyshire Stone Barn Eco-Tourism Conversion',
+      summary: 'Converting a historic stone barn into two luxury eco-friendly holiday cottages.',
+      description: 'Full architectural conversion with high rental potential in the Peak District. Repaid from summer guest bookings.',
+      sector: 'Property & Tourism',
+      risks: [
+        'Structural repairs on historic stone masonry can take longer than budgeted.',
+        'Tourism season booking fluctuations during cold and wet summers.',
+        'Council planning condition sign-offs for heritage conservation.',
+      ],
+    },
+    {
+      partnerName: 'Nathan Ross (Commercial Drone Pilot)',
+      partnerDesc: 'Specialist UAV survey team inspecting infrastructure, wind turbines, and industrial bridges.',
+      title: 'Commercial Drone Offshore Turbine Inspection Fleet',
+      summary: 'Thermal-imaging inspection drones for industrial wind turbine and bridge surveys.',
+      description: 'Early stage drone inspection startup. Borrower faced offshore client contract cancellations and defaulted; currently in recovery.',
+      sector: 'Tech & Field Services',
+      risks: [
+        'High chance of borrower default if industrial inspection contracts pause.',
+        'Loss or damage of specialized drone equipment in extreme maritime weather.',
+        'Unsecured loan without property asset guarantees.',
+      ],
+    },
+    {
+      partnerName: 'Tariq Al-Mansoor (Aerospace Engineer)',
+      partnerDesc: 'Satellite ground station network receiving low-Earth orbit weather and Earth-observation data.',
+      title: 'Low-Orbit Satellite Community Ground Station Dish',
+      summary: 'Automated satellite tracking dish in Yorkshire receiving weather and Earth-observation data.',
+      description: 'Ground station capturing data sold to universities and climate researchers. Early stage with innovative data sales model. Strictly capped at £100 per investor.',
+      sector: 'Aerospace & Telecom',
+      risks: [
+        'Novel pilot ground station with no past commercial operating history.',
+        'Satellite downlink spectrum licensing subject to regulatory approval.',
+        'Total capital loss possible; Provision Fund does not cover Uncharted tier.',
+      ],
+    },
+    {
+      partnerName: 'Dr. Aris Vance (Bio-Energy Researcher)',
+      partnerDesc: 'Experimental tubular photo-bioreactor testing algae oil yield for sustainable aviation fuel.',
+      title: 'Next-Gen Micro-Algae Biofuel Experimental Rig',
+      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
+      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
+      sector: 'Frontier CleanTech',
+      risks: [
+        'Biological culture contamination can wipe out experimental batch cycles.',
+        'Aviation fuel certification timeline remains long and uncertain.',
+        'Treat as money you can afford to lose completely; no Provision Fund cover.',
+      ],
+    },
+    {
+      partnerName: 'Calum MacLeod (Hydro Specialist)',
+      partnerDesc: 'Experimental submerged river turbine prototype generating 24/7 continuous baseload electricity.',
+      title: 'River Kinetic Micro-Hydro Turbine Prototype',
+      summary: 'Submerged non-dam river turbine generating 24/7 continuous electrical power from river flow.',
+      description: 'Highland renewable power pilot rig. Fully funded by early community testers. Strictly capped at £100 per user.',
+      sector: 'Experimental Energy',
+      risks: [
+        'Experimental mechanical prototype with unknown underwater debris wear.',
+        'River environmental agency testing permits subject to annual review.',
+        'Highest risk tier: treat as speculative; no Provision Fund protection.',
+      ],
+    },
+  ];
+
+  for (let i = 0; i < Math.min(opps.rows.length, updates.length); i++) {
+    const opp = opps.rows[i];
+    const u = updates[i];
+
+    const oppRow = await query<{ partner_id: string }>('SELECT partner_id FROM opportunities WHERE id = $1', [opp.id]);
+    const partnerId = oppRow.rows[0]?.partner_id;
+
+    if (partnerId) {
+      await query(
+        'UPDATE partners SET name = $1, description = $2, sector = $3 WHERE id = $4',
+        [u.partnerName, u.partnerDesc, u.sector, partnerId]
+      );
+    }
+
+    await query(
+      `UPDATE opportunities
+       SET title = $1, summary = $2, description = $3, sector = $4, key_risks = $5
+       WHERE id = $6`,
+      [u.title, u.summary, u.description, u.sector, JSON.stringify(u.risks), opp.id]
+    );
   }
 }

@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { RiskTierBadge, RiskTier } from '@/components/RiskTierBadge';
-import { Clock, MapPin, Building2, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
+import { Clock, MapPin, User, SlidersHorizontal, ArrowUpDown, Tag } from 'lucide-react';
 
 interface OpportunityItem {
   id: string;
@@ -157,16 +157,21 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
                   <h3 className="font-semibold text-base text-slate-900 group-hover:text-emerald-800 transition line-clamp-1">
                     {opp.title}
                   </h3>
-                  <div className="flex items-center gap-2 text-xs text-slate-500 mt-1">
-                    <Building2 className="w-3.5 h-3.5" />
-                    <span className="line-clamp-1">{opp.partner_name}</span>
+                  <div className="flex items-center gap-1.5 text-xs text-emerald-800 font-medium mt-1">
+                    <User className="w-3.5 h-3.5 text-emerald-700" />
+                    <span className="line-clamp-1">Pitched by: {opp.partner_name}</span>
                   </div>
-                  {opp.partner_location && (
-                    <div className="flex items-center gap-1.5 text-xs text-slate-400 mt-0.5">
-                      <MapPin className="w-3 h-3" />
-                      <span>{opp.partner_location}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 text-xs text-slate-500 mt-0.5">
+                    <span className="px-1.5 py-0.5 bg-stone-100 rounded text-[10px] font-semibold text-slate-600">
+                      {opp.sector}
+                    </span>
+                    {opp.partner_location && (
+                      <span className="flex items-center gap-1 text-[11px] text-slate-400">
+                        <MapPin className="w-3 h-3" />
+                        <span>{opp.partner_location}</span>
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-xs text-slate-600 line-clamp-2 leading-relaxed">

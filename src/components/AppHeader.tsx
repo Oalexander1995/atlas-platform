@@ -27,6 +27,7 @@ export function AppHeader({ currentUserEmail = 'ready@atlas.demo' }: AppHeaderPr
 
   const navLinks = [
     { href: '/explore', label: 'Explore', icon: Compass },
+    { href: '/pitch', label: 'Pitch Project', icon: Sparkles },
     { href: '/auto-invest', label: 'Auto-Invest', icon: Sparkles },
     { href: '/portfolio', label: 'Portfolio', icon: PieChart },
     { href: '/wallet', label: 'Wallet', icon: Wallet },

@@ -209,14 +209,13 @@ export default async function OpportunityDetailPage({
       <div className="bg-white rounded-3xl border border-stone-200 p-6 md:p-8 shadow-sm space-y-4">
         <div className="flex items-center gap-2">
           <Building2 className="w-5 h-5 text-emerald-700" />
-          <h2 className="text-lg font-bold text-slate-900">Who you&apos;re investing with</h2>
+          <h2 className="text-lg font-bold text-slate-900">Project Creator & Sponsor</h2>
         </div>
         <div className="space-y-3 text-sm text-slate-700">
           <p>
-            <strong>{opportunity.partner_name}</strong> is a UK small business founded in{' '}
-            {opportunity.partner_founded_year || 2020}.
+            <strong>{opportunity.partner_name}</strong> is the project creator pitching this opportunity on Atlas.
           </p>
-          <p className="text-slate-600">{opportunity.partner_description}</p>
+          <p className="text-slate-600 leading-relaxed">{opportunity.partner_description}</p>
         </div>
       </div>
 

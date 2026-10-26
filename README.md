@@ -2,7 +2,7 @@
 
 > **DEMO — Simulated money only. No real investments or bank transfers are made.**
 
-Atlas is an interactive, production-ready prototype of a curated micro-investment platform designed specifically for UK households with low capital. By lowering the entry point to just **£10**, vetting local UK small businesses into four intuitive risk tiers, and embedding regulatory guardrails (appropriateness tests, 24-hour cooling-off periods, strict caps, and a discretionary Provision Fund), Atlas makes investing safe, educational, and accessible to anyone—explained in plain English with a reading age of 12 or below.
+Atlas is an interactive, production-ready prototype of a curated micro-investment marketplace designed specifically for UK households. Anyone with a viable investment project—such as a property renovation, clean energy installation, electric delivery fleet, or tech venture—can pitch their opportunity to raise funding. Everyday people come together to fund these projects starting from just **£10** and earn returns as the project delivers, while being protected by built-in regulatory guardrails (appropriateness tests, 24-hour cooling-off periods, strict caps, and a discretionary Provision Fund). Everything is explained in plain English with a reading age of 12 or below.
 
 ---
 
