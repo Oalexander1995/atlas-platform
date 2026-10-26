@@ -7,6 +7,8 @@ import { getWalletBalancePence } from '@/lib/ledger';
 import { ClockService } from '@/lib/clock';
 import { RiskTierBadge, RiskTier } from '@/components/RiskTierBadge';
 import { CrowdPowerCalculator } from '@/components/CrowdPowerCalculator';
+import { ReturnAssetsShowcase } from '@/components/ReturnAssetsShowcase';
+import { ExpertVettingProcess } from '@/components/ExpertVettingProcess';
 import {
   Compass,
   Sparkles,
@@ -142,6 +144,12 @@ export default async function HomePage() {
 
       {/* Crowd Power Multiplier Interactive Feature */}
       <CrowdPowerCalculator />
+
+      {/* Everything That Brings in a Return — Real Tangible Assets */}
+      <ReturnAssetsShowcase />
+
+      {/* How Every Project is Vetted by Experts Before Acceptance */}
+      <ExpertVettingProcess />
 
       {/* How It Works in 3 Kid-Simple Steps */}
       <section className="space-y-4">
