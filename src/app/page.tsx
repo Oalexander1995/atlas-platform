@@ -116,11 +116,9 @@ export default async function HomePage() {
           </h1>
 
           <p className="text-emerald-100/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-normal">
-            We believe everyone should have the opportunity to grow their wealth, not just those who already
-            have it. Our platform makes investing more accessible by opening the door to opportunities that
-            would traditionally be out of reach for everyday people. With a focus on transparency, carefully
-            vetted opportunities and different levels of risk, we aim to help people take control of their
-            financial future and make their money work harder for them.
+            We believe everyone deserves the chance to grow their wealth. Our platform makes
+            investing more accessible, opening up opportunities once out of reach and helping people
+            make their money work harder.
           </p>
 
           {/* Primary Call to Action Buttons */}
