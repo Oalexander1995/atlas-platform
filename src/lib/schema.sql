@@ -1,4 +1,4 @@
--- Atlas Schema: Foundations & Ledger (Milestone 1 & 2)
+-- Atlas Schema: Foundations, Ledger, Opportunities & Seed (Milestone 1, 2, 3)
 
 -- System Settings & Clock Offset
 CREATE TABLE IF NOT EXISTS system_settings (
@@ -144,13 +144,63 @@ LEFT JOIN postings p ON a.id = p.account_id
 GROUP BY a.id, a.code, a.purpose, a.owner_user_id, a.opportunity_id;
 
 -- -------------------------------------------------------------
+-- Partners & Opportunities (Section 8.1 & Section 5.6/5.7)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS partners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name TEXT NOT NULL,
+  description TEXT NOT NULL,
+  founded_year INT NOT NULL,
+  sector TEXT NOT NULL,
+  location TEXT NOT NULL,
+  track_record JSONB NOT NULL DEFAULT '{"repaid_on_time": 0, "previous_loans": 0}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS opportunities (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  partner_id UUID REFERENCES partners(id) ON DELETE SET NULL,
+  title TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  description TEXT NOT NULL,
+  risk_tier TEXT NOT NULL CHECK (risk_tier IN ('low', 'medium', 'high', 'uncharted')),
+  sector TEXT NOT NULL,
+  target_pence BIGINT NOT NULL CHECK (target_pence > 0),
+  raised_pence BIGINT NOT NULL DEFAULT 0 CHECK (raised_pence >= 0),
+  expected_return_min_bps INT NOT NULL,
+  expected_return_max_bps INT NOT NULL,
+  term_months INT NOT NULL CHECK (term_months > 0),
+  status TEXT NOT NULL CHECK (status IN ('draft', 'open', 'funded', 'repaying', 'completed', 'defaulted')),
+  platform_fee_bps INT NOT NULL DEFAULT 300,
+  provision_contribution_bps INT NOT NULL DEFAULT 100,
+  per_user_cap_pence BIGINT NOT NULL DEFAULT 100000, -- default £1,000 (£100 for uncharted)
+  key_risks JSONB NOT NULL DEFAULT '[]'::jsonb,
+  vetting_checklist JSONB NOT NULL DEFAULT '[]'::jsonb,
+  updates JSONB NOT NULL DEFAULT '[]'::jsonb,
+  opens_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  closes_at TIMESTAMPTZ NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS repayment_schedules (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  opportunity_id UUID NOT NULL REFERENCES opportunities(id) ON DELETE CASCADE,
+  due_date DATE NOT NULL,
+  capital_pence BIGINT NOT NULL CHECK (capital_pence >= 0),
+  interest_pence BIGINT NOT NULL CHECK (interest_pence >= 0),
+  status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'late', 'defaulted')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -------------------------------------------------------------
 -- Holdings & Losses (Section 8.1 - needed for reconciliation 8.5)
 -- -------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS holdings (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL REFERENCES users(id),
-  opportunity_id UUID NOT NULL,
+  opportunity_id UUID NOT NULL REFERENCES opportunities(id),
   principal_pence BIGINT NOT NULL CHECK (principal_pence >= 0),
   source TEXT NOT NULL CHECK (source IN ('manual', 'auto_invest')),
   status TEXT NOT NULL DEFAULT 'active',
@@ -162,7 +212,7 @@ CREATE TABLE IF NOT EXISTS holding_losses (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   holding_id UUID REFERENCES holdings(id),
   user_id UUID NOT NULL REFERENCES users(id),
-  opportunity_id UUID NOT NULL,
+  opportunity_id UUID NOT NULL REFERENCES opportunities(id),
   amount_pence BIGINT NOT NULL CHECK (amount_pence >= 0),
   provision_payout_pence BIGINT NOT NULL DEFAULT 0,
   payout_reason TEXT,
