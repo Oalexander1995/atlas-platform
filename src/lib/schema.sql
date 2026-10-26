@@ -1,4 +1,4 @@
--- Atlas Schema: Foundations, Ledger, Opportunities, Onboarding (Milestones 1-4)
+-- Atlas Schema: Foundations, Ledger, Opportunities, Onboarding, Auto-Invest (Milestones 1-6)
 
 -- System Settings & Clock Offset
 CREATE TABLE IF NOT EXISTS system_settings (
@@ -223,7 +223,7 @@ CREATE TABLE IF NOT EXISTS cooling_off (
 );
 
 -- -------------------------------------------------------------
--- Holdings & Losses (Section 8.1 - needed for reconciliation 8.5)
+-- Holdings & Losses (Section 8.1)
 -- -------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS holdings (
@@ -245,5 +245,18 @@ CREATE TABLE IF NOT EXISTS holding_losses (
   amount_pence BIGINT NOT NULL CHECK (amount_pence >= 0),
   provision_payout_pence BIGINT NOT NULL DEFAULT 0,
   payout_reason TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -------------------------------------------------------------
+-- Auto-Invest Plans (Section 5.9)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS auto_invest_plans (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  risk_tier TEXT NOT NULL CHECK (risk_tier IN ('low', 'medium', 'high')),
+  monthly_pence BIGINT NOT NULL CHECK (monthly_pence >= 0),
+  status TEXT NOT NULL DEFAULT 'active' CHECK (status IN ('active', 'paused', 'stopped')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
