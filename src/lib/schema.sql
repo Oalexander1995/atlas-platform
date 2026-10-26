@@ -1,4 +1,4 @@
--- Atlas Schema: Foundations, Ledger, Opportunities & Seed (Milestone 1, 2, 3)
+-- Atlas Schema: Foundations, Ledger, Opportunities, Onboarding (Milestones 1-4)
 
 -- System Settings & Clock Offset
 CREATE TABLE IF NOT EXISTS system_settings (
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS opportunities (
   status TEXT NOT NULL CHECK (status IN ('draft', 'open', 'funded', 'repaying', 'completed', 'defaulted')),
   platform_fee_bps INT NOT NULL DEFAULT 300,
   provision_contribution_bps INT NOT NULL DEFAULT 100,
-  per_user_cap_pence BIGINT NOT NULL DEFAULT 100000, -- default £1,000 (£100 for uncharted)
+  per_user_cap_pence BIGINT NOT NULL DEFAULT 100000,
   key_risks JSONB NOT NULL DEFAULT '[]'::jsonb,
   vetting_checklist JSONB NOT NULL DEFAULT '[]'::jsonb,
   updates JSONB NOT NULL DEFAULT '[]'::jsonb,
@@ -191,6 +191,35 @@ CREATE TABLE IF NOT EXISTS repayment_schedules (
   interest_pence BIGINT NOT NULL CHECK (interest_pence >= 0),
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'late', 'defaulted')),
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -------------------------------------------------------------
+-- Investor Onboarding & Regulatory Guardrails (Section 3 & 5.3)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS investor_classifications (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  category TEXT NOT NULL CHECK (category IN ('restricted', 'high_net_worth', 'sophisticated')),
+  declaration_text TEXT NOT NULL,
+  declared_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS appropriateness_attempts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  question_ids INT[] NOT NULL,
+  answers JSONB NOT NULL,
+  score INT NOT NULL,
+  passed BOOLEAN NOT NULL,
+  attempted_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  next_attempt_allowed_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS cooling_off (
+  user_id UUID PRIMARY KEY REFERENCES users(id),
+  started_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ends_at TIMESTAMPTZ NOT NULL
 );
 
 -- -------------------------------------------------------------

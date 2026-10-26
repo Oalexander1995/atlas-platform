@@ -35,6 +35,12 @@ export default function RootLayout({
                 Explore
               </Link>
               <Link
+                href="/onboarding"
+                className="text-slate-600 hover:text-slate-900 transition"
+              >
+                Onboarding
+              </Link>
+              <Link
                 href="/portfolio"
                 className="text-slate-600 hover:text-slate-900 transition"
               >
