@@ -82,6 +82,25 @@ export function CrowdPowerCalculator() {
                   {investorCount.toLocaleString('en-GB')} people
                 </span>
               </div>
+
+              {/* Quick Preset Buttons for Investors */}
+              <div className="grid grid-cols-4 gap-2 pb-1">
+                {[100, 500, 1000, 2500].map((count) => (
+                  <button
+                    key={count}
+                    type="button"
+                    onClick={() => setInvestorCount(count)}
+                    className={`py-1.5 rounded-xl text-xs font-bold transition border ${
+                      investorCount === count
+                        ? 'bg-emerald-400 text-slate-950 border-emerald-300 shadow-sm'
+                        : 'bg-white/10 text-white border-white/20 hover:bg-white/20'
+                    }`}
+                  >
+                    {count.toLocaleString('en-GB')}
+                  </button>
+                ))}
+              </div>
+
               <input
                 type="range"
                 min="50"
@@ -91,10 +110,24 @@ export function CrowdPowerCalculator() {
                 onChange={(e) => setInvestorCount(Number(e.target.value))}
                 className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/20 rounded-lg"
               />
-              <div className="flex justify-between text-[10px] text-emerald-300/70">
-                <span>50 people</span>
-                <span>1,000 people</span>
-                <span>5,000 people</span>
+
+              {/* Mathematically aligned scale labels */}
+              <div className="relative text-[10px] text-emerald-300/70 h-5 mt-1 font-mono">
+                <span className="absolute left-0">50</span>
+                <span
+                  className="absolute -translate-x-1/2 font-bold text-emerald-300 flex flex-col items-center"
+                  style={{ left: `${((1000 - 50) / (5000 - 50)) * 100}%` }}
+                >
+                  <span className="text-[9px] leading-none mb-0.5">▲</span>
+                  <span>1,000</span>
+                </span>
+                <span
+                  className="absolute -translate-x-1/2"
+                  style={{ left: `${((2500 - 50) / (5000 - 50)) * 100}%` }}
+                >
+                  2,500
+                </span>
+                <span className="absolute right-0">5,000</span>
               </div>
             </div>
 
