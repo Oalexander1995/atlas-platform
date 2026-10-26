@@ -1,7 +1,19 @@
 'use client';
 
-import React, { useState } from 'react';
-import { BookOpen, CheckCircle2, XCircle, Award, ChevronRight, HelpCircle, ArrowRight } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import {
+  BookOpen,
+  CheckCircle2,
+  XCircle,
+  Award,
+  ChevronRight,
+  HelpCircle,
+  ArrowRight,
+  Sparkles,
+  Gift,
+  Coins,
+} from 'lucide-react';
 
 interface QuizQuestion {
   question: string;
@@ -297,32 +309,70 @@ export function LearnHubClient() {
   const [quizAnswers, setQuizAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
   const [completedLessons, setCompletedLessons] = useState<Record<string, boolean>>({});
+  const [pointsBalance, setPointsBalance] = useState<number | null>(null);
+  const [pointsToast, setPointsToast] = useState<string | null>(null);
+
+  const fetchPoints = async () => {
+    try {
+      const res = await fetch('/api/v1/points');
+      if (res.ok) {
+        const json = await res.json();
+        setPointsBalance(json.data?.balance || 0);
+      }
+    } catch {
+      // ignore
+    }
+  };
+
+  useEffect(() => {
+    fetchPoints();
+  }, []);
 
   const handleSelectOption = (questionIdx: number, optionIdx: number) => {
     if (showResults) return; // locked once checked
     setQuizAnswers((prev) => ({ ...prev, [questionIdx]: optionIdx }));
   };
 
-  const handleCheckQuiz = () => {
+  const handleCheckQuiz = async () => {
     setShowResults(true);
-    // If all correct, mark completed
-    const allCorrect = selectedLesson.quiz.every(
+    const score = selectedLesson.quiz.filter(
       (q, idx) => quizAnswers[idx] === q.correctIndex
-    );
-    if (allCorrect) {
+    ).length;
+
+    if (score === 3) {
       setCompletedLessons((prev) => ({ ...prev, [selectedLesson.id]: true }));
+    }
+
+    try {
+      const res = await fetch('/api/v1/lessons/complete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          lesson_id: selectedLesson.id,
+          quiz_score: score,
+        }),
+      });
+      const data = await res.json();
+      if (data.data?.pointsEarned > 0) {
+        setPointsToast(`+${data.data.pointsEarned} Atlas Points earned! 🎉`);
+        setPointsBalance(data.data.newBalance);
+      }
+    } catch {
+      // ignore
     }
   };
 
   const handleResetQuiz = () => {
     setQuizAnswers({});
     setShowResults(false);
+    setPointsToast(null);
   };
 
   const handleSelectLesson = (lesson: Lesson) => {
     setSelectedLesson(lesson);
     setQuizAnswers({});
     setShowResults(false);
+    setPointsToast(null);
   };
 
   const score = selectedLesson.quiz.filter(
@@ -332,20 +382,60 @@ export function LearnHubClient() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-white rounded-3xl border border-stone-200 p-6 md:p-8 shadow-sm">
-        <div className="max-w-3xl space-y-3">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Atlas Learning Hub</span>
+      <div className="bg-white rounded-3xl border border-stone-200 p-6 md:p-8 shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="max-w-2xl space-y-2">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Atlas Learning Hub</span>
+            </div>
+            <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
+              Investing Explained in Simple Steps
+            </h1>
+            <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
+              Short, friendly 3-minute lessons with mini-quizzes. Learn how money works, why
+              spreading your eggs across multiple baskets matters, and how to practice safely.
+            </p>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">
-            Investing Explained in Simple Steps
-          </h1>
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed">
-            Short, friendly 3-minute lessons with mini-quizzes. Learn how money works, why
-            spreading your eggs across multiple baskets matters, and how to practice safely.
-          </p>
+
+          {/* Quick Tools & Points Pill */}
+          <div className="flex flex-wrap sm:flex-col items-start sm:items-end gap-2 flex-shrink-0">
+            {pointsBalance !== null && (
+              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl px-4 py-2 text-right">
+                <span className="text-[10px] font-semibold text-emerald-800 uppercase block">
+                  Atlas Points
+                </span>
+                <span className="text-xl font-bold text-emerald-950 font-mono">
+                  {pointsBalance} pts
+                </span>
+              </div>
+            )}
+
+            <div className="flex items-center gap-2 text-xs">
+              <Link
+                href="/simulator"
+                className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-700 font-semibold transition flex items-center gap-1.5"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Simulator</span>
+              </Link>
+              <Link
+                href="/rewards"
+                className="px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-slate-700 font-semibold transition flex items-center gap-1.5"
+              >
+                <Gift className="w-3.5 h-3.5 text-emerald-700" />
+                <span>Prize Draw</span>
+              </Link>
+            </div>
+          </div>
         </div>
+
+        {pointsToast && (
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl p-3 text-xs flex items-center gap-2 animate-in fade-in">
+            <Coins className="w-4 h-4 text-emerald-600" />
+            <span className="font-semibold">{pointsToast}</span>
+          </div>
+        )}
       </div>
 
       {/* Main Grid: Lesson List (Left) + Active Lesson & Quiz (Right) */}

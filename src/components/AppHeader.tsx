@@ -14,6 +14,7 @@ import {
   PieChart,
   Wallet,
   BookOpen,
+  Gift,
 } from 'lucide-react';
 
 interface AppHeaderProps {
@@ -30,6 +31,7 @@ export function AppHeader({ currentUserEmail = 'ready@atlas.demo' }: AppHeaderPr
     { href: '/portfolio', label: 'Portfolio', icon: PieChart },
     { href: '/wallet', label: 'Wallet', icon: Wallet },
     { href: '/learn', label: 'Learn', icon: BookOpen },
+    { href: '/rewards', label: 'Prize Draw', icon: Gift },
     { href: '/provision-fund', label: 'Provision Fund', icon: ShieldCheck },
   ];
 

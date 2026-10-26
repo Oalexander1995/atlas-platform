@@ -276,3 +276,79 @@ CREATE TABLE IF NOT EXISTS notifications (
   created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+-- -------------------------------------------------------------
+-- Learning Progress & Atlas Points (Section 5.13 & 5.15)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS lesson_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  lesson_id TEXT NOT NULL,
+  quiz_score INT NOT NULL,
+  passed_first_time BOOLEAN NOT NULL DEFAULT false,
+  completed_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, lesson_id)
+);
+
+CREATE TABLE IF NOT EXISTS points_transactions (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  points INT NOT NULL,
+  reason TEXT NOT NULL CHECK (reason IN (
+    'complete_lesson', 'pass_quiz_first_time', 'use_simulator',
+    'learning_streak', 'complete_profile', 'exchange_prize_draw_entry'
+  )),
+  reference_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- -------------------------------------------------------------
+-- Badges (Section 5.16)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS user_badges (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES users(id),
+  badge_code TEXT NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  awarded_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(user_id, badge_code)
+);
+
+-- -------------------------------------------------------------
+-- Prize Draws & Entries (Section 5.15)
+-- -------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS prize_draws (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  month TEXT UNIQUE NOT NULL,
+  seed TEXT,
+  prizes JSONB NOT NULL DEFAULT '[]'::jsonb,
+  status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'completed')),
+  run_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS prize_entries (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  draw_id UUID NOT NULL REFERENCES prize_draws(id),
+  user_id UUID REFERENCES users(id),
+  postal_name TEXT,
+  postal_town TEXT,
+  source TEXT NOT NULL CHECK (source IN ('points', 'postal')),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS prize_winners (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  draw_id UUID NOT NULL REFERENCES prize_draws(id),
+  entry_id UUID NOT NULL REFERENCES prize_entries(id),
+  prize_title TEXT NOT NULL,
+  voucher_code TEXT NOT NULL,
+  display_name TEXT NOT NULL,
+  display_town TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
