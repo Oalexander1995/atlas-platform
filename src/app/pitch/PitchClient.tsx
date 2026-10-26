@@ -240,6 +240,63 @@ export function PitchClient() {
         </div>
       </div>
 
+      {/* 4-Step Borrower Diligence Roadmap */}
+      <div className="bg-white rounded-3xl border border-stone-200 p-6 md:p-8 shadow-sm space-y-4">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold uppercase tracking-wider">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+            <span>The Pitch-to-Funding Roadmap</span>
+          </div>
+          <h2 className="text-xl md:text-2xl font-bold text-slate-900 tracking-tight">
+            How Your Opportunity Gets Funded by the Crowd
+          </h2>
+          <p className="text-xs md:text-sm text-slate-500">
+            Fair terms, fast execution, and zero hidden bank fees. Less than 2 weeks from submission to live syndicate.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">Stage 01</span>
+            <h3 className="font-bold text-slate-900 text-sm">1. Submit Details</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Fill out the form below with your target raise, projected returns, asset category, and risk factors.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">Stage 02</span>
+            <h3 className="font-bold text-slate-900 text-sm">2. Independent Audit</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Chartered accountants stress-test cash flows and RICS surveyors verify physical asset valuations.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">Stage 03</span>
+            <h3 className="font-bold text-slate-900 text-sm">3. Legal Debenture</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Commercial solicitors draft the loan terms and register asset security at UK Companies House.
+            </p>
+          </div>
+
+          <div className="p-4 rounded-2xl bg-stone-50 border border-stone-200 space-y-2">
+            <span className="text-[10px] font-mono font-bold text-emerald-700 uppercase">Stage 04</span>
+            <h3 className="font-bold text-slate-900 text-sm">4. Crowd Syndicate</h3>
+            <p className="text-xs text-slate-600 leading-relaxed">
+              Your project goes live to 1,000+ everyday investors who pool from £10 up to your target cap.
+            </p>
+          </div>
+        </div>
+
+        <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-200 text-xs text-emerald-900 flex flex-wrap items-center justify-between gap-3">
+          <span className="font-medium">
+            💡 <strong>Transparent Pricing:</strong> 0% upfront fee. A 2% platform origination fee applies only upon 100% successful funding, plus a 1% Community Provision Fund contribution.
+          </span>
+          <span className="text-emerald-700 font-semibold">Zero hidden broker commissions</span>
+        </div>
+      </div>
+
       {/* Main Pitch Form */}
       <form onSubmit={handleSubmit} className="space-y-6">
         {errorMessage && (

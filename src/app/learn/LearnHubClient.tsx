@@ -36,24 +36,24 @@ const LESSONS: Lesson[] = [
   {
     id: 'what-is-investing',
     number: 1,
-    title: 'What is Investing?',
+    title: 'What is Investing & Crowd Pooling?',
     readTime: '3 mins',
-    summary: 'Learn how putting spare money to work helps local businesses grow.',
+    summary: 'Learn how everyday people pool small amounts to fund high-impact projects.',
     content: [
-      'Imagine your neighbour Sarah bakes amazing sourdough bread. She wants to buy a larger oven so she can bake twice as many loaves every morning.',
-      'If you lend Sarah £20 to help buy the oven, you are investing in her bakery. Sarah uses the oven to sell more bread. Over the next year, she pays you back your £20 plus a little extra (called interest) as a thank you.',
-      'Investing means putting your money into projects or businesses in the hope that they will succeed and pay you back with interest. It is different from saving in a bank because the money is put to work in real businesses, meaning returns depend on the business performing well.',
+      'Imagine an experienced property developer, Marcus, who has planning permission to modernise a neglected Victorian building into 8 energy-efficient apartments. He needs £1,000,000 to complete the modernisation, but the commercial bank says no.',
+      'Instead of needing a single giant millionaire, 1,000 everyday people pool together on Atlas—putting in £1,000 each (or smaller slices from £10). Once completed, tenant rents pay back everyone’s investment plus interest every month.',
+      'Investing means putting money into real, tangible projects (like housing modernisation, solar arrays, or medical equipment leases) in return for a share of the income. Returns depend on the project performing as planned and capital is at risk.',
     ],
     quiz: [
       {
         question: 'What is the main difference between keeping money in a jar and investing it?',
         options: [
           'Money in a jar can grow on its own',
-          'Investing puts money to work in a business with the chance to earn interest',
+          'Investing puts money to work in a project with the chance to earn interest',
           'Investing means you give your money away forever',
         ],
         correctIndex: 1,
-        explanation: 'Investing gives businesses capital to grow and gives you the opportunity to earn interest as they succeed.',
+        explanation: 'Investing provides viable projects with capital to build and gives you the opportunity to earn interest as they succeed.',
       },
       {
         question: 'Where does the extra money (interest) come from when an investment pays back?',
@@ -131,8 +131,8 @@ const LESSONS: Lesson[] = [
     content: [
       'Have you ever heard the saying: "Don\'t put all your eggs in one basket"?',
       'If you carry 10 eggs in a single basket and trip, all 10 eggs can crack. But if you put 2 eggs in 5 different baskets, a slip only damages 2 eggs while the other 8 remain intact.',
-      'In investing, this is called diversification. Instead of putting £100 into one single shop, you put £10 into 10 different businesses across the UK (like a bakery, a solar farm, a veterinary clinic, and a bicycle shop).',
-      'If one business has a bad year, the other nine continue repaying. On Atlas, Auto-Invest automatically spreads your money into small £10 slices to help you diversify.',
+      'In investing, this is called diversification. Instead of putting £100 into one single project, you put £10 into 10 different projects across the UK (like an apartment modernisation, a commercial solar farm, an EV highway hub, and a medical scanner lease).',
+      'If one project experiences a delay, the other nine continue repaying. On Atlas, Auto-Invest automatically spreads your money into small £10 slices to help you diversify.',
     ],
     quiz: [
       {

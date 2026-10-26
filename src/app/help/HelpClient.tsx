@@ -52,7 +52,22 @@ export function HelpClient() {
       category: 'general',
       question: 'What is Atlas and how does it work?',
       answer:
-        'Atlas is a curated micro-investing platform built for everyday UK households. We connect small local businesses who need loans with people who want to lend small amounts starting from just £10. Instead of putting all your eggs in one basket, you can spread your money across multiple independent businesses.',
+        'Atlas is a co-investment syndicate marketplace built for everyday UK households: Big investments, Small barriers. We connect viable project owners and entrepreneurs (such as residential modernisations, commercial solar farms, EV charging hubs, and NHS medical equipment) with everyday people pooling small amounts from £10 up to £1,000. By pooling 1,000 everyday investors together, we raise £1,000,000 to fund high-impact assets that traditionally only institutions could access.',
+    },
+    {
+      id: 'vetting-process-faq',
+      category: 'general',
+      question: 'How are projects vetted before appearing on Atlas?',
+      answer:
+        'Every project passes 4 strict independent diligence gates before approval: identity & fraud screening, cash-flow stress testing by chartered accountants, physical asset surveys by RICS surveyors, and legal debenture structuring by commercial solicitors. Fewer than 5% of pitched projects pass our vetting tests.',
+      highlight: 'Strict 4-stage independent diligence with a <5% acceptance rate.',
+    },
+    {
+      id: 'pitching-faq',
+      category: 'general',
+      question: 'Who can pitch a project to raise funds on Atlas?',
+      answer:
+        'Any UK company, property renovator, or enterprise with a viable commercial project can pitch at /pitch. If traditional high-street banks are too slow or inflexible, Atlas provides transparent terms and a community of co-investors ready to back viable proposals.',
     },
     {
       id: 'simulated-money',
@@ -67,7 +82,7 @@ export function HelpClient() {
       category: 'general',
       question: 'How does Atlas make money? Are there fees for investors?',
       answer:
-        'Investors pay 0% fees. There are no fees to open an account, deposit, invest, or withdraw. Atlas earns revenue by charging borrowers an upfront 2% origination fee on funded loans to cover platform maintenance, credit checks, and legal paperwork.',
+        'Investors pay 0% fees. There are no fees to open an account, deposit, invest, or withdraw. Atlas earns revenue by charging project owners an upfront 2% origination fee on funded raises to cover independent expert vetting, surveyor audits, and legal charges, plus a 1% contribution to the Community Provision Fund.',
     },
     {
       id: 'fscs-protection',
@@ -97,14 +112,14 @@ export function HelpClient() {
       category: 'limits',
       question: 'What are the investment limits?',
       answer:
-        'To protect everyday investors from risking more than they can afford, Atlas enforces strict limits:\n• Minimum investment: £10 per business\n• Maximum per standard opportunity: £1,000\n• Maximum per Uncharted opportunity: £100\n• Maximum total investments over 12 months: £5,000\n\nThese rules are checked automatically on our servers every time an investment is made.',
+        'To protect everyday investors from risking more than they can afford, Atlas enforces strict limits:\n• Minimum investment: £10 per project syndicate\n• Maximum per standard opportunity: £1,000\n• Maximum per Uncharted opportunity: £100\n• Maximum total investments over 12 months: £5,000\n\nThese rules are checked automatically on our servers every time an investment is made.',
     },
     {
       id: 'auto-invest-explained',
       category: 'limits',
       question: 'How does Auto-Invest work?',
       answer:
-        'Auto-Invest lets you set a monthly budget (like £50 or £100) and pick your preferred risk tiers. Our engine then splits your money into small £10 slices across multiple businesses using a round-robin schedule. It also enforces a strict 20% cap so no single business ever gets more than one-fifth of your plan budget.',
+        'Auto-Invest lets you set a monthly budget (like £50 or £100) and pick your preferred risk tiers. Our engine then splits your money into small £10 slices across multiple vetted syndicates using a round-robin schedule. It also enforces a strict 20% cap so no single project ever gets more than one-fifth of your plan budget.',
     },
     {
       id: 'points-rules',

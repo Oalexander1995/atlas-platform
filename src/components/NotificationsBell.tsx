@@ -75,13 +75,13 @@ export function NotificationsBell() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-stone-100 transition"
+        className="relative p-2 rounded-xl text-emerald-200 hover:text-white hover:bg-emerald-900/40 transition"
         aria-label="View notifications"
         aria-expanded={open}
       >
         <Bell className="w-5 h-5" />
         {unreadCount > 0 && (
-          <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-emerald-600 text-white font-bold text-[10px] flex items-center justify-center animate-pulse">
+          <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-emerald-500 text-slate-950 font-bold text-[10px] flex items-center justify-center animate-pulse">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -89,14 +89,14 @@ export function NotificationsBell() {
 
       {open && (
         <div
-          className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-3xl shadow-xl border border-stone-200 p-4 z-50 text-xs animate-in fade-in slide-in-from-top-1"
+          className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#031c13] text-white rounded-3xl shadow-2xl border border-emerald-500/30 p-4 z-50 text-xs animate-in fade-in slide-in-from-top-1"
           onMouseLeave={() => setOpen(false)}
         >
-          <div className="flex items-center justify-between border-b border-stone-100 pb-3 mb-2">
+          <div className="flex items-center justify-between border-b border-emerald-500/20 pb-3 mb-2">
             <div className="flex items-center gap-1.5">
-              <span className="font-bold text-slate-900 text-sm">Notifications</span>
+              <span className="font-bold text-white text-sm">Notifications</span>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-semibold">
+                <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-semibold border border-emerald-500/30">
                   {unreadCount} new
                 </span>
               )}
@@ -106,7 +106,7 @@ export function NotificationsBell() {
               <button
                 onClick={handleMarkAllRead}
                 disabled={loading}
-                className="text-emerald-700 hover:text-emerald-800 font-medium text-[11px] flex items-center gap-1 transition"
+                className="text-emerald-300 hover:text-emerald-200 font-medium text-[11px] flex items-center gap-1 transition"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Mark all read</span>
@@ -116,10 +116,10 @@ export function NotificationsBell() {
 
           <div className="max-h-80 overflow-y-auto space-y-2">
             {notifications.length === 0 ? (
-              <div className="py-8 text-center text-slate-400">
+              <div className="py-8 text-center text-emerald-300/60">
                 <p>No notifications yet</p>
-                <p className="text-[10px] text-slate-400 mt-1">
-                  Updates on repayments, auto-invest and loans will appear here
+                <p className="text-[10px] text-emerald-300/40 mt-1">
+                  Updates on repayments, auto-invest and projects will appear here
                 </p>
               </div>
             ) : (
@@ -131,8 +131,8 @@ export function NotificationsBell() {
                     onClick={() => isUnread && handleMarkAsRead(n.id)}
                     className={`p-3 rounded-2xl border transition cursor-pointer ${
                       isUnread
-                        ? 'bg-emerald-50/60 border-emerald-200'
-                        : 'bg-stone-50/50 border-stone-100 text-slate-600'
+                        ? 'bg-emerald-950/70 border-emerald-500/40 text-white'
+                        : 'bg-white/5 border-white/10 text-emerald-100/70'
                     }`}
                   >
                     <div className="flex items-start gap-2.5">

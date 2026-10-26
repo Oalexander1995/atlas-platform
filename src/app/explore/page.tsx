@@ -14,7 +14,7 @@ export default async function ExplorePage() {
   const opportunities = await getOpportunities();
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6">
       {/* Statutory Section 3.1 Risk Warning Banner */}
       <RiskWarningBanner />
 

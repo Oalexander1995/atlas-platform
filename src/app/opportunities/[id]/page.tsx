@@ -16,6 +16,8 @@ import {
   FileText,
   TrendingUp,
   HelpCircle,
+  Sparkles,
+  ArrowRight,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -392,6 +394,31 @@ export default async function OpportunityDetailPage({
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Project Owner Pitch Banner */}
+      <div className="bg-gradient-to-br from-[#062419] to-[#041a12] border border-emerald-500/30 rounded-3xl p-6 md:p-8 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-sm">
+        <div className="space-y-2 max-w-xl">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-400/20 text-emerald-300 text-xs font-bold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Are You a Project Owner?</span>
+          </div>
+          <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+            Have a viable investment project seeking funding?
+          </h2>
+          <p className="text-xs md:text-sm text-emerald-100/80 leading-relaxed">
+            If commercial banks are too slow or have rejected your application, pitch directly to
+            Atlas&apos;s community of everyday investors. Raise up to £1,000,000 with flexible terms
+            and community backing.
+          </p>
+        </div>
+        <Link
+          href="/pitch"
+          className="whitespace-nowrap px-6 py-3.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-2xl text-xs md:text-sm transition shadow-md flex items-center gap-2 self-start md:self-auto"
+        >
+          <span>Pitch Your Project</span>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </div>
   );

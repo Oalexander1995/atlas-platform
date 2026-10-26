@@ -10,6 +10,8 @@ import { CrowdPowerCalculator } from '@/components/CrowdPowerCalculator';
 import { ReturnAssetsShowcase } from '@/components/ReturnAssetsShowcase';
 import { ExpertVettingProcess } from '@/components/ExpertVettingProcess';
 import { WhyUsSection } from '@/components/WhyUsSection';
+import { LiveCommunityTicker } from '@/components/LiveCommunityTicker';
+import { HomeFaqAccordion } from '@/components/HomeFaqAccordion';
 import {
   Compass,
   Sparkles,
@@ -80,74 +82,78 @@ export default async function HomePage() {
   const featured = oppsRes.rows;
 
   return (
-    <div className="-mx-4 sm:-mx-6 lg:-mx-12 -my-6 md:-my-8 px-4 sm:px-6 lg:px-12 py-8 md:py-12 bg-gradient-to-b from-[#062419] via-[#082f21] to-[#041a12] text-white min-h-screen space-y-16">
-      {/* Top Demo Status Ribbon */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs backdrop-blur-md">
-        <div className="flex items-center gap-2 text-emerald-100 font-medium">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>
-            Practice Account: <strong className="text-white">{demoEmail}</strong>
-          </span>
-          <span className="text-emerald-500 hidden sm:inline">•</span>
-          <span className="text-emerald-200">
-            Wallet Balance: <strong className="text-white">£{(balancePence / 100).toFixed(2)}</strong> demo money
-          </span>
-        </div>
-        <div className="flex items-center gap-3 text-emerald-300/70">
-          <span className="text-[11px] flex items-center gap-1 font-mono">
-            <Clock className="w-3 h-3 text-emerald-400" />
-            {formattedDate}
-          </span>
-        </div>
-      </div>
-
-      {/* Hero Section */}
-      <section className="text-center space-y-6 max-w-4xl mx-auto pt-2">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold tracking-wide">
-          <span>🇬🇧 An Example Platform Showing What Investing Could Be</span>
+    <div className="w-full bg-gradient-to-b from-[#062419] via-[#082f21] to-[#041a12] text-white min-h-screen py-6 md:py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+        {/* Top Demo Status Ribbon */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 flex flex-wrap items-center justify-between gap-3 text-xs backdrop-blur-md">
+          <div className="flex items-center gap-2 text-emerald-100 font-medium">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>
+              Practice Account: <strong className="text-white">{demoEmail}</strong>
+            </span>
+            <span className="text-emerald-500 hidden sm:inline">•</span>
+            <span className="text-emerald-200">
+              Wallet Balance: <strong className="text-white">£{(balancePence / 100).toFixed(2)}</strong> demo money
+            </span>
+          </div>
+          <div className="flex items-center gap-3 text-emerald-300/70">
+            <span className="text-[11px] flex items-center gap-1 font-mono">
+              <Clock className="w-3 h-3 text-emerald-400" />
+              {formattedDate}
+            </span>
+          </div>
         </div>
 
-        <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
-          Big investments, <br />
-          <span className="text-emerald-400">Small barriers.</span>
-        </h1>
+        {/* Hero Section */}
+        <section className="text-center space-y-6 max-w-4xl mx-auto pt-2">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs font-semibold tracking-wide">
+            <span>🇬🇧 An Example Platform Showing What Investing Could Be</span>
+          </div>
 
-        <p className="text-emerald-100/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-normal">
-          We believe everyone should have the opportunity to grow their wealth, not just those who already
-          have it. Our platform makes investing more accessible by opening the door to opportunities that
-          would traditionally be out of reach for everyday people. With a focus on transparency, carefully
-          vetted opportunities and different levels of risk, we aim to help people take control of their
-          financial future and make their money work harder for them.
-        </p>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
+            Big investments, <br />
+            <span className="text-emerald-400">Small barriers.</span>
+          </h1>
 
-        {/* Primary Call to Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
-          <Link
-            href="/explore"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
-          >
-            <Compass className="w-5 h-5 text-slate-950" />
-            <span>Browse Opportunities</span>
-          </Link>
-          <Link
-            href="/pitch"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2"
-          >
-            <Sparkles className="w-5 h-5 text-slate-950" />
-            <span>Pitch a Project (Raise Funds)</span>
-          </Link>
-          <Link
-            href="/wallet"
-            className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition backdrop-blur flex items-center justify-center gap-2"
-          >
-            <Wallet className="w-5 h-5 text-emerald-300" />
-            <span>Try With £{(balancePence / 100).toFixed(0)} Demo</span>
-          </Link>
-        </div>
-      </section>
+          <p className="text-emerald-100/90 text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl mx-auto font-normal">
+            We believe everyone should have the opportunity to grow their wealth, not just those who already
+            have it. Our platform makes investing more accessible by opening the door to opportunities that
+            would traditionally be out of reach for everyday people. With a focus on transparency, carefully
+            vetted opportunities and different levels of risk, we aim to help people take control of their
+            financial future and make their money work harder for them.
+          </p>
 
-      {/* Crowd Power Multiplier Interactive Feature */}
-      <CrowdPowerCalculator />
+          {/* Primary Call to Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-2">
+            <Link
+              href="/explore"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2"
+            >
+              <Compass className="w-5 h-5 text-slate-950" />
+              <span>Browse Opportunities</span>
+            </Link>
+            <Link
+              href="/pitch"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-sm sm:text-base transition shadow-lg shadow-amber-400/20 flex items-center justify-center gap-2"
+            >
+              <Sparkles className="w-5 h-5 text-slate-950" />
+              <span>Pitch a Project (Raise Funds)</span>
+            </Link>
+            <Link
+              href="/wallet"
+              className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold text-sm sm:text-base transition backdrop-blur flex items-center justify-center gap-2"
+            >
+              <Wallet className="w-5 h-5 text-emerald-300" />
+              <span>Try With £{(balancePence / 100).toFixed(0)} Demo</span>
+            </Link>
+          </div>
+        </section>
+
+        {/* Live Community Activity & Social Proof Bar */}
+        <LiveCommunityTicker />
+
+        {/* Crowd Power Multiplier Interactive Feature */}
+        <CrowdPowerCalculator />
 
       {/* How It Works in 4 Simple Steps */}
       <section className="space-y-6">
@@ -343,6 +349,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Frequently Asked Questions */}
+      <HomeFaqAccordion />
+
       {/* 4 Interactive Educational Feature Pillars */}
       <section className="space-y-6">
         <div className="space-y-1">
@@ -440,6 +449,7 @@ export default async function HomePage() {
           <span className="text-amber-300/80 font-medium">Demo platform — Simulated currency</span>
         </div>
       </section>
+      </div>
     </div>
   );
 }
