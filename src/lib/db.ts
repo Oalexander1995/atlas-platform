@@ -5,7 +5,10 @@ import path from 'path';
 let dbInstance: PGlite | null = null;
 let initPromise: Promise<PGlite> | null = null;
 
-const DEFAULT_DATA_DIR = path.resolve(process.cwd(), './data/postgres');
+const DEFAULT_DATA_DIR =
+  process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME
+    ? path.resolve('/tmp/postgres')
+    : path.resolve(process.cwd(), './data/postgres');
 
 /**
  * Returns the singleton PGlite database instance.
