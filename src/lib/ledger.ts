@@ -480,3 +480,73 @@ export async function runReconciliation(): Promise<ReconciliationReport> {
     mismatches,
   };
 }
+
+export interface ProvisionFundPayout {
+  id: string;
+  opportunityTitle: string;
+  amountPence: number;
+  payoutReason: string;
+  createdAt: string;
+}
+
+export interface ProvisionFundStatus {
+  balancePence: number;
+  outstandingCapitalPence: number;
+  coverageRatioPercent: number;
+  payouts: ProvisionFundPayout[];
+}
+
+export async function getProvisionFundStatus(): Promise<ProvisionFundStatus> {
+  const pfAccount = await getOrCreateSystemAccount('provision_fund');
+  const pfBalRes = await query<{ balance_pence: string }>(
+    `SELECT balance_pence FROM account_balances WHERE account_id = $1`,
+    [pfAccount.id]
+  );
+  const balancePence = Number(pfBalRes.rows[0]?.balance_pence || 0);
+
+  const outstandingRes = await query<{ total_outstanding: string }>(
+    `SELECT COALESCE(SUM(h.principal_pence), 0) AS total_outstanding
+     FROM holdings h
+     JOIN opportunities o ON h.opportunity_id = o.id
+     WHERE o.risk_tier IN ('low', 'medium', 'high')
+       AND h.status = 'active'`
+  );
+  const outstandingCapitalPence = Number(outstandingRes.rows[0]?.total_outstanding || 0);
+
+  const coverageRatioPercent =
+    outstandingCapitalPence > 0
+      ? Number(((balancePence / outstandingCapitalPence) * 100).toFixed(1))
+      : balancePence > 0
+      ? 100
+      : 0;
+
+  const payoutsRes = await query<{
+    id: string;
+    title: string;
+    provision_payout_pence: string;
+    payout_reason: string;
+    created_at: string;
+  }>(
+    `SELECT hl.id, o.title, hl.provision_payout_pence, hl.payout_reason, hl.created_at
+     FROM holding_losses hl
+     JOIN opportunities o ON hl.opportunity_id = o.id
+     WHERE hl.provision_payout_pence > 0
+     ORDER BY hl.created_at DESC`
+  );
+
+  const payouts: ProvisionFundPayout[] = payoutsRes.rows.map((r) => ({
+    id: r.id,
+    opportunityTitle: r.title,
+    amountPence: Number(r.provision_payout_pence),
+    payoutReason: r.payout_reason || 'Discretionary provision payout',
+    createdAt: r.created_at,
+  }));
+
+  return {
+    balancePence,
+    outstandingCapitalPence,
+    coverageRatioPercent,
+    payouts,
+  };
+}
+
