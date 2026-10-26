@@ -132,6 +132,30 @@ export async function getOrCreateOpportunityEscrow(
 }
 
 /**
+ * Returns or creates the partner borrower ledger account for an opportunity
+ */
+export async function getOrCreateOpportunityPartnerAccount(
+  opportunityId: string
+): Promise<LedgerAccount> {
+  const code = `opp:${opportunityId}:partner`;
+  const existing = await query<LedgerAccount>(
+    'SELECT * FROM ledger_accounts WHERE code = $1',
+    [code]
+  );
+  if (existing.rows.length > 0) {
+    return existing.rows[0];
+  }
+
+  const res = await query<LedgerAccount>(
+    `INSERT INTO ledger_accounts (code, type, opportunity_id, purpose)
+     VALUES ($1, 'asset', $2, 'opportunity_partner')
+     RETURNING *`,
+    [code, opportunityId]
+  );
+  return res.rows[0];
+}
+
+/**
  * Returns user wallet balance derived from ledger postings
  */
 export async function getWalletBalancePence(userId: string): Promise<number> {
@@ -445,7 +469,7 @@ export async function runReconciliation(): Promise<ReconciliationReport> {
     payouts: string;
   }>(
     `SELECT
-       COALESCE(SUM(CASE WHEN j.type = 'provision_contribution' THEN p.amount_pence ELSE 0 END), 0) AS contributions,
+       COALESCE(SUM(CASE WHEN j.type IN ('provision_contribution', 'disbursement') THEN p.amount_pence ELSE 0 END), 0) AS contributions,
        COALESCE(SUM(CASE WHEN j.type = 'provision_payout' THEN -p.amount_pence ELSE 0 END), 0) AS payouts
      FROM postings p
      JOIN journal_entries j ON p.journal_entry_id = j.id

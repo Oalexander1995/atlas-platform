@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { NotificationsBell } from './NotificationsBell';
 import {
   ShieldCheck,
   ChevronDown,
@@ -91,10 +92,12 @@ export function AppHeader({ currentUserEmail = 'ready@atlas.demo' }: AppHeaderPr
           })}
         </nav>
 
-        {/* Right Action: Demo Account Switcher */}
-        <div className="relative">
-          <button
-            onClick={() => setShowUserMenu(!showUserMenu)}
+        {/* Right Actions: Notifications + Demo Account Switcher */}
+        <div className="flex items-center gap-2">
+          <NotificationsBell />
+          <div className="relative">
+            <button
+              onClick={() => setShowUserMenu(!showUserMenu)}
             className="flex items-center gap-2 bg-stone-100 hover:bg-stone-200 text-slate-800 px-3 py-1.5 rounded-xl text-xs font-semibold border border-stone-200 transition"
             aria-expanded={showUserMenu}
             aria-label="Demo account switcher"
@@ -164,6 +167,7 @@ export function AppHeader({ currentUserEmail = 'ready@atlas.demo' }: AppHeaderPr
           )}
         </div>
       </div>
-    </header>
-  );
+    </div>
+  </header>
+);
 }

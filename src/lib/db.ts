@@ -55,10 +55,10 @@ export async function applyMigrations(db: PGlite): Promise<void> {
 export async function query<T = any>(
   sql: string,
   params?: any[]
-): Promise<{ rows: T[] }> {
+): Promise<{ rows: T[]; rowCount?: number }> {
   const db = await getDb();
   const result = await db.query<T>(sql, params);
-  return { rows: result.rows };
+  return { rows: result.rows, rowCount: (result as any).affectedRows ?? result.rows.length };
 }
 
 /**
@@ -69,14 +69,28 @@ export async function exec(sql: string): Promise<void> {
   await db.exec(sql);
 }
 
+export interface DbClient {
+  query<T = any>(sql: string, params?: any[]): Promise<{ rows: T[]; rowCount?: number }>;
+  exec(sql: string): Promise<any>;
+}
+
 /**
  * Helper to run operations in a transaction
  */
-export async function transaction<T>(fn: (tx: any) => Promise<T>): Promise<T> {
+export async function transaction<T>(fn: (tx: DbClient) => Promise<T>): Promise<T> {
   const db = await getDb();
   await db.exec('BEGIN');
   try {
-    const result = await fn(db);
+    const wrappedTx: DbClient = {
+      query: async <R = any>(sql: string, params?: any[]) => {
+        const res = await db.query<R>(sql, params);
+        return { rows: res.rows, rowCount: (res as any).affectedRows ?? res.rows.length };
+      },
+      exec: async (sql: string) => {
+        return db.exec(sql);
+      },
+    };
+    const result = await fn(wrappedTx);
     await db.exec('COMMIT');
     return result;
   } catch (error) {
