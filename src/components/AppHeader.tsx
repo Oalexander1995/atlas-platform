@@ -54,6 +54,12 @@ export function AppHeader({ currentUserEmail = 'ready@atlas.demo' }: AppHeaderPr
       role: 'Create opportunities & view ledger',
       href: '/admin/opportunities',
     },
+    {
+      name: 'Compliance Officer',
+      email: 'compliance@atlas.demo',
+      role: 'Review AI conversations & audit trail',
+      href: '/admin/compliance',
+    },
   ];
 
   return (
