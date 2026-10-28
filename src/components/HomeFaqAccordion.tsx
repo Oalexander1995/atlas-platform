@@ -21,15 +21,15 @@ export function HomeFaqAccordion() {
       icon: Coins,
       question: 'Can I really start investing with as little as £10?',
       answer:
-        'Yes. Historically, commercial real estate, clean solar arrays, and medical equipment leases required hundreds of thousands of pounds upfront—locking out regular households. Atlas slices institutional-scale investments into accessible £10 micro-units. You can invest as little as £10 up to the £1,000 regulatory cap per standard project, allowing you to build a well-diversified portfolio.',
+        'Yes. Historically, commercial real estate, clean solar arrays, and medical equipment leases required hundreds of thousands of pounds upfront—locking out regular households. Atlas slices institutional-scale investments into accessible £10 micro-units. You can invest as little as £10 up to the £1,000 Atlas platform limit per project, allowing you to build a well-diversified portfolio.',
       badge: 'Low Barriers',
     },
     {
       id: 'how-crowd-pools',
       icon: Users,
-      question: 'How do 1,000 people pool together to raise £1,000,000?',
+      question: 'How do people pool together to raise funds for projects?',
       answer:
-        'When a project owner needs £1,000,000 to modernise an 8-apartment building or install a commercial solar farm, they submit their proposal on Atlas. Up to 1,000 everyday investors join the syndicate with small amounts (£10 to £1,000). Once the syndicate reaches 100% of its goal, funds are released in staged construction milestones. Tenant rents or energy revenue are collected monthly and distributed directly back to all co-investors in proportion to their contribution.',
+        'When a project owner needs funding to modernise an 8-apartment building or install a commercial solar farm, they submit their proposal on Atlas. Everyday investors join the syndicate with small amounts (£10 up to the £1,000 platform limit). Once the syndicate reaches 100% of its goal, funds are released in staged milestones. Tenant rents or energy revenue are collected monthly and distributed directly back to all co-investors in proportion to their contribution.',
       badge: 'The Power of Pooling',
     },
     {
@@ -37,7 +37,7 @@ export function HomeFaqAccordion() {
       icon: ShieldCheck,
       question: 'What happens if a borrower or project runs into difficulties?',
       answer:
-        'Every project funded on Atlas is secured by a first legal charge or commercial debenture registered at UK Companies House over the underlying physical asset. If a borrower struggles to make payments, independent chartered recovery professionals work to protect investor capital. Furthermore, Atlas maintains a Discretionary Community Provision Fund (supported by a 1% borrower levy on all funded projects) designed to help cushion unexpected shortfalls on Low, Medium, and High tier syndicates.',
+        'Every project funded on Atlas is secured by a first legal charge or commercial debenture registered at UK Companies House over the underlying physical asset. If a borrower struggles to make payments, independent chartered recovery professionals work to recover capital. Furthermore, Atlas maintains a discretionary Provision Fund (supported by 1% of every raise) designed to help cushion unexpected shortfalls on eligible syndicates. The Provision Fund is discretionary, has no guarantee of payment, and may not cover all losses.',
       badge: 'Asset Security',
     },
     {
@@ -45,7 +45,7 @@ export function HomeFaqAccordion() {
       icon: Building2,
       question: 'Why do project owners come to Atlas instead of high-street banks?',
       answer:
-        'High-street commercial banks are notoriously rigid and slow, often taking 6 to 9 months for loan committees while demanding onerous personal guarantees or rejecting viable projects due to bureaucratic criteria. Atlas offers viable entrepreneurs fast, merit-based execution, transparent covenant terms, and an engaged community of co-investors who actively champion their project.',
+        'Commercial banks are notoriously rigid and slow, often taking 6 to 9 months for loan committees while demanding onerous personal guarantees or rejecting viable projects due to bureaucratic criteria. Atlas offers viable entrepreneurs fast, merit-based execution, transparent covenant terms, and an engaged community of co-investors who actively champion their project.',
       badge: 'Two-Sided Market',
     },
     {
@@ -53,7 +53,7 @@ export function HomeFaqAccordion() {
       icon: Scale,
       question: 'How does Atlas make money? Are there hidden fees for investors?',
       answer:
-        'Investors pay 0% fees. Opening an account, depositing, holding, and withdrawing returns is completely free for investors. Atlas generates revenue by charging project owners an upfront 2% origination fee on successfully funded raises to cover independent expert vetting, surveyor audits, and legal registrations, along with a 1% contribution to the Community Provision Fund. There are no hidden charges or exit penalties.',
+        'Investors pay 0% fees. Opening an account, depositing, holding, and withdrawing returns is completely free for investors. Atlas generates revenue exclusively from borrowers: borrowers pay an arrangement fee of 2.0% upon successful raise completion and an annual platform servicing fee of 0.5%. In addition, 1.0% of each raise goes directly to the Provision Fund. There are no hidden fees or exit charges for investors.',
       badge: 'Transparent Fees',
     },
     {

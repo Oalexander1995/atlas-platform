@@ -30,7 +30,10 @@ export default async function RootLayout({
         </a>
         <div className="sticky top-0 z-40 bg-white shadow-xs">
           <DemoBanner />
-          <AppHeader currentUserEmail={session?.email || 'ready@atlas.demo'} />
+          <AppHeader
+            currentUserEmail={session?.email || 'demo@atlas.example'}
+            userRole={session?.role || 'investor'}
+          />
         </div>
 
         <main
@@ -48,24 +51,28 @@ export default async function RootLayout({
           className="border-t border-emerald-900/40 py-10 text-xs text-emerald-200/70 bg-[#02130d] pb-28 md:pb-12"
         >
           <div className="max-w-6xl mx-auto px-4 space-y-6">
-            {/* Statutory Risk Warning Bar (Section 3.1) */}
+            {/* Statutory Risk Warning Bar */}
             <div className="p-4 bg-amber-500/10 border border-amber-400/30 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-amber-200">
               <div className="space-y-0.5">
                 <p className="font-bold text-amber-300 text-xs flex items-center gap-1.5 uppercase tracking-wide">
                   <span className="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse" />
-                  Statutory Regulatory Warning (Section 3.1)
+                  Statutory Risk Warning
                 </p>
                 <p className="text-xs text-white/90 leading-relaxed max-w-3xl">
-                  Don&apos;t invest unless you&apos;re prepared to lose all the money you invest.
-                  This is a high-risk investment and you are unlikely to be protected if something
-                  goes wrong.
+                  Don&apos;t invest unless you&apos;re prepared to lose all the money you invest. This is a high-risk investment and you are unlikely to be protected if something goes wrong.{' '}
+                  <Link
+                    href="/risk-summary"
+                    className="underline font-semibold text-amber-300 hover:text-white"
+                  >
+                    Take 2 mins to learn more.
+                  </Link>
                 </p>
               </div>
               <Link
                 href="/risk-summary"
                 className="whitespace-nowrap px-3.5 py-1.5 bg-amber-400/20 hover:bg-amber-400/30 text-amber-200 font-semibold rounded-xl text-xs transition self-start sm:self-auto border border-amber-400/40"
               >
-                Take 2 mins to learn more →
+                Learn More →
               </Link>
             </div>
 
@@ -74,7 +81,7 @@ export default async function RootLayout({
               <div>
                 <p className="font-bold text-white text-sm">Atlas Platform</p>
                 <p className="mt-1 text-emerald-200/60 max-w-md leading-relaxed text-[11px]">
-                  Curated micro-investing demo for UK households. Section 0 compliant. Simulated
+                  Curated loan-based crowdfunding marketplace demo for UK households. Simulated
                   money only — no real financial transactions take place.
                 </p>
               </div>
@@ -84,6 +91,12 @@ export default async function RootLayout({
                   className="hover:text-emerald-300 transition underline underline-offset-2"
                 >
                   Help & FAQs
+                </Link>
+                <Link
+                  href="/how-we-vet"
+                  className="hover:text-emerald-300 transition underline underline-offset-2"
+                >
+                  How We Vet
                 </Link>
                 <Link
                   href="/terms"
@@ -113,20 +126,24 @@ export default async function RootLayout({
                   href="/learn"
                   className="hover:text-emerald-300 transition underline underline-offset-2"
                 >
-                  Learn Hub
+                  Learn
                 </Link>
-                <Link
-                  href="/admin/opportunities"
-                  className="hover:text-emerald-300 transition underline underline-offset-2"
-                >
-                  Admin Hub
-                </Link>
-                <Link
-                  href="/admin/compliance"
-                  className="hover:text-emerald-300 transition underline underline-offset-2"
-                >
-                  Compliance
-                </Link>
+                {(session?.role === 'admin' || session?.role === 'compliance') && (
+                  <>
+                    <Link
+                      href="/admin/opportunities"
+                      className="hover:text-emerald-300 transition underline underline-offset-2"
+                    >
+                      Admin Hub
+                    </Link>
+                    <Link
+                      href="/admin/compliance"
+                      className="hover:text-emerald-300 transition underline underline-offset-2"
+                    >
+                      Compliance
+                    </Link>
+                  </>
+                )}
               </div>
             </div>
           </div>

@@ -125,14 +125,15 @@ const LESSONS: Lesson[] = [
   {
     id: 'why-diversify',
     number: 3,
-    title: 'Why Diversify? (The Basket Rule)',
+    title: 'Why Diversify? (Spreading Your Money)',
     readTime: '3 mins',
-    summary: 'Never put all your eggs in one basket — spread your micro-investments.',
+    summary:
+      'Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss.',
     content: [
-      'Have you ever heard the saying: "Don\'t put all your eggs in one basket"?',
-      'If you carry 10 eggs in a single basket and trip, all 10 eggs can crack. But if you put 2 eggs in 5 different baskets, a slip only damages 2 eggs while the other 8 remain intact.',
-      'In investing, this is called diversification. Instead of putting £100 into one single project, you put £10 into 10 different projects across the UK (like an apartment modernisation, a commercial solar farm, an EV highway hub, and a medical scanner lease).',
-      'If one project experiences a delay, the other nine continue repaying. On Atlas, Auto-Invest automatically spreads your money into small £10 slices to help you diversify.',
+      'Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss.',
+      'Instead of putting £100 into one single project, you can spread £10 across 10 different projects across the UK (like an apartment modernisation, a commercial solar farm, an EV fast-charger site, and a medical scanner lease).',
+      'If one project experiences a delay or default, your other loans can still provide repayments. While spreading investments can reduce the impact of an individual failure, it never eliminates the possibility of financial loss.',
+      'On Atlas, our platform limits and Auto-Invest tool help you split your budget in £10 slices across multiple vetted opportunities.',
     ],
     quiz: [
       {
@@ -393,8 +394,8 @@ export function LearnHubClient() {
               Investing Explained in Simple Steps
             </h1>
             <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
-              Short, friendly 3-minute lessons with mini-quizzes. Learn how money works, why
-              spreading your eggs across multiple baskets matters, and how to practice safely.
+              Short, friendly 3-minute lessons with mini-quizzes. Learn how money works, how
+              spreading money across several projects can reduce impact if one fails, and how to practice with simulated money.
             </p>
           </div>
 

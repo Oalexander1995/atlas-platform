@@ -509,14 +509,19 @@ export function PitchClient() {
           )}
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-2">
-              Select Appropriate Risk Level *
-            </label>
+            <div className="flex items-center justify-between mb-2">
+              <label className="block text-xs font-bold text-slate-700">
+                Select Appropriate Risk Level *
+              </label>
+              <span className="text-[10px] text-amber-800 font-medium">
+                Note: All projects carry a risk of losing your money
+              </span>
+            </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                { id: 'low', label: 'Low Risk', desc: 'Established asset or collateral' },
+                { id: 'low', label: 'Lower Risk', desc: 'Established asset or collateral' },
                 { id: 'medium', label: 'Medium Risk', desc: 'Standard business project' },
-                { id: 'high', label: 'High Risk', desc: 'New venture or startup' },
+                { id: 'high', label: 'Higher Risk', desc: 'New venture or expansion' },
                 { id: 'uncharted', label: 'Uncharted', desc: 'Experimental (£100 cap)' },
               ].map((tier) => (
                 <button

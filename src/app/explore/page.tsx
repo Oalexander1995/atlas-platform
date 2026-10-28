@@ -15,7 +15,7 @@ export default async function ExplorePage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6 md:py-8 space-y-6">
-      {/* Statutory Section 3.1 Risk Warning Banner */}
+      {/* Statutory Risk Warning Banner */}
       <RiskWarningBanner />
 
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

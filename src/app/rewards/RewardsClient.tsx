@@ -44,10 +44,74 @@ interface BadgeItem {
   awardedAt: string | null;
 }
 
+const fallbackRewardsData: RewardsData = {
+  currentDraw: {
+    id: 'draw-current',
+    month: 'This Month',
+    status: 'ACTIVE',
+    totalEntries: 215,
+    prizes: [
+      { title: 'Eco Shopping Voucher', valuePounds: 50, count: 1 },
+      { title: 'Bookshop Vouchers', valuePounds: 25, count: 2 },
+      { title: 'Local Cafe Vouchers', valuePounds: 10, count: 5 },
+    ],
+  },
+  userEntriesCount: 2,
+  userMaxEntriesRemaining: 8,
+  pointsBalance: 250,
+  history: [
+    {
+      month: 'Previous Month',
+      seed: '0x8f2a...c4e1',
+      runAt: new Date().toISOString(),
+      winners: [
+        { prizeTitle: '£50 Eco Voucher', displayName: 'Sarah M.', displayTown: 'Manchester' },
+        { prizeTitle: '£25 Book Voucher', displayName: 'David T.', displayTown: 'Bristol' },
+        { prizeTitle: '£10 Cafe Voucher', displayName: 'Elena K.', displayTown: 'Leeds' },
+      ],
+    },
+  ],
+};
+
+const fallbackBadges: BadgeItem[] = [
+  {
+    code: 'FIRST_LESSON',
+    title: 'Financial Foundations',
+    description: 'Completed your first financial literacy lesson on loan syndication.',
+    icon: '🌱',
+    unlocked: true,
+    awardedAt: new Date().toISOString(),
+  },
+  {
+    code: 'QUIZ_MASTER',
+    title: 'Due Diligence Explorer',
+    description: 'Scored 100% on the asset-backed lending risk quiz.',
+    icon: '🎯',
+    unlocked: true,
+    awardedAt: new Date().toISOString(),
+  },
+  {
+    code: 'ETHICAL_INVESTOR',
+    title: 'Prudent Diversification',
+    description: 'Mastered the module on platform exposure limits and capital risk.',
+    icon: '🧭',
+    unlocked: false,
+    awardedAt: null,
+  },
+  {
+    code: 'COMMUNITY_PILLAR',
+    title: 'Senior Scholar',
+    description: 'Finished all introductory educational modules on the Atlas platform.',
+    icon: '🏛️',
+    unlocked: false,
+    awardedAt: null,
+  },
+];
+
 export function RewardsClient() {
-  const [data, setData] = useState<RewardsData | null>(null);
-  const [badges, setBadges] = useState<BadgeItem[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<RewardsData>(fallbackRewardsData);
+  const [badges, setBadges] = useState<BadgeItem[]>(fallbackBadges);
+  const [loading, setLoading] = useState(false);
   const [entering, setEntering] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showTerms, setShowTerms] = useState(false);
@@ -63,9 +127,11 @@ export function RewardsClient() {
       const badgesJson = await badgesRes.json();
 
       if (drawJson.data) setData(drawJson.data);
-      if (badgesJson.data?.badges) setBadges(badgesJson.data.badges);
+      if (badgesJson.data?.badges && badgesJson.data.badges.length > 0) {
+        setBadges(badgesJson.data.badges);
+      }
     } catch {
-      // ignore
+      // Keep fallback data if request fails
     } finally {
       setLoading(false);
     }
@@ -98,10 +164,6 @@ export function RewardsClient() {
       setEntering(false);
     }
   };
-
-  if (loading && !data) {
-    return <div className="py-12 text-center text-xs text-slate-500">Loading rewards hub...</div>;
-  }
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto py-2">
@@ -136,14 +198,17 @@ export function RewardsClient() {
           </div>
         </div>
 
-        {/* Section 0 Strict Notice */}
-        <div className="bg-stone-50 border border-stone-200 rounded-2xl p-3 text-xs text-slate-600 flex items-center gap-2">
-          <Info className="w-4 h-4 text-slate-500 flex-shrink-0" />
-          <span>
-            <strong>FCA Section 0 Compliance:</strong> Points are awarded purely for education,
-            quizzes and profile setup. Points are <em>never</em> awarded for depositing, investing, or
-            referrals.
-          </span>
+        {/* Strict Learning-Only Notice */}
+        <div className="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4 text-xs text-emerald-950 flex items-start gap-3">
+          <Info className="w-4 h-4 text-emerald-700 flex-shrink-0 mt-0.5" />
+          <div className="space-y-1">
+            <p className="font-semibold text-emerald-900">
+              Rewards are earned through learning only. Investing does not earn entries or improve your chances.
+            </p>
+            <p className="text-emerald-800 text-[11px] leading-relaxed">
+              Points and prize draw entries are awarded purely for completing financial literacy lessons, quizzes, and educational milestones. Points are never linked to deposits, investments, amounts committed, or friend referrals.
+            </p>
+          </div>
         </div>
       </div>
 
@@ -225,11 +290,11 @@ export function RewardsClient() {
               </div>
             )}
 
-            {/* Free Postal Entry Route (Section 3.6 AC) */}
+            {/* Free Postal Entry Route */}
             <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 space-y-2 text-xs">
               <div className="flex items-center gap-1.5 font-bold text-slate-800">
                 <Mail className="w-4 h-4 text-slate-600" />
-                <span>Free Postal Entry Route (Section 3.6)</span>
+                <span>Free Postal Entry Route</span>
               </div>
               <p className="text-slate-600 leading-relaxed text-[11px]">
                 No purchase or points necessary. To enter for free by post, send a postcard with your
@@ -270,7 +335,7 @@ export function RewardsClient() {
                 <History className="w-4 h-4 text-emerald-700" />
                 <h3 className="font-bold text-slate-900 text-sm">Recent Draw Winners</h3>
               </div>
-              <span className="text-[10px] text-slate-400">Anonymised per Section 5.15</span>
+              <span className="text-[10px] text-slate-400">Anonymised for privacy</span>
             </div>
 
             {data?.history && data.history.length > 0 ? (
@@ -305,7 +370,7 @@ export function RewardsClient() {
           </div>
         </div>
 
-        {/* Right Column: Badges Collection (Section 5.16) */}
+        {/* Right Column: Badges Collection */}
         <div className="lg:col-span-5 space-y-4">
           <div className="bg-white rounded-3xl border border-stone-200 p-6 shadow-sm space-y-4">
             <div className="flex items-center justify-between border-b border-stone-100 pb-3">

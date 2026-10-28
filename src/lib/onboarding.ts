@@ -16,14 +16,14 @@ export const QUESTION_BANK: AppropriatenessQuestion[] = [
   {
     id: 1,
     category: 'capital_at_risk',
-    question: 'What could happen to the money you lend to a business on Atlas?',
+    question: 'If a borrower defaults, could you lose all the money you invested?',
     options: [
-      { id: 'a', text: 'You can lose some or all of your money if the business fails to repay.' },
-      { id: 'b', text: 'Atlas will always repay your money no matter what happens.' },
-      { id: 'c', text: 'Your money is 100% shielded against any possible loss.' },
+      { id: 'a', text: 'Yes, you can lose all or part of the money you invested if a borrower defaults.' },
+      { id: 'b', text: 'No, Atlas guarantees full repayment under all circumstances.' },
+      { id: 'c', text: 'No, loans are 100% government protected against any possible loss.' },
     ],
     correctOptionId: 'a',
-    explanation: 'All investments carry risk. If a business struggles or closes, you could lose some or all of the money you lent them.',
+    explanation: 'All investments carry risk. If a borrower defaults or fails to repay, you could lose all of the money you invested.',
   },
   {
     id: 2,
@@ -54,14 +54,14 @@ export const QUESTION_BANK: AppropriatenessQuestion[] = [
   {
     id: 4,
     category: 'illiquidity',
-    question: 'If you invest £50 in an 18-month loan, when can you take your money back?',
+    question: 'Can you withdraw your money whenever you want once you invest?',
     options: [
-      { id: 'a', text: 'You can click a button and withdraw it instantly whenever you want.' },
-      { id: 'b', text: 'You must wait as the business repays over the agreed 18 months.' },
-      { id: 'c', text: 'Atlas will buy back your loan anytime if you ask nicely.' },
+      { id: 'a', text: 'Yes, you can click a button and withdraw instantly whenever you want.' },
+      { id: 'b', text: 'No, your capital is tied up for the full loan term and repaid according to schedule.' },
+      { id: 'c', text: 'Yes, Atlas will buy back your loan anytime on demand.' },
     ],
     correctOptionId: 'b',
-    explanation: 'Investing is not like a bank cash machine. Your money is locked into the loan and is paid back gradually over the loan term.',
+    explanation: 'Your money is tied up for the full loan term and you cannot withdraw it on demand.',
   },
   {
     id: 5,
@@ -88,18 +88,18 @@ export const QUESTION_BANK: AppropriatenessQuestion[] = [
     explanation: 'Illiquid simply means hard to turn into cash quickly. Your money is tied up until repayments arrive.',
   },
 
-  // Category 3: Diversification ("Don't put all your eggs in one basket")
+  // Category 3: Diversification (Spreading Risk)
   {
     id: 7,
     category: 'diversification',
-    question: 'Dani has £50 to invest. What is the smartest and safest way to do it?',
+    question: 'Dani has £50 to invest. What is a prudent way to allocate it across projects?',
     options: [
       { id: 'a', text: 'Put all £50 into one single business that has the highest target.' },
-      { id: 'b', text: 'Split the £50 into five £10 pieces across 5 different businesses.' },
+      { id: 'b', text: 'Spread the £50 in £10 amounts across 5 different businesses.' },
       { id: 'c', text: 'Wait until she has £5,000 before making any loans.' },
     ],
     correctOptionId: 'b',
-    explanation: 'Spreading money across multiple businesses is called diversification. If one business struggles, your other four can still repay.',
+    explanation: 'Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss.',
   },
   {
     id: 8,
@@ -111,19 +111,19 @@ export const QUESTION_BANK: AppropriatenessQuestion[] = [
       { id: 'c', text: 'It is not risky at all; one business is easier to remember.' },
     ],
     correctOptionId: 'a',
-    explanation: 'If all your eggs are in one basket and that basket drops, all your eggs break. Spreading your loans protects you from a single failure.',
+    explanation: 'Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss.',
   },
   {
     id: 9,
     category: 'diversification',
-    question: 'How does Atlas Auto-Invest help you diversify?',
+    question: 'How does Atlas Auto-Invest help you manage portfolio exposure?',
     options: [
       { id: 'a', text: 'It puts all your money into a single lucky draw ticket.' },
-      { id: 'b', text: 'It automatically splits your money into £10 slices across multiple vetted loans.' },
+      { id: 'b', text: 'It automatically spreads your money in £10 slices across multiple vetted loans.' },
       { id: 'c', text: 'It borrows money from other people in your name.' },
     ],
     correctOptionId: 'b',
-    explanation: 'Auto-Invest spreads your budget into £10 slices across open opportunities in your chosen risk tier so you never rely on just one.',
+    explanation: 'Auto-Invest spreads your budget across multiple open opportunities so you do not have excessive exposure to any single project.',
   },
 
   // Category 4: The Provision Fund

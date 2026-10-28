@@ -63,10 +63,10 @@ export default function RiskSummaryPage() {
             <div className="w-9 h-9 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-800">
               <Layers className="w-5 h-5" />
             </div>
-            <h2>3. Never put all your eggs in one basket</h2>
+            <h2>3. Spreading money reduces impact, but does not remove risk</h2>
           </div>
           <p className="text-sm text-slate-600 leading-relaxed">
-            Spreading your money is called <strong>diversification</strong>. Lending £50 to one business is very risky. But lending £10 to 5 different businesses means that even if one business has problems, your other loans can still keep working.
+            Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss. Putting all your money into a single business carries significant exposure. Spreading £10 slices across multiple vetted opportunities helps distribute risk, though all investments remain at risk.
           </p>
         </div>
 

@@ -2,6 +2,7 @@ import { query } from './db';
 import { hashPassword, UserRole, AccountState } from './auth';
 import { depositDemoMoney, getOrCreateUserWallet, getWalletBalancePence, getOrCreateOpportunityEscrow, getOrCreateSystemAccount } from './ledger';
 import { ClockService } from './clock';
+import { CANONICAL_PROJECTS, PROVISION_FUND_BALANCE_PENCE } from './constants/projects';
 
 export async function ensureDemoUsersSeeded(): Promise<void> {
   const defaultPassword = 'AtlasDemo!2026';
@@ -26,6 +27,13 @@ export async function ensureDemoUsersSeeded(): Promise<void> {
       fullName: 'Atlas Compliance Officer',
       role: 'compliance',
       accountState: 'verified',
+    },
+    {
+      email: 'demo@atlas.example',
+      fullName: 'Demo Investor',
+      role: 'investor',
+      accountState: 'verified',
+      initialBalancePence: 25000, // £250.00
     },
     {
       email: 'ready@atlas.demo',
@@ -76,8 +84,8 @@ export async function ensureDemoUsersSeeded(): Promise<void> {
       }
     }
 
-    // Auto-complete onboarding for ready@ and active@
-    if (user.email === 'ready@atlas.demo' || user.email === 'active@atlas.demo') {
+    // Auto-complete onboarding for ready@, active@, and demo@
+    if (user.email === 'ready@atlas.demo' || user.email === 'active@atlas.demo' || user.email === 'demo@atlas.example') {
       await query(
         `INSERT INTO investor_classifications (user_id, category, declaration_text, declared_at)
          VALUES ($1, 'restricted', 'Restricted investor declaration', $2)
@@ -269,14 +277,14 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       partnerName: 'Marcus Vance (Property Renovator)',
       title: 'Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)',
       summary: 'Refurbishing a Victorian property into 8 energy-efficient apartments for long-term rental income.',
-      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation for 8 units. 1,000 investors pool £1,000 each (or start from £10). Monthly rental yields from vetted tenants repay investors their capital plus interest.',
+      description: 'Marcus has completed 4 residential renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, insulation and interior fit-out for 8 residential apartments. Rental yields from vetted tenants repay investors their capital plus interest monthly.',
       risk_tier: 'low',
       sector: 'Property & Real Estate',
       target_pence: 100000000,
-      raised_pence: 67500000,
-      expected_return_min_bps: 350,
-      expected_return_max_bps: 500,
-      term_months: 12,
+      raised_pence: 68500000,
+      expected_return_min_bps: 550,
+      expected_return_max_bps: 650,
+      term_months: 18,
       status: 'open',
       key_risks: [
         'Property renovation work could uncover unforeseen plumbing or wiring repairs.',
@@ -462,22 +470,22 @@ export async function ensureOpportunitiesSeeded(): Promise<void> {
       ],
     },
     {
-      partnerName: 'Dr. Aris Vance (Bio-Energy Researcher)',
-      title: 'Next-Gen Micro-Algae Biofuel Experimental Production Facility',
-      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
-      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
-      risk_tier: 'uncharted',
-      sector: 'Frontier CleanTech',
-      target_pence: 35000000,
-      raised_pence: 16000000,
-      expected_return_min_bps: 0,
-      expected_return_max_bps: 2200,
+      partnerName: 'Liam Gallagher (Logistics Operator)',
+      title: 'EV Fast-Charger Installation – Retail Park, Bristol',
+      summary: 'Deploying 8 ultra-fast rapid EV charging bays across a busy Bristol commercial retail park.',
+      description: 'Liam operates clean fleet infrastructure. This syndicate funds the groundworks and hardware for 8 rapid 150kW commercial EV chargers. Repaid from driver charging revenue under a signed 10-year site agreement with the retail park operator.',
+      risk_tier: 'medium',
+      sector: 'Clean Infrastructure',
+      target_pence: 25000000,
+      raised_pence: 12000000,
+      expected_return_min_bps: 650,
+      expected_return_max_bps: 800,
       term_months: 24,
       status: 'open',
       key_risks: [
-        'Biological culture contamination can wipe out experimental batch cycles.',
-        'Aviation fuel certification timeline remains long and uncertain.',
-        'Treat as money you can afford to lose completely; no Provision Fund cover.',
+        'Local grid connection energisation delays by the regional distribution network operator.',
+        'Wholesale electricity tariff volatility affecting operating margins before adjustment.',
+        'Component warranty servicing call-outs for high-voltage DC power converter modules.',
       ],
     },
     {
@@ -712,16 +720,16 @@ async function updateLegacyToInvestmentOpportunities(): Promise<void> {
       ],
     },
     {
-      partnerName: 'Dr. Aris Vance (Bio-Energy Researcher)',
-      partnerDesc: 'Experimental tubular photo-bioreactor testing algae oil yield for sustainable aviation fuel.',
-      title: 'Next-Gen Micro-Algae Biofuel Experimental Rig',
-      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
-      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
-      sector: 'Frontier CleanTech',
+      partnerName: 'Marcus Bennett (Clean Energy Infrastructure)',
+      partnerDesc: 'Ultra-rapid EV charging station operator installing multi-vehicle DC hubs at high-footfall retail parks.',
+      title: 'EV Fast-Charger Installation – Retail Park, Bristol',
+      summary: 'Installation of six ultra-rapid DC chargers funded by projected charging fees under a 10-year retail site lease.',
+      description: 'High-power electric vehicle charging hub serving shoppers and fleet vehicles with steady daily turnover.',
+      sector: 'Clean Infrastructure',
       risks: [
-        'Biological culture contamination can wipe out experimental batch cycles.',
-        'Aviation fuel certification timeline remains long and uncertain.',
-        'Treat as money you can afford to lose completely; no Provision Fund cover.',
+        'Grid connection energisation delays with regional distribution network operator.',
+        'Electricity tariff volatility during peak charging periods.',
+        'Local competing charging hubs opening within the immediate retail catchment.',
       ],
     },
     {
@@ -763,53 +771,78 @@ async function updateLegacyToInvestmentOpportunities(): Promise<void> {
 }
 
 export async function ensureHighTicketSyndicates(): Promise<void> {
-  const check = await query<{ count: string }>(
-    'SELECT COUNT(*) FROM opportunities WHERE target_pence < 10000000'
-  );
-  if (Number(check.rows[0].count) === 0) {
-    return;
-  }
-
   const updates = [
     {
-      matchTitle: '%Victorian House%',
+      matchTitle: '%Victorian%Modernisation%',
       title: 'Manchester Canal-Side Victorian Residential Modernisation (8 Apartments)',
       summary: 'Refurbishing a Victorian property into 8 energy-efficient apartments for long-term rental income.',
-      description: 'Marcus has completed 4 house renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, and insulation for 8 units. 1,000 investors pool £1,000 each (or start from £10). Monthly rental yields from vetted tenants repay investors their capital plus interest.',
+      description: 'Marcus has completed 4 residential renovations in Greater Manchester. This loan funds modern heating, brand new kitchens, insulation and interior fit-out for 8 residential apartments. Rental yields from vetted tenants repay investors their capital plus interest monthly.',
       target_pence: 100000000, // £1,000,000
-      raised_pence: 67500000,  // £675,000 (67.5% funded)
+      raised_pence: 68500000,  // £685,000 (68.5% funded)
+      expected_return_min_bps: 550, // 5.5%
+      expected_return_max_bps: 650, // 6.5%
+      term_months: 18,
+      risk_tier: 'low',
     },
     {
       matchTitle: '%Logistics Park%',
       title: 'Somerset Logistics Park — Commercial Solar Array & Battery Farm',
       summary: 'Commercial solar panels and industrial lithium battery storage deployed on a major logistics hub.',
-      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay 1,000 co-investors their capital plus interest.',
+      description: 'Elena is an infrastructure engineer deploying rooftop clean energy. Fixed 15-year power purchase agreements with warehouse tenants repay 312 co-investors their capital plus interest monthly.',
       target_pence: 100000000, // £1,000,000
       raised_pence: 100000000, // £1,000,000 (100% funded)
+      expected_return_min_bps: 500, // 5.0%
+      expected_return_max_bps: 600, // 6.0%
+      term_months: 18,
+      risk_tier: 'low',
     },
     {
       matchTitle: '%Diagnostic Clinic%',
       title: 'Regional Diagnostic Clinic — Imaging Scanner Equipment Lease',
       summary: 'State-of-the-art ultrasound imaging equipment leased to an NHS partner diagnostic clinic.',
-      description: 'Established healthcare clinic co-funding medical diagnostic machinery. 500 co-investors pooled to fund £500,000. Full loan repayments completed on time and in full over 24 months.',
+      description: 'Established healthcare clinic co-funding medical diagnostic machinery. 185 co-investors pooled £500,000. Full loan repayments completed on time and in full over 24 months.',
       target_pence: 50000000, // £500,000
       raised_pence: 50000000, // £500,000 (100% completed)
+      expected_return_min_bps: 450, // 4.5%
+      expected_return_max_bps: 550, // 5.5%
+      term_months: 24,
+      risk_tier: 'low',
     },
     {
-      matchTitle: '%Delivery Van%',
-      title: 'National Commercial EV Fast-Charging Highway Hub Network (6 Sites)',
-      summary: 'Deploying 12 rapid commercial EV charging bays across 6 high-demand motorway freight corridors.',
-      description: 'Liam operates commercial transport hubs. 750 co-investors pooling to raise £750,000. Contracted fleet haulage charging fees repay investors every month.',
-      target_pence: 75000000, // £750,000
-      raised_pence: 49500000, // £495,000 (66% funded)
+      matchTitle: '%Biofuel%',
+      title: 'EV Fast-Charger Installation – Retail Park, Bristol',
+      summary: 'Deploying 8 ultra-fast rapid EV charging bays across a busy Bristol commercial retail park.',
+      description: 'Liam operates clean fleet infrastructure. This syndicate funds the groundworks and hardware for 8 rapid 150kW commercial EV chargers. Repaid from driver charging revenue under a signed 10-year site agreement with the retail park operator.',
+      target_pence: 25000000, // £250,000
+      raised_pence: 12000000, // £120,000 (48% funded)
+      expected_return_min_bps: 650, // 6.5%
+      expected_return_max_bps: 800, // 8.0%
+      term_months: 24,
+      risk_tier: 'medium',
+    },
+    {
+      matchTitle: '%Fast-Charger%Bristol%',
+      title: 'EV Fast-Charger Installation – Retail Park, Bristol',
+      summary: 'Deploying 8 ultra-fast rapid EV charging bays across a busy Bristol commercial retail park.',
+      description: 'Liam operates clean fleet infrastructure. This syndicate funds the groundworks and hardware for 8 rapid 150kW commercial EV chargers. Repaid from driver charging revenue under a signed 10-year site agreement with the retail park operator.',
+      target_pence: 25000000, // £250,000
+      raised_pence: 12000000, // £120,000 (48% funded)
+      expected_return_min_bps: 650, // 6.5%
+      expected_return_max_bps: 800, // 8.0%
+      term_months: 24,
+      risk_tier: 'medium',
     },
     {
       matchTitle: '%Hydroponic%',
       title: 'Vertical Hydroponic Supermarket Farm Automation',
       summary: 'Automated LED lighting and nutrient sensors for an indoor farm supplying supermarket herbs.',
-      description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket pre-orders fund the loan repayments over 24 months.',
+      description: 'Smart agriculture venture scaling fresh basil and mint output in Leeds. Supermarket purchase orders fund loan repayments over 24 months.',
       target_pence: 35000000, // £350,000
       raised_pence: 18000000, // £180,000 (51.4% funded)
+      expected_return_min_bps: 600, // 6.0%
+      expected_return_max_bps: 750, // 7.5%
+      term_months: 24,
+      risk_tier: 'medium',
     },
     {
       matchTitle: '%Eco-Apparel%',
@@ -818,63 +851,82 @@ export async function ensureHighTicketSyndicates(): Promise<void> {
       description: 'Established sustainable clothing brand with 12,000 customers. Loan is actively repaying month-by-month on schedule from seasonal retail sales.',
       target_pence: 25000000, // £250,000
       raised_pence: 25000000, // £250,000 (repaying)
+      expected_return_min_bps: 650, // 6.5%
+      expected_return_max_bps: 750, // 7.5%
+      term_months: 36,
+      risk_tier: 'medium',
     },
     {
       matchTitle: '%Indie Studio%',
       title: 'Indie Studio Game Console Port & Physical Editions',
       summary: 'Porting a viral PC indie game to Nintendo Switch and manufacturing physical collector cartridges.',
-      description: 'Award-winning game studio expanding to consoles. Pre-order game sales directly repay investors over 24 months.',
+      description: 'Award-winning Sheffield studio expanding to console markets. Pre-order game sales directly repay investors over 24 months.',
       target_pence: 50000000, // £500,000
       raised_pence: 32000000, // £320,000 (64% funded)
+      expected_return_min_bps: 850, // 8.5%
+      expected_return_max_bps: 1050, // 10.5%
+      term_months: 24,
+      risk_tier: 'high',
     },
     {
       matchTitle: '%Highland Wool%',
       title: 'Highland Clean Tech Dye Production Facility',
       summary: 'Stainless steel temperature-controlled dye vats to scale naturally dyed wool production.',
-      description: 'Artisan cooperative processing wool from local crofts. Seeking funds to fulfill wholesale orders from European knitwear designers.',
+      description: 'Artisan cooperative processing wool from local crofts. Seeking funding to fulfill wholesale orders from European knitwear designers.',
       target_pence: 30000000, // £300,000
-      raised_pence: 14000000, // £140,000
+      raised_pence: 14000000, // £140,000 (46.7% funded)
+      expected_return_min_bps: 800, // 8.0%
+      expected_return_max_bps: 1000, // 10.0%
+      term_months: 18,
+      risk_tier: 'high',
     },
     {
       matchTitle: '%Commercial Drone%',
       title: 'Commercial Drone Offshore Turbine Inspection Fleet',
       summary: 'Thermal-imaging inspection drones for industrial wind turbine and bridge surveys.',
-      description: 'Early stage drone inspection startup. Borrower faced offshore client contract cancellations and defaulted; currently in recovery.',
+      description: 'Specialist drone inspection team. Borrower faced offshore client contract cancellations and defaulted; currently in recovery with Provision Fund assistance.',
       target_pence: 40000000, // £400,000
       raised_pence: 40000000, // £400,000 (defaulted)
-    },
-    {
-      matchTitle: '%Satellite%',
-      title: 'Low-Orbit Satellite Earth Observation Receiving Station',
-      summary: 'Automated satellite tracking dish in Yorkshire receiving weather and Earth-observation data.',
-      description: 'Ground station capturing data sold to universities and climate researchers. Early stage with innovative data sales model. Strictly capped at £100 per investor.',
-      target_pence: 25000000, // £250,000
-      raised_pence: 11000000, // £110,000
-    },
-    {
-      matchTitle: '%Biofuel%',
-      title: 'Next-Gen Micro-Algae Biofuel Experimental Production Facility',
-      summary: 'Experimental tubular bioreactor extracting green lipids from micro-algae for aviation fuel.',
-      description: 'Breakthrough university spinout testing algae lipid yields. High risk scientific venture. Strictly capped at £100 per user.',
-      target_pence: 35000000, // £350,000
-      raised_pence: 16000000, // £160,000
-    },
-    {
-      matchTitle: '%Hydro Turbine%',
-      title: 'River Kinetic Micro-Hydro Turbine Generation Station',
-      summary: 'Submerged non-dam river turbine generating 24/7 continuous electrical power from river flow.',
-      description: 'Highland renewable power pilot rig. Fully funded by early community testers. Strictly capped at £100 per user.',
-      target_pence: 50000000, // £500,000
-      raised_pence: 50000000, // £500,000 (funded)
+      expected_return_min_bps: 950, // 9.5%
+      expected_return_max_bps: 1200, // 12.0%
+      term_months: 30,
+      risk_tier: 'high',
     },
   ];
 
   for (const u of updates) {
     await query(
       `UPDATE opportunities
-       SET title = $1, summary = $2, description = $3, target_pence = $4, raised_pence = $5
-       WHERE title ILIKE $6`,
-      [u.title, u.summary, u.description, u.target_pence, u.raised_pence, u.matchTitle]
+       SET title = $1, summary = $2, description = $3, target_pence = $4, raised_pence = $5,
+           expected_return_min_bps = $6, expected_return_max_bps = $7, term_months = $8, risk_tier = $9
+       WHERE title ILIKE $10`,
+      [
+        u.title,
+        u.summary,
+        u.description,
+        u.target_pence,
+        u.raised_pence,
+        u.expected_return_min_bps,
+        u.expected_return_max_bps,
+        u.term_months,
+        u.risk_tier,
+        u.matchTitle,
+      ]
     );
+  }
+
+  // Ensure Provision Fund ledger account balance is set to exactly 1% of total raised (£35,950 = 3595000 pence)
+  try {
+    const pfAccount = await getOrCreateSystemAccount('provision_fund');
+    const now = await ClockService.now();
+    await query(
+      `INSERT INTO account_balances (account_id, balance_pence, updated_at)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (account_id) DO UPDATE
+       SET balance_pence = EXCLUDED.balance_pence, updated_at = EXCLUDED.updated_at`,
+      [pfAccount.id, PROVISION_FUND_BALANCE_PENCE, now.toISOString()]
+    );
+  } catch {
+    // ignore if account balance schema differs
   }
 }

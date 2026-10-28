@@ -38,7 +38,7 @@ export default async function OpportunityDetailPage({
   const maxReturn = (opportunity.expected_return_max_bps / 100).toFixed(1);
   const percentRaised = Math.min(100, Math.round((opportunity.raised_pence / opportunity.target_pence) * 100));
   const targetPounds = Math.round(opportunity.target_pence / 100);
-  const coInvestorsCount = Math.max(18, Math.round((opportunity.raised_pence / (opportunity.target_pence || 1)) * 1000));
+  const coInvestorsCount = opportunity.co_investors_count || Math.max(1, Math.round((opportunity.raised_pence / (opportunity.target_pence || 1)) * 500));
 
   // "Example: if you invest £100" calculations (Section 5.7)
   const expectedReturnPounds = (100 * (opportunity.expected_return_min_bps / 10000) * (opportunity.term_months / 12)).toFixed(2);
@@ -57,7 +57,7 @@ export default async function OpportunityDetailPage({
         </Link>
       </div>
 
-      {/* Prominent Statutory Section 3.1 Risk Warning */}
+      {/* Statutory Risk Warning */}
       <RiskWarningBanner />
 
       {/* Hero Header */}
@@ -105,7 +105,10 @@ export default async function OpportunityDetailPage({
           <div>
             <div className="text-xs text-slate-500">Expected return</div>
             <div className="text-base md:text-lg font-bold text-slate-900">
-              {minReturn}%–{maxReturn}% <span className="text-xs font-normal text-slate-500">/ yr, not guaranteed</span>
+              {minReturn}%–{maxReturn}% <span className="text-xs font-normal text-slate-500">/ yr</span>
+            </div>
+            <div className="text-[10px] text-slate-500 italic mt-0.5">
+              Target return, not guaranteed. Your capital is at risk.
             </div>
           </div>
           <div>
@@ -218,7 +221,7 @@ export default async function OpportunityDetailPage({
         </div>
 
         <p className="text-xs md:text-sm text-emerald-100/90 leading-relaxed">
-          A £{targetPounds.toLocaleString('en-GB')} investment project would normally require an institutional venture fund or millionaire. On Atlas, the goal is fractionalised into accessible portions so 1,000 everyday people can pool £1,000 each (or start with just £10) to make it happen together.
+          A £{targetPounds.toLocaleString('en-GB')} investment project usually requires large institutional capital. On Atlas, the goal is syndicated into accessible portions so everyday investors can pool together from £10 up to the £1,000 platform limit per project.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
@@ -408,7 +411,7 @@ export default async function OpportunityDetailPage({
           </h2>
           <p className="text-xs md:text-sm text-emerald-100/80 leading-relaxed">
             If commercial banks are too slow or have rejected your application, pitch directly to
-            Atlas&apos;s community of everyday investors. Raise up to £1,000,000 with flexible terms
+            Atlas&apos;s community of everyday investors. Raise funding once your project passes our review, with flexible terms
             and community backing.
           </p>
         </div>

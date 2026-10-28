@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { RiskTierBadge } from '@/components/RiskTierBadge';
 import { PortfolioSummary } from '@/lib/portfolio';
+import { OnboardingProgressCard, OnboardingStatusProps } from '@/components/OnboardingProgressCard';
 import {
   Download,
   Building2,
@@ -15,7 +16,13 @@ import {
   HelpCircle,
 } from 'lucide-react';
 
-export function PortfolioClient({ portfolio }: { portfolio: PortfolioSummary }) {
+export function PortfolioClient({
+  portfolio,
+  onboardingStatus,
+}: {
+  portfolio: PortfolioSummary;
+  onboardingStatus?: OnboardingStatusProps;
+}) {
   const totalOutstandingPounds = (portfolio.currentlyOutstandingPence / 100).toFixed(2);
   const totalInvestedPounds = (portfolio.totalInvestedPence / 100).toFixed(2);
   const totalReceivedPounds = (portfolio.totalReceivedBackPence / 100).toFixed(2);
@@ -52,6 +59,8 @@ export function PortfolioClient({ portfolio }: { portfolio: PortfolioSummary }) 
           Download Statement (CSV)
         </a>
       </div>
+
+      {onboardingStatus && <OnboardingProgressCard status={onboardingStatus} />}
 
       {/* Summary Metrics Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

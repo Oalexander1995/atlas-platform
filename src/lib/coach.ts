@@ -192,11 +192,11 @@ export function getScriptedResponse(
     };
   }
 
-  // 5. What's diversification? (Section 10.6 Test 4)
+  // 5. What's diversification?
   if (/what'?s diversification|what is diversification|why diversify/i.test(q)) {
     return {
       response:
-        "Diversification means spreading your money across many different businesses rather than putting all your eggs in one basket. For example, if you have £50 to invest, you could put £10 into 5 different projects — like a town bakery, a clean solar roof, a bicycle repair shop, an organic farm, and a healthcare clinic. If one business faces tough times and can't pay, the other four are still repaying, so your overall savings are much better protected.",
+        "Diversification means spreading your money across many different businesses rather than putting all your money into a single project. Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss. For example, allocating £10 across 5 different projects means you are not reliant on a single borrower, though all loan investments remain at risk.",
       flagged: false,
       flagReason: null,
     };

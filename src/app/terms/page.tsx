@@ -25,11 +25,11 @@ export default function TermsPage() {
           rules protect you and how our platform operates.
         </p>
 
-        {/* Section 0 Important Notice */}
+        {/* Important Notice */}
         <div className="mt-5 p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-700 flex-shrink-0 mt-0.5" />
           <div className="text-xs text-amber-900 leading-relaxed">
-            <p className="font-bold">Simulated Money Notice (Section 0 Non-Negotiable)</p>
+            <p className="font-bold">Important Notice: Simulated Money Prototype</p>
             <p className="mt-0.5">
               Atlas is currently operating as an interactive prototype with simulated money. No
               real bank transfers, card debits, or actual investments take place. These terms

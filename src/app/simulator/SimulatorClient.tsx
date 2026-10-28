@@ -186,10 +186,10 @@ export function SimulatorClient() {
                 </span>
               </div>
 
-              {/* Low */}
+              {/* Lower */}
               <div className="space-y-1">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-teal-800 font-medium">Low Risk (3–5% return, 1% default rate)</span>
+                  <span className="text-teal-800 font-medium">Lower Risk (3–5% target return, 1% default rate)</span>
                   <span>{lowPct}%</span>
                 </div>
                 <input
@@ -206,7 +206,7 @@ export function SimulatorClient() {
               {/* Medium */}
               <div className="space-y-1">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-amber-800 font-medium">Medium Risk (5–8% return, 4% default rate)</span>
+                  <span className="text-amber-800 font-medium">Medium Risk (5–8% target return, 4% default rate)</span>
                   <span>{medPct}%</span>
                 </div>
                 <input
@@ -220,10 +220,10 @@ export function SimulatorClient() {
                 />
               </div>
 
-              {/* High */}
+              {/* Higher */}
               <div className="space-y-1">
                 <div className="flex justify-between text-[11px]">
-                  <span className="text-orange-800 font-medium">High Risk (8–14% return, 10% default rate)</span>
+                  <span className="text-orange-800 font-medium">Higher Risk (8–14% target return, 10% default rate)</span>
                   <span>{highPct}%</span>
                 </div>
                 <input

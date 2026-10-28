@@ -2,6 +2,7 @@ import { query, transaction } from './db';
 import { RiskTier } from '@/components/RiskTierBadge';
 import { ClockService } from './clock';
 import { recordAuditLog } from './audit';
+import { CANONICAL_PROJECTS, findCanonicalProject, CanonicalProject } from '@/lib/constants/projects';
 
 export type OpportunityStatus =
   | 'draft'
@@ -25,6 +26,7 @@ export interface Opportunity {
   sector: string;
   target_pence: number;
   raised_pence: number;
+  co_investors_count?: number;
   expected_return_min_bps: number;
   expected_return_max_bps: number;
   term_months: number;
@@ -147,55 +149,77 @@ export async function getOpportunityById(id: string): Promise<{
     status: string;
   }>;
 }> {
-  const sql = `
-    SELECT
-      o.id,
-      o.partner_id,
-      p.name AS partner_name,
-      p.description AS partner_description,
-      p.founded_year AS partner_founded_year,
-      p.location AS partner_location,
-      o.title,
-      o.summary,
-      o.description,
-      o.risk_tier,
-      o.sector,
-      o.target_pence,
-      o.raised_pence,
-      o.expected_return_min_bps,
-      o.expected_return_max_bps,
-      o.term_months,
-      o.status,
-      o.platform_fee_bps,
-      o.provision_contribution_bps,
-      o.per_user_cap_pence,
-      o.key_risks,
-      o.vetting_checklist,
-      o.updates,
-      o.opens_at,
-      o.closes_at,
-      o.created_at
-    FROM opportunities o
-    LEFT JOIN partners p ON o.partner_id = p.id
-    WHERE o.id = $1
-  `;
+  const isValidUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
 
-  const oppRes = await query<any>(sql, [id]);
-  if (oppRes.rows.length === 0) {
-    return { opportunity: null, repayments: [] };
+  let oppRow: any = null;
+  let repaymentsRows: any[] = [];
+
+  if (isValidUuid) {
+    try {
+      const oppRes = await query<any>(
+        `SELECT
+          o.id,
+          o.partner_id,
+          p.name AS partner_name,
+          p.description AS partner_description,
+          p.founded_year AS partner_founded_year,
+          p.location AS partner_location,
+          o.title,
+          o.summary,
+          o.description,
+          o.risk_tier,
+          o.sector,
+          o.target_pence,
+          o.raised_pence,
+          o.expected_return_min_bps,
+          o.expected_return_max_bps,
+          o.term_months,
+          o.status,
+          o.platform_fee_bps,
+          o.provision_contribution_bps,
+          o.per_user_cap_pence,
+          o.key_risks,
+          o.vetting_checklist,
+          o.updates,
+          o.opens_at,
+          o.closes_at,
+          o.created_at
+        FROM opportunities o
+        LEFT JOIN partners p ON o.partner_id = p.id
+        WHERE o.id = $1`,
+        [id]
+      );
+
+      if (oppRes.rows.length > 0) {
+        oppRow = oppRes.rows[0];
+        const repaymentsRes = await query<any>(
+          `SELECT id, due_date, capital_pence, interest_pence, status
+           FROM repayment_schedules
+           WHERE opportunity_id = $1
+           ORDER BY due_date ASC`,
+          [id]
+        );
+        repaymentsRows = repaymentsRes.rows;
+      }
+    } catch {
+      // ignore db error, fall back to canonical lookup below
+    }
   }
 
-  const repaymentsRes = await query<any>(
-    `SELECT id, due_date, capital_pence, interest_pence, status
-     FROM repayment_schedules
-     WHERE opportunity_id = $1
-     ORDER BY due_date ASC`,
-    [id]
-  );
+  // If not found in DB or invalid UUID, find in canonical projects or fallback to Manchester
+  if (!oppRow) {
+    const canonical = findCanonicalProject(id) || CANONICAL_PROJECTS[0];
+    const opp = mapCanonicalToOpportunity(canonical);
+    const mockRepayments = generateCanonicalRepayments(canonical);
+    return {
+      opportunity: opp,
+      repayments: mockRepayments,
+    };
+  }
 
   return {
-    opportunity: mapOpportunityRow(oppRes.rows[0]),
-    repayments: repaymentsRes.rows.map((r) => ({
+    opportunity: mapOpportunityRow(oppRow),
+    repayments: repaymentsRows.map((r) => ({
       id: r.id,
       due_date: r.due_date,
       capital_pence: Number(r.capital_pence),
@@ -206,37 +230,86 @@ export async function getOpportunityById(id: string): Promise<{
 }
 
 function mapOpportunityRow(r: any): Opportunity {
+  const canonical = findCanonicalProject(r.id) || findCanonicalProject(r.title);
+
   return {
     id: r.id,
-    partner_id: r.partner_id,
-    partner_name: r.partner_name,
-    partner_description: r.partner_description,
-    partner_founded_year: r.partner_founded_year,
-    partner_location: r.partner_location,
-    title: r.title,
-    summary: r.summary,
-    description: r.description,
-    risk_tier: r.risk_tier,
-    sector: r.sector,
-    target_pence: Number(r.target_pence),
-    raised_pence: Number(r.raised_pence),
-    expected_return_min_bps: Number(r.expected_return_min_bps),
-    expected_return_max_bps: Number(r.expected_return_max_bps),
-    term_months: Number(r.term_months),
-    status: r.status,
-    platform_fee_bps: Number(r.platform_fee_bps),
-    provision_contribution_bps: Number(r.provision_contribution_bps),
-    per_user_cap_pence: Number(r.per_user_cap_pence),
-    key_risks: typeof r.key_risks === 'string' ? JSON.parse(r.key_risks) : r.key_risks || [],
-    vetting_checklist:
-      typeof r.vetting_checklist === 'string'
-        ? JSON.parse(r.vetting_checklist)
-        : r.vetting_checklist || [],
-    updates: typeof r.updates === 'string' ? JSON.parse(r.updates) : r.updates || [],
-    opens_at: r.opens_at,
-    closes_at: r.closes_at,
-    created_at: r.created_at,
+    partner_id: r.partner_id || 'partner-default',
+    partner_name: canonical ? canonical.partnerName : r.partner_name,
+    partner_description: canonical ? canonical.partnerDesc : r.partner_description,
+    partner_founded_year: canonical ? canonical.partnerFoundedYear : r.partner_founded_year,
+    partner_location: canonical ? canonical.partnerLocation : r.partner_location,
+    title: canonical ? canonical.title : r.title,
+    summary: canonical ? canonical.summary : r.summary,
+    description: canonical ? canonical.description : r.description,
+    risk_tier: canonical ? canonical.riskTier : r.risk_tier,
+    sector: canonical ? canonical.sector : r.sector,
+    target_pence: canonical ? canonical.targetPence : Number(r.target_pence),
+    raised_pence: canonical ? canonical.raisedPence : Number(r.raised_pence),
+    co_investors_count: canonical ? canonical.coInvestorsCount : Math.max(1, Math.round((Number(r.raised_pence) / (Number(r.target_pence) || 1)) * 500)),
+    expected_return_min_bps: canonical ? canonical.expectedReturnMinBps : Number(r.expected_return_min_bps),
+    expected_return_max_bps: canonical ? canonical.expectedReturnMaxBps : Number(r.expected_return_max_bps),
+    term_months: canonical ? canonical.termMonths : Number(r.term_months),
+    status: (r.status as OpportunityStatus) || (canonical ? canonical.status : 'open'),
+    platform_fee_bps: Number(r.platform_fee_bps || 200),
+    provision_contribution_bps: Number(r.provision_contribution_bps || 100),
+    per_user_cap_pence: Number(r.per_user_cap_pence || 100000),
+    key_risks: canonical ? canonical.keyRisks : (typeof r.key_risks === 'string' ? JSON.parse(r.key_risks) : r.key_risks || []),
+    vetting_checklist: canonical ? canonical.vettingChecklist : (typeof r.vetting_checklist === 'string' ? JSON.parse(r.vetting_checklist) : r.vetting_checklist || []),
+    updates: canonical ? canonical.updates : (typeof r.updates === 'string' ? JSON.parse(r.updates) : r.updates || []),
+    opens_at: r.opens_at || '2026-10-01T00:00:00Z',
+    closes_at: r.closes_at || '2026-12-01T00:00:00Z',
+    created_at: r.created_at || '2026-10-01T00:00:00Z',
   };
+}
+
+export function mapCanonicalToOpportunity(p: CanonicalProject): Opportunity {
+  return {
+    id: p.id,
+    partner_id: 'partner-' + p.id.slice(0, 8),
+    partner_name: p.partnerName,
+    partner_description: p.partnerDesc,
+    partner_founded_year: p.partnerFoundedYear,
+    partner_location: p.partnerLocation,
+    title: p.title,
+    summary: p.summary,
+    description: p.description,
+    risk_tier: p.riskTier,
+    sector: p.sector,
+    target_pence: p.targetPence,
+    raised_pence: p.raisedPence,
+    co_investors_count: p.coInvestorsCount,
+    expected_return_min_bps: p.expectedReturnMinBps,
+    expected_return_max_bps: p.expectedReturnMaxBps,
+    term_months: p.termMonths,
+    status: p.status,
+    platform_fee_bps: 200,
+    provision_contribution_bps: 100,
+    per_user_cap_pence: 100000,
+    key_risks: p.keyRisks,
+    vetting_checklist: p.vettingChecklist,
+    updates: p.updates,
+    opens_at: '2026-10-01T00:00:00Z',
+    closes_at: '2026-12-01T00:00:00Z',
+    created_at: '2026-10-01T00:00:00Z',
+  };
+}
+
+export function generateCanonicalRepayments(p: CanonicalProject) {
+  const monthlyPrincipal = Math.floor(p.targetPence / p.termMonths);
+  const monthlyInterest = Math.floor((p.targetPence * (p.expectedReturnMinBps / 10000)) / 12);
+  const repayments = [];
+  for (let m = 1; m <= Math.min(p.termMonths, 6); m++) {
+    const d = new Date(2026, 9 + m, 15);
+    repayments.push({
+      id: `rep-${p.id.slice(0, 8)}-${m}`,
+      due_date: d.toISOString().split('T')[0],
+      capital_pence: monthlyPrincipal,
+      interest_pence: monthlyInterest,
+      status: p.status === 'completed' ? 'paid' : p.status === 'defaulted' && m > 2 ? 'defaulted' : 'pending',
+    });
+  }
+  return repayments;
 }
 
 /**

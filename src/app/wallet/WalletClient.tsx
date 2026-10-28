@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ArrowDownLeft, ArrowUpRight, Wallet, History, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { OnboardingProgressCard, OnboardingStatusProps } from '@/components/OnboardingProgressCard';
 
 interface WalletClientProps {
   initialBalancePence: number;
@@ -15,12 +16,14 @@ interface WalletClientProps {
     createdAt: string;
   }>;
   userEmail: string;
+  onboardingStatus?: OnboardingStatusProps;
 }
 
 export function WalletClient({
   initialBalancePence,
   initialTransactions,
   userEmail,
+  onboardingStatus,
 }: WalletClientProps) {
   const [balancePence, setBalancePence] = useState(initialBalancePence);
   const [transactions, setTransactions] = useState(initialTransactions);
@@ -114,6 +117,8 @@ export function WalletClient({
           Simulated — no real bank connection. Balances are derived directly from the double-entry ledger.
         </p>
       </div>
+
+      {onboardingStatus && <OnboardingProgressCard status={onboardingStatus} />}
 
       {message && (
         <div

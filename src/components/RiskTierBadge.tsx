@@ -15,7 +15,7 @@ export function RiskTierBadge({ tier, size = 'md', className = '' }: RiskTierBad
     { label: string; icon: React.ComponentType<{ className?: string }>; style: string }
   > = {
     low: {
-      label: 'Low Risk',
+      label: 'Lower Risk',
       icon: ShieldCheck,
       style: 'bg-teal-50 text-teal-800 border-teal-300 ring-teal-200',
     },
@@ -25,13 +25,13 @@ export function RiskTierBadge({ tier, size = 'md', className = '' }: RiskTierBad
       style: 'bg-amber-50 text-amber-800 border-amber-300 ring-amber-200',
     },
     high: {
-      label: 'High Risk',
+      label: 'Higher Risk',
       icon: AlertOctagon,
       style: 'bg-orange-50 text-orange-900 border-orange-300 ring-orange-200',
     },
     uncharted: {
-      label: 'Uncharted',
-      icon: Compass,
+      label: 'Higher Risk',
+      icon: AlertOctagon,
       style: 'bg-purple-50 text-purple-900 border-purple-300 ring-purple-200',
     },
   };
@@ -53,6 +53,7 @@ export function RiskTierBadge({ tier, size = 'md', className = '' }: RiskTierBad
 
   return (
     <span
+      title="All projects carry a risk of losing your money"
       className={`inline-flex items-center rounded-full border font-medium ${config.style} ${sizeClasses[size]} ${className}`}
     >
       <Icon className={iconSizes[size]} aria-hidden="true" />

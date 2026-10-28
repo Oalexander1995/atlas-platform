@@ -11,9 +11,9 @@ export async function GET(req: NextRequest) {
     let userId = session?.userId;
 
     if (!userId) {
-      const demoRes = await query<{ id: string }>('SELECT id FROM users WHERE email = $1', [
-        'ready@atlas.demo',
-      ]);
+      const demoRes = await query<{ id: string }>(
+        `SELECT id FROM users WHERE email IN ('demo@atlas.example', 'ready@atlas.demo') ORDER BY (email = 'demo@atlas.example') DESC LIMIT 1`
+      );
       userId = demoRes.rows[0]?.id;
     }
 

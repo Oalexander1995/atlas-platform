@@ -3,6 +3,7 @@ import { getCurrentUser } from '@/lib/auth';
 import { ensureDemoUsersSeeded } from '@/lib/seed';
 import { query } from '@/lib/db';
 import { getWalletBalancePence, getWalletTransactions } from '@/lib/ledger';
+import { getOnboardingStatus } from '@/lib/onboarding';
 import { WalletClient } from './WalletClient';
 
 export const dynamic = 'force-dynamic';
@@ -12,13 +13,12 @@ export default async function WalletPage() {
 
   let session = await getCurrentUser();
   let userId = session?.userId;
-  let userEmail = session?.email || 'ready@atlas.demo';
+  let userEmail = session?.email || 'demo@atlas.example';
 
-  // In demo mode, if not explicitly logged in, default to ready@atlas.demo
+  // In demo mode, if not explicitly logged in, default to demo@atlas.example (or ready@atlas.demo)
   if (!userId) {
     const demoUserRes = await query<{ id: string; email: string }>(
-      'SELECT id, email FROM users WHERE email = $1',
-      ['ready@atlas.demo']
+      `SELECT id, email FROM users WHERE email IN ('demo@atlas.example', 'ready@atlas.demo') ORDER BY (email = 'demo@atlas.example') DESC LIMIT 1`
     );
     if (demoUserRes.rows.length > 0) {
       userId = demoUserRes.rows[0].id;
@@ -32,6 +32,7 @@ export default async function WalletPage() {
 
   const balancePence = await getWalletBalancePence(userId);
   const transactions = await getWalletTransactions(userId);
+  const onboardingStatus = await getOnboardingStatus(userId);
 
   return (
     <div className="py-4">
@@ -39,12 +40,13 @@ export default async function WalletPage() {
         <span>
           Viewing demo wallet for: <strong>{userEmail}</strong>
         </span>
-        <span className="text-emerald-700">Demo Active</span>
+        <span className="text-emerald-700 font-semibold">Simulated Demo Account</span>
       </div>
       <WalletClient
         initialBalancePence={balancePence}
         initialTransactions={transactions}
         userEmail={userEmail}
+        onboardingStatus={onboardingStatus}
       />
     </div>
   );

@@ -2,11 +2,11 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Users, Coins, Sparkles, Building2, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Users, Coins, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export function CrowdPowerCalculator() {
-  const [investorCount, setInvestorCount] = useState<number>(1000);
-  const [amountPerPerson, setAmountPerPerson] = useState<number>(1000);
+  const [investorCount, setInvestorCount] = useState<number>(2500);
+  const [amountPerPerson, setAmountPerPerson] = useState<number>(400);
 
   const totalRaised = investorCount * amountPerPerson;
 
@@ -14,7 +14,7 @@ export function CrowdPowerCalculator() {
     {
       threshold: 1000000,
       title: 'Commercial Solar & Battery Farm',
-      desc: 'A £1,000,000 green energy farm powering 2,000 homes. Normally only accessible to giant banks!',
+      desc: 'A £1,000,000 green energy farm powering 2,000 homes, backed by predictable 15-year commercial power contracts.',
       icon: '☀️',
     },
     {
@@ -32,7 +32,7 @@ export function CrowdPowerCalculator() {
     {
       threshold: 100000,
       title: 'Specialist Medical Diagnostic Scanner',
-      desc: 'High-tech imaging suite co-funding medical diagnostic capacity for local clinics.',
+      desc: 'High-tech imaging suite co-funding medical diagnostic capacity for regional clinics.',
       icon: '🏥',
     },
     {
@@ -59,11 +59,11 @@ export function CrowdPowerCalculator() {
             <span>The Crowd Power Multiplier</span>
           </div>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-            How 1,000 People Raise £1,000,000
+            How 2,500 People Raise £1,000,000
           </h2>
           <p className="text-xs sm:text-sm md:text-base text-emerald-100/90 max-w-2xl leading-relaxed">
-            Major investments with big returns usually require £1 Million upfront—meaning everyday
-            people are locked out. On Atlas, we pool together so anyone can join with £10 to £1,000.
+            Major investments with predictable returns usually require £1 Million upfront. On Atlas,
+            everyday investors pool together so anyone can join with £10 to the £1,000 platform limit.
           </p>
         </div>
 
@@ -115,17 +115,17 @@ export function CrowdPowerCalculator() {
               <div className="relative text-[10px] text-emerald-300/70 h-5 mt-1 font-mono">
                 <span className="absolute left-0">50</span>
                 <span
-                  className="absolute -translate-x-1/2 font-bold text-emerald-300 flex flex-col items-center"
+                  className="absolute -translate-x-1/2"
                   style={{ left: `${((1000 - 50) / (5000 - 50)) * 100}%` }}
                 >
-                  <span className="text-[9px] leading-none mb-0.5">▲</span>
-                  <span>1,000</span>
+                  1,000
                 </span>
                 <span
-                  className="absolute -translate-x-1/2"
+                  className="absolute -translate-x-1/2 font-bold text-emerald-300 flex flex-col items-center"
                   style={{ left: `${((2500 - 50) / (5000 - 50)) * 100}%` }}
                 >
-                  2,500
+                  <span className="text-[9px] leading-none mb-0.5">▲</span>
+                  <span>2,500</span>
                 </span>
                 <span className="absolute right-0">5,000</span>
               </div>
@@ -145,7 +145,7 @@ export function CrowdPowerCalculator() {
 
               {/* Quick Preset Buttons */}
               <div className="grid grid-cols-4 gap-2">
-                {[10, 100, 500, 1000].map((amt) => (
+                {[10, 100, 400, 1000].map((amt) => (
                   <button
                     key={amt}
                     type="button"
@@ -160,6 +160,20 @@ export function CrowdPowerCalculator() {
                   </button>
                 ))}
               </div>
+
+              <input
+                type="range"
+                min="10"
+                max="1000"
+                step="10"
+                value={amountPerPerson}
+                onChange={(e) => setAmountPerPerson(Number(e.target.value))}
+                className="w-full accent-emerald-400 cursor-pointer h-2 bg-white/20 rounded-lg mt-2"
+              />
+
+              <p className="text-[11px] text-emerald-300/80 italic mt-1">
+                Most investors put in less than the £1,000 platform limit.
+              </p>
             </div>
           </div>
 
@@ -173,7 +187,7 @@ export function CrowdPowerCalculator() {
                 £{totalRaised.toLocaleString('en-GB')}
               </div>
               <p className="text-xs text-slate-500 mt-0.5">
-                {investorCount.toLocaleString('en-GB')} people × £{amountPerPerson.toLocaleString('en-GB')} each
+                {investorCount.toLocaleString('en-GB')} people × £{amountPerPerson.toLocaleString('en-GB')} average contribution
               </p>
             </div>
 
@@ -183,7 +197,7 @@ export function CrowdPowerCalculator() {
                 <span className="text-2xl">{currentProject.icon}</span>
                 <div>
                   <span className="text-[10px] font-bold uppercase text-emerald-800 tracking-wider">
-                    Unlocks Big-Ticket Opportunity:
+                    Unlocks Productive Project:
                   </span>
                   <h4 className="font-bold text-slate-900 text-xs sm:text-sm">
                     {currentProject.title}
@@ -211,14 +225,14 @@ export function CrowdPowerCalculator() {
           <div className="flex items-center gap-2 text-center sm:text-left">
             <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <span>
-              All investments are spread in safe slices (£10 minimum up to £1,000 cap per project) so you never put all your eggs in one basket.
+              Spreading money across several projects can reduce the impact if one fails, but does not remove the risk of loss. Most investors put in less than the £1,000 platform limit.
             </span>
           </div>
           <Link
             href="/explore"
             className="whitespace-nowrap px-4 py-2 bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-bold rounded-xl transition shadow-xs flex items-center gap-1.5"
           >
-            <span>Browse £1M Projects</span>
+            <span>Browse Projects</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

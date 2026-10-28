@@ -94,10 +94,9 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
               className="w-full text-sm bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-slate-800 focus:outline-none"
             >
               <option value="all">All Risk Levels</option>
-              <option value="low">Low Risk</option>
+              <option value="low">Lower Risk</option>
               <option value="medium">Medium Risk</option>
-              <option value="high">High Risk</option>
-              <option value="uncharted">Uncharted (Highest Risk)</option>
+              <option value="high">Higher Risk</option>
             </select>
           </div>
 
@@ -146,7 +145,7 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
           const maxReturn = (opp.expected_return_max_bps / 100).toFixed(1);
           const percentRaised = Math.min(100, Math.round((opp.raised_pence / opp.target_pence) * 100));
           const targetPounds = Math.round(opp.target_pence / 100);
-          const coInvestors = Math.max(18, Math.round((opp.raised_pence / (opp.target_pence || 1)) * 1000));
+          const coInvestors = (opp as any).co_investors_count || Math.max(1, Math.round((opp.raised_pence / (opp.target_pence || 1)) * 500));
 
           const statusStyles: Record<string, string> = {
             open: 'bg-emerald-50 text-emerald-800 border-emerald-200',
@@ -212,11 +211,16 @@ export function ExploreClient({ initialOpportunities }: { initialOpportunities: 
 
               <div className="pt-4 border-t border-stone-100 mt-4 space-y-3">
                 {/* Expected Return Range */}
-                <div className="flex items-baseline justify-between">
-                  <span className="text-xs text-slate-500">Expected return:</span>
-                  <span className="text-xs font-semibold text-slate-800">
-                    {minReturn}%–{maxReturn}% a year, <span className="font-normal text-slate-500">not guaranteed</span>
-                  </span>
+                <div className="space-y-0.5">
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xs text-slate-500">Expected return:</span>
+                    <span className="text-xs font-semibold text-slate-800">
+                      {minReturn}%–{maxReturn}% / yr
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-slate-500 italic text-right">
+                    Target return, not guaranteed. Your capital is at risk.
+                  </div>
                 </div>
 
                 {/* Term and Min */}

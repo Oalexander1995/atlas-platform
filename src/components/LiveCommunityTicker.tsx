@@ -2,7 +2,12 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Users, TrendingUp, ShieldCheck, Sparkles, MapPin, Clock } from 'lucide-react';
+import { Users, TrendingUp, ShieldCheck, Clock } from 'lucide-react';
+import {
+  TOTAL_CO_INVESTORS_COUNT,
+  TOTAL_SYNDICATED_PENCE,
+  PROVISION_FUND_BALANCE_PENCE,
+} from '@/lib/constants/projects';
 
 interface ActivityItem {
   id: string;
@@ -17,51 +22,51 @@ export function LiveCommunityTicker() {
   const [activities] = useState<ActivityItem[]>([
     {
       id: '1',
-      name: 'Liam M.',
-      location: 'Leeds',
-      amountPounds: 50,
-      project: 'Somerset 12MW Solar & Battery Storage Farm',
-      timeAgo: '2m ago',
-    },
-    {
-      id: '2',
       name: 'Sarah P.',
       location: 'Bristol',
       amountPounds: 250,
       project: 'Manchester Canal-Side Victorian Modernisation (8 Apartments)',
-      timeAgo: '6m ago',
+      timeAgo: '4m ago',
+    },
+    {
+      id: '2',
+      name: 'Liam M.',
+      location: 'Leeds',
+      amountPounds: 50,
+      project: 'Somerset Logistics Park Commercial Solar Array & Battery Farm',
+      timeAgo: '9m ago',
     },
     {
       id: '3',
-      name: 'Marcus B.',
-      location: 'Glasgow',
+      name: 'Elena K.',
+      location: 'London',
       amountPounds: 100,
-      project: 'High-Throughput Diagnostic MRI Scanner Lease',
-      timeAgo: '11m ago',
+      project: 'EV Fast-Charger Installation – Retail Park, Bristol',
+      timeAgo: '16m ago',
     },
     {
       id: '4',
-      name: 'Elena K.',
-      location: 'London',
-      amountPounds: 20,
-      project: 'National Highway Ultra-Fast EV Hub Network (6 Sites)',
-      timeAgo: '17m ago',
-    },
-    {
-      id: '5',
       name: 'David H.',
       location: 'Sheffield',
       amountPounds: 500,
-      project: 'Hydroponic High-Yield Indoor Urban Farm',
+      project: 'Vertical Hydroponic Supermarket Farm Automation',
       timeAgo: '24m ago',
+    },
+    {
+      id: '5',
+      name: 'Marcus B.',
+      location: 'Glasgow',
+      amountPounds: 75,
+      project: 'Regional Diagnostic Clinic Imaging Scanner Lease',
+      timeAgo: '32m ago',
     },
     {
       id: '6',
       name: 'Chloe T.',
       location: 'Birmingham',
-      amountPounds: 1000,
+      amountPounds: 400,
       project: 'Manchester Canal-Side Victorian Modernisation (8 Apartments)',
-      timeAgo: '31m ago',
+      timeAgo: '41m ago',
     },
   ]);
 
@@ -76,6 +81,9 @@ export function LiveCommunityTicker() {
 
   const current = activities[currentIndex];
 
+  const totalSyndicatedPounds = (TOTAL_SYNDICATED_PENCE / 100).toLocaleString('en-GB');
+  const provisionFundPounds = (PROVISION_FUND_BALANCE_PENCE / 100).toLocaleString('en-GB');
+
   return (
     <div className="bg-[#031c13] rounded-3xl border border-emerald-500/30 p-5 sm:p-6 shadow-md space-y-4">
       {/* Top 3 High-Impact Stats */}
@@ -85,8 +93,12 @@ export function LiveCommunityTicker() {
             <Users className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-xl sm:text-2xl font-black text-white tracking-tight">3,940+</span>
-            <span className="block text-[11px] text-emerald-200/80 font-medium">UK Everyday Co-Investors</span>
+            <span className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              {TOTAL_CO_INVESTORS_COUNT.toLocaleString('en-GB')}
+            </span>
+            <span className="block text-[11px] text-emerald-200/80 font-medium">
+              UK Everyday Co-Investors
+            </span>
           </div>
         </div>
 
@@ -95,8 +107,12 @@ export function LiveCommunityTicker() {
             <TrendingUp className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-xl sm:text-2xl font-black text-emerald-400 tracking-tight">£3.45M+</span>
-            <span className="block text-[11px] text-emerald-200/80 font-medium">Pitched & Syndicated</span>
+            <span className="text-xl sm:text-2xl font-black text-emerald-400 tracking-tight">
+              £{totalSyndicatedPounds}
+            </span>
+            <span className="block text-[11px] text-emerald-200/80 font-medium">
+              Pitched & Syndicated
+            </span>
           </div>
         </div>
 
@@ -105,8 +121,12 @@ export function LiveCommunityTicker() {
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <span className="text-xl sm:text-2xl font-black text-white tracking-tight">£142,500</span>
-            <span className="block text-[11px] text-emerald-200/80 font-medium">Community Provision Cushion</span>
+            <span className="text-xl sm:text-2xl font-black text-white tracking-tight">
+              £{provisionFundPounds}
+            </span>
+            <span className="block text-[11px] text-emerald-200/80 font-medium">
+              Provision Fund Balance (1% of raises)
+            </span>
           </div>
         </div>
       </div>
@@ -119,7 +139,7 @@ export function LiveCommunityTicker() {
             <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
           </span>
           <span className="font-bold text-emerald-300 uppercase tracking-wider text-[10px]">
-            Live Syndicate Pulse:
+            Simulated demo activity:
           </span>
         </div>
 

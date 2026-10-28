@@ -24,9 +24,9 @@ describe('Opportunities Marketplace & Seed Data (Milestone 3)', () => {
     }, {} as Record<string, number>);
 
     expect(tierCounts.low).toBe(3);
-    expect(tierCounts.medium).toBe(3);
+    expect(tierCounts.medium).toBe(4);
     expect(tierCounts.high).toBe(3);
-    expect(tierCounts.uncharted).toBe(3);
+    expect(tierCounts.uncharted).toBe(2);
   });
 
   it('includes the required mix of statuses (7 open, 2 funded, 1 repaying, 1 completed, 1 defaulted)', async () => {
@@ -45,7 +45,7 @@ describe('Opportunities Marketplace & Seed Data (Milestone 3)', () => {
 
   it('enforces stricter £100 per-user cap for Uncharted tier', async () => {
     const opps = await getOpportunities({ tier: 'uncharted' });
-    expect(opps.length).toBe(3);
+    expect(opps.length).toBe(2);
 
     for (const opp of opps) {
       expect(opp.per_user_cap_pence).toBe(10000); // £100.00
